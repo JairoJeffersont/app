@@ -52,7 +52,7 @@ class LoginController {
         $this->usuarioModel = new UsuarioModel();
         $this->config = require './src/Configs/config.php'; // Carrega as configurações do aplicativo
         $this->logger = new Logger('login_log'); // Inicializa o logger para logs de login
-        $this->logger->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/login_log.log', Level::Error));
+        $this->logger->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/login_log.log', Level::Debug));
         $this->emailSender = new EmailSender(); // Inicializa o serviço de envio de emails
     }
 
