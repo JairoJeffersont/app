@@ -30,6 +30,7 @@ CREATE TABLE usuario (
     usuario_aniversario date NOT NULL,
     usuario_foto varchar(255) DEFAULT NULL,
     usuario_cliente varchar(36) NOT NULL,
+    usuario_token varchar(255) DEFAULT NULL,
     usuario_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     usuario_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (usuario_id),

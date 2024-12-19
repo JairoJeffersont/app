@@ -2,10 +2,12 @@
 
 namespace GabineteDigital\Controllers;
 
-use GabineteDigital\Controllers\UsuarioController;
+use GabineteDigital\Middleware\EmailSender;
+use GabineteDigital\Models\UsuarioModel;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
+use PDOException;
 
 /**
  * LoginController
@@ -17,10 +19,10 @@ use Monolog\Level;
 class LoginController {
 
     /**
-     * @var UsuarioController
+     * @var UsuarioModel
      * Instância do controlador de usuários.
      */
-    private $usuarioController;
+    private $usuarioModel;
 
     /**
      * @var array
@@ -35,99 +37,74 @@ class LoginController {
     private $logger;
 
     /**
+     * @var EmailSender Instância do EmailSender para enviar email de confirmação.
+     */
+    private $emailSender;
+
+    /**
      * Construtor do LoginController.
      * 
      * Inicializa o controlador de usuários, configurações e o logger.
      */
     public function __construct() {
-        $this->usuarioController = new UsuarioController();
+        $this->usuarioModel = new UsuarioModel();
         $this->config = require './src/Configs/config.php';
         $this->logger = new Logger('login_log');
         $this->logger->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/login_log.log', Level::Error));
+        $this->emailSender = new EmailSender();
     }
 
-    /**
-     * Método responsável por realizar o login do usuário.
-     * 
-     * @param string $email O email do usuário.
-     * @param string $senha A senha do usuário.
-     * 
-     * @return array Retorna o status e mensagem da tentativa de login.
-     */
-    public function Logar($email, $senha) {
 
-        /**
-         * Valida o formato do email.
-         */
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['status' => 'invalid_email',  'message' => 'Email inválido.'];
+
+    public function recuperarSenha($email) {
+        try {
+            $busca = $this->usuarioModel->buscar('usuario_email', $email);
+
+            if (empty($busca)) {
+                return ['status' => 'not_found', 'message' => 'Usuário não encontrado.'];
+            }
+
+            $uniqid = uniqid();
+
+            $busca[0]['usuario_token'] = $uniqid;
+
+            $result = $this->usuarioModel->atualizar($busca[0]['usuario_id'], $busca[0]);
+
+            if ($result) {
+                $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', 'CORPO DO EMAIL' . $uniqid); //CRIAR CORPO DO EMAIL 
+                return ['status' => 'success', 'message' => 'Email de recuperação enviado com sucesso', 'token' => $uniqid];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
+    }
 
-        /**
-         * Verifica login para o usuário master.
-         */
-        if ($this->config['master_user']['master_email'] === $email && $this->config['master_user']['master_pass'] === $senha) {
-            session_start();
 
-            $_SESSION = [
-                'expiracao' => time() + (1 * 60 * 60),
-                'usuario_id' => 1,
-                'usuario_nome' => $this->config['master_user']['master_name'],
-                'usuario_nivel' => 0,
-                'usuario_foto' => null,
-                'usuario_cliente' => '1',
-                'cliente_nome' => 'CLIENTE_SISTEMA',
-                'cliente_deputado_id' => 1,
-                'cliente_deputado_nome' => 'DEPUTADO_SISTEMA',
-                'cliente_deputado_estado' => 'BR',
-                'cliente_assinaturas' => 1,
-            ];
+    public function novaSenha($token, $senha) {
+        
+        try {
+            $busca = $this->usuarioModel->buscar('usuario_token', $token);
 
-            $this->logger->log(Level::Info, sprintf('%s - %s', date('Y-m-d | H:i'), $this->config['master_user']['master_name']));
+            if (empty($busca)) {
+                return ['status' => 'not_found', 'message' => 'Token inválido.'];
+            }
 
-            return ['status' => 'success', 'message' => 'Usuário verificado com sucesso.'];
-        }
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-        $result = $this->usuarioController->buscarUsuario('usuario_email', $email);
+            $busca[0]['usuario_senha'] = $senhaHash;
+            $busca[0]['usuario_token'] = null;
 
-        /**
-         * Retorna status caso o usuário não seja encontrado ou houver erro.
-         */
-        if ($result['status'] == 'not_found' || $result['status'] == 'error' || $result['status'] == 'bad_request') {
-            return $result;
-        }
+            $result = $this->usuarioModel->atualizar($busca[0]['usuario_id'], $busca[0]);
 
-        /**
-         * Verifica se o usuário está ativo.
-         */
-        if (!$result['dados'][0]['usuario_ativo']) {
-            return ['status' => 'deactivated', 'status_code' => 403, 'message' => 'Usuário desativado.'];
-        }
-
-        /**
-         * Verifica a senha do usuário.
-         */
-        if (password_verify($senha, $result[0]['usuario_senha'])) {
-            session_start();
-
-            $_SESSION = [
-                'expiracao' => time() + $this->config['app']['session_time'] * 60 * 60,
-                'usuario_id' => $result[0]['usuario_id'],
-                'usuario_nome' => $result[0]['usuario_nome'],
-                'usuario_nivel' => $result[0]['usuario_nivel'],
-                'usuario_foto' => $result[0]['usuario_foto'],
-                'usuario_cliente' => $result[0]['usuario_cliente'],
-                'cliente_nome' => $result[0]['cliente_nome'],
-                'cliente_deputado_id' => $result[0]['cliente_deputado_id'],
-                'cliente_deputado_nome' => $result[0]['cliente_deputado_nome'],
-                'cliente_deputado_estado' => $result[0]['cliente_deputado_estado'],
-                'cliente_assinaturas' => $result[0]['cliente_assinaturas'],
-            ];
-
-            $this->logger->log(Level::Info, sprintf('%s - %s', date('Y-m-d | H:i'), $result[0]['usuario_nome']));
-            return ['status' => 'success', 'status_code' => 200, 'message' => 'Usuário verificado com sucesso.'];
-        } else {
-            return ['status' => 'wrong_password', 'message' => 'Senha incorreta.'];
+            if ($result) {
+                return ['status' => 'success', 'message' => 'Senha Alterada com sucesso'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 }

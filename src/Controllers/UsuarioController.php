@@ -109,13 +109,13 @@ class UsuarioController {
      */
     public function atualizarUsuario($usuario_id, $dados) {
 
-        $camposObrigatorios = ['usuario_nome', 'usuario_email', 'usuario_telefone', 'usuario_senha', 'usuario_nivel', 'usuario_ativo', 'usuario_aniversario', 'usuario_cliente'];
+        /*$camposObrigatorios = ['usuario_nome', 'usuario_email', 'usuario_telefone', 'usuario_senha', 'usuario_nivel', 'usuario_ativo', 'usuario_aniversario', 'usuario_cliente'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
                 return ['status' => 'bad_request', 'message' => "O campo '$campo' é obrigatório."];
             }
-        }
+        }*/
 
         if (!filter_var($dados['usuario_email'], FILTER_VALIDATE_EMAIL)) {
             return ['status' => 'invalid_email', 'message' => 'Email inválido.'];

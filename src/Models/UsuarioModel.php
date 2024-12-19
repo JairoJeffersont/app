@@ -65,10 +65,12 @@ class UsuarioModel {
     public function atualizar($usuario_id, $dados) {
         $query = "UPDATE usuario SET usuario_nome = :usuario_nome, usuario_email = :usuario_email, usuario_telefone = :usuario_telefone, 
                   usuario_senha = :usuario_senha, usuario_nivel = :usuario_nivel, usuario_ativo = :usuario_ativo, usuario_aniversario = :usuario_aniversario, 
-                  usuario_cliente = :usuario_cliente, usuario_foto = :usuario_foto
+                  usuario_cliente = :usuario_cliente, usuario_foto = :usuario_foto, usuario_token = :usuario_token
                   WHERE usuario_id = :usuario_id";
 
         $stmt = $this->conn->prepare($query);
+
+        $token = isset($dados['usuario_token']) ? $dados['usuario_token'] : null;
 
         // Bind dos parâmetros.
         $stmt->bindParam(':usuario_nome', $dados['usuario_nome'], PDO::PARAM_STR);
@@ -80,6 +82,7 @@ class UsuarioModel {
         $stmt->bindParam(':usuario_aniversario', $dados['usuario_aniversario'], PDO::PARAM_STR);
         $stmt->bindParam(':usuario_cliente', $dados['usuario_cliente'], PDO::PARAM_STR);
         $stmt->bindParam(':usuario_foto', $dados['usuario_foto'], PDO::PARAM_STR);
+        $stmt->bindParam(':usuario_token', $token, PDO::PARAM_STR);
         $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);
 
         return $stmt->execute();
