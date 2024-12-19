@@ -4,9 +4,8 @@ namespace GabineteDigital\Controllers;
 
 use GabineteDigital\Middleware\EmailSender;
 use GabineteDigital\Models\UsuarioModel;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
+use GabineteDigital\Middleware\Logger;
+
 use PDOException;
 
 /**
@@ -51,8 +50,7 @@ class LoginController {
     public function __construct() {
         $this->usuarioModel = new UsuarioModel();
         $this->config = require './src/Configs/config.php'; // Carrega as configurações do aplicativo
-        $this->logger = new Logger('login_log'); // Inicializa o logger para logs de login
-        $this->logger->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/login_log.log', Level::Debug));
+        $this->logger = new Logger();
         $this->emailSender = new EmailSender(); // Inicializa o serviço de envio de emails
     }
 
@@ -91,7 +89,7 @@ class LoginController {
             ];
 
             // Loga a informação do usuário mestre
-            $this->logger->log(Level::Info, sprintf('%s - %s', date('Y-m-d | H:i'), $this->config['master_user']['master_name']));
+            $this->logger->novoLog('login_log', $this->config['master_user']['master_name']);
 
             return ['status' => 'success', 'message' => 'Usuário verificado com sucesso.'];
         }
@@ -128,14 +126,14 @@ class LoginController {
                     'cliente_assinaturas' => $busca[0]['cliente_assinaturas'],
                 ];
 
-                $this->logger->log(Level::Info, sprintf('%s - %s', date('Y-m-d | H:i'), $busca[0]['usuario_nome']));
+                $this->logger->novoLog('login_log', $busca[0]['usuario_nome']);
                 return ['status' => 'success', 'message' => 'Usuário verificado com sucesso.'];
             } else {
                 return ['status' => 'wrong_password', 'message' => 'Senha incorreta.'];
             }
         } catch (PDOException $e) {
-            $erro_id = uniqid(); // Gera um identificador único para o erro
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $erro_id = uniqid();
+            $this->logger->novoLog('login_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -171,7 +169,7 @@ class LoginController {
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('login_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -206,7 +204,7 @@ class LoginController {
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('login_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }

@@ -4,9 +4,7 @@ namespace GabineteDigital\Middleware;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
+use GabineteDigital\Middleware\Logger;
 
 /**
  * Classe EmailSender
@@ -30,7 +28,7 @@ class EmailSender {
      */
     public function __construct() {
         $this->mailer = new PHPMailer(true);
-        $this->logger = new Logger('error_email');
+        $this->logger = new Logger();
     }
 
     /**
@@ -41,10 +39,7 @@ class EmailSender {
      * @return array Retorna um array associativo com o status da operação ('success' ou 'error') e uma mensagem.
      */
     public function sendEmail($toEmail, $assunto, $message) {
-        $logDirectory = dirname(__DIR__, 2) . '/logs';
-        $logFile = $logDirectory . '/error_email.log';
 
-        $this->logger->pushHandler(new StreamHandler($logFile, Level::Error));
 
         try {
             $this->mailer->IsSMTP();
@@ -65,8 +60,9 @@ class EmailSender {
             //$this->mailer->send();
             return ['status' => 'success', 'message' => 'Email enviado com sucesso.'];
         } catch (Exception $e) {
-            $this->logger->log(Level::Error, $this->mailer->ErrorInfo);
-            return ['status' => 'error', 'message' => 'Erro ao enviar mensagem.'];
+            $erro_id = uniqid();
+            $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 }

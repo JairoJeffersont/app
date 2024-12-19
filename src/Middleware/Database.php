@@ -2,9 +2,6 @@
 
 namespace GabineteDigital\Middleware;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
 use PDO;
 use PDOException;
 
@@ -25,11 +22,8 @@ class Database {
      * Em caso de erro na conexão, registra o erro no log e redireciona para a página de erro fatal.
      */
     public function __construct() {
-        // Instancia do logger para erros relacionados à conexão com o banco de dados
-        $log = new Logger('error_db');
 
-        // Caminho para o diretório de logs
-        $log->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/error_db.log', Level::Error));
+        $log = new Logger();
 
         // Obtém a configuração do banco de dados
         $config = require dirname(__DIR__, 2) . '/src/Configs/config.php';
@@ -51,8 +45,7 @@ class Database {
 
         } catch (PDOException $e) {
             // Registra o erro no log
-            $log->log(Level::Error, $e->getMessage());
-
+            $log->novoLog('db_error.log', $e->getMessage());
             // Redireciona para página de erro em caso de falha na conexão
             header('Location: ?secao=fatal_error');
             exit;

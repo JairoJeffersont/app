@@ -4,9 +4,7 @@ namespace GabineteDigital\Controllers;
 
 use GabineteDigital\Middleware\FileUploader;
 use GabineteDigital\Models\UsuarioModel;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
+use GabineteDigital\Middleware\Logger;
 use PDOException;
 
 /**
@@ -45,8 +43,7 @@ class UsuarioController {
      */
     public function __construct() {
         $this->usuarioModel = new UsuarioModel();
-        $this->logger = new Logger('error_usuarios');
-        $this->logger->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/error_usuarios.log', Level::Error));
+        $this->logger = new Logger();
         $this->fileUploader = new FileUploader();
         $this->pasta_foto = 'public/arquivos/fotos_usuarios';
     }
@@ -95,7 +92,7 @@ class UsuarioController {
             }
 
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -153,7 +150,7 @@ class UsuarioController {
             }
 
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -174,7 +171,7 @@ class UsuarioController {
             return ['status' => 'success', 'message' => count($usuarios) . ' usuário(s) encontrado(s)', 'dados' => $usuarios];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -202,7 +199,7 @@ class UsuarioController {
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -229,7 +226,7 @@ class UsuarioController {
             return ['status' => 'success', 'message' => 'Usuário apagado com sucesso.'];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }

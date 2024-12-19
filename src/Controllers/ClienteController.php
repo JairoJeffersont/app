@@ -4,9 +4,8 @@ namespace GabineteDigital\Controllers;
 
 use GabineteDigital\Middleware\EmailSender;
 use GabineteDigital\Models\ClienteModel;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
+use GabineteDigital\Middleware\Logger;
+
 use PDOException;
 
 /**
@@ -39,8 +38,8 @@ class ClienteController {
      */
     public function __construct() {
         $this->clienteModel = new ClienteModel();
-        $this->logger = new Logger('error_cliente');
-        $this->logger->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/error_cliente.log', Level::Error));
+        $this->logger = new Logger();
+
         $this->emailSender = new EmailSender();
     }
 
@@ -75,7 +74,7 @@ class ClienteController {
                 return ['status' => 'duplicated', 'message' => 'E-mail ou CPF já está cadastrado ou já existe uma assinatura para esse deputado.'];
             } else {
                 $erro_id = uniqid();
-                $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+                $this->logger->novoLog('cliente_log', $e->getMessage() . ' | ' . $erro_id);
                 return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
             }
         }
@@ -109,7 +108,7 @@ class ClienteController {
             return ['status' => 'success', 'message' => 'Cliente atualizado com sucesso.'];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('cliente_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -130,7 +129,7 @@ class ClienteController {
             return ['status' => 'success', 'message' => count($busca) . ' cliente(s) encontrado(s)', 'dados' => $busca];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('cliente_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -159,7 +158,7 @@ class ClienteController {
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('cliente_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -187,7 +186,7 @@ class ClienteController {
             }
 
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('cliente_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -220,7 +219,7 @@ class ClienteController {
             return ['status' => 'success', 'message' => 'Status do cliente alterado com sucesso.'];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('cliente_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
