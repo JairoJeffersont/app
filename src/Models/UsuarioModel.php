@@ -91,7 +91,7 @@ class UsuarioModel {
      * @return array Retorna um array associativo com os dados de todos os usuários.
      */
     public function listar($cliente) {
-        $query = "SELECT * FROM view_usuarios WHERE usuario_cliente = :cliente AND usuario_nome <> 'USUÁRIO SISTEMA' ORDER BY usuario_nome ASC";
+        $query = "SELECT * FROM view_usuarios WHERE usuario_cliente = :cliente AND usuario_id <> '1' ORDER BY usuario_nome ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
@@ -109,7 +109,7 @@ class UsuarioModel {
      * @return array Retorna um array associativo com os dados dos usuários encontrados.
      */
     public function buscar($coluna, $valor) {
-        $query = "SELECT * FROM view_usuarios WHERE $coluna = :valor AND usuario_nome <> 'USUÁRIO SISTEMA'";
+        $query = "SELECT * FROM view_usuarios WHERE $coluna = :valor AND usuario_id <> '1'";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);

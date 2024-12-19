@@ -112,7 +112,7 @@ class ClienteModel {
      * @return array Retorna um array associativo com os dados de todos os clientes, exceto o cliente com ID 1.
      */
     public function listar() {
-        $query = "SELECT * FROM cliente WHERE cliente_id <> 1 ORDER BY cliente_nome ASC";
+        $query = "SELECT * FROM cliente WHERE cliente_id <> '1' ORDER BY cliente_nome ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -128,7 +128,7 @@ class ClienteModel {
      * @return array Retorna um array associativo com os dados dos clientes encontrados.
      */
     public function buscar($coluna, $valor) {
-        $query = "SELECT * FROM cliente WHERE $coluna = :valor AND cliente_id <> 1";
+        $query = "SELECT * FROM cliente WHERE $coluna = :valor AND cliente_id <> '1'";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);

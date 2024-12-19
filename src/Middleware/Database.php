@@ -29,11 +29,7 @@ class Database {
         $log = new Logger('error_db');
 
         // Caminho para o diretório de logs
-        $logDirectory = dirname(__DIR__, 2) . '/logs';
-        $logFile = $logDirectory . '/error_db.log';
-
-        // Adiciona um manipulador para registrar mensagens no log com nível DEBUG
-        $log->pushHandler(new StreamHandler($logFile, Level::Debug));
+        $log->pushHandler(new StreamHandler(dirname(__DIR__, 2) . '/logs/error_db.log', Level::Error));
 
         // Obtém a configuração do banco de dados
         $config = require dirname(__DIR__, 2) . '/src/Configs/config.php';
