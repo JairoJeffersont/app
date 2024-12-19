@@ -40,4 +40,4 @@ CREATE TABLE usuario (
 INSERT INTO usuario (usuario_id, usuario_nome, usuario_email, usuario_telefone, usuario_senha, usuario_nivel, usuario_ativo, usuario_aniversario, usuario_cliente) 
 VALUES ('1', 'USUÁRIO SISTEMA', 'email@email.com', '000000', 'sd9fasdfasd9fasd89fsad9f8', 1, 1, '2000-01-01', '1');
 
-CREATE VIEW view_usuarios AS SELECT usuario.*, cliente.cliente_nome FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
+CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
