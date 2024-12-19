@@ -1,3 +1,0 @@
-2024-12-19 20:17:25  | 67647f559e52f
-2024-12-19 20:17:49 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ususario_email' in 'where clause' | 67647f6dd7d48
-2024-12-19 20:18:06 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ususario_email' in 'where clause' | 67647f7eb0ea8

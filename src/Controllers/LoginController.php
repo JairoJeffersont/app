@@ -164,8 +164,8 @@ class LoginController {
 
             if ($result) {
                 // Envia o email de recuperação com o token
-                $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', 'CORPO DO EMAIL' . $uniqid); // Criar corpo do email
-                return ['status' => 'success', 'message' => 'Email de recuperação enviado com sucesso'];
+                $resp = $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', 'CORPO DO EMAIL' . $uniqid); // Criar corpo do email
+                return ['status' => 'success', 'message' => $resp['message']];
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();

@@ -6,4 +6,4 @@ require 'vendor/autoload.php';
 
 $a = new LoginController();
 
-print_r($a->Logar('teste@teste.com', 'intell01'));
+print_r($a->recuperarSenha('jairojeffersont@gmail.com'));

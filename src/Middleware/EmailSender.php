@@ -61,7 +61,7 @@ class EmailSender {
             return ['status' => 'success', 'message' => 'Email enviado com sucesso.'];
         } catch (Exception $e) {
             $erro_id = uniqid();
-            $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('email_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
