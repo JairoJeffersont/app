@@ -6,7 +6,7 @@ CREATE TABLE cliente (
     cliente_ativo tinyint(1) NOT NULL,
     cliente_endereco varchar(255) DEFAULT NULL,
     cliente_cep varchar(8) DEFAULT NULL,
-    cliente_cpf varchar(14) NOT NULL,
+    cliente_cpf varchar(14) NOT NULL UNIQUE,
     cliente_assinaturas int NOT NULL,
     cliente_deputado_id int NOT NULL UNIQUE,
     cliente_deputado_nome varchar(255) NOT NULL,

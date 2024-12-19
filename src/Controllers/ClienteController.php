@@ -72,7 +72,7 @@ class ClienteController {
             return ['status' => 'success', 'message' => 'Cliente inserido com sucesso. Em breve você receberá um email com as instruções para acesso.'];
         } catch (PDOException $e) {
             if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
-                return ['status' => 'duplicated', 'message' => 'O e-mail já está cadastrado ou já existe uma assinatura para esse deputado.'];
+                return ['status' => 'duplicated', 'message' => 'E-mail ou CPF já está cadastrado ou já existe uma assinatura para esse deputado.'];
             } else {
                 $erro_id = uniqid();
                 $this->logger->log(Level::Error, $e->getMessage() . ' | ' . $erro_id);
