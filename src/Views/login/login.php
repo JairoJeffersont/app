@@ -43,7 +43,7 @@
                 <button type="submit" name="btn_logar" class="btn">Entrar</button>
             </div>
         </form>
-        <p class="mt-3 link"> <a href="?secao=recuperar-senha">Esqueceu a senha?</a> | <a href="?secao=cadastro">Faça seu cadastro</a></p>
+        <p class="mt-3 link"> <a href="?secao=recuperar-senha">Esqueceu a senha?</a> | <a href="?secao=cadastro">Cadastre seu gabinete</a></p>
         <p class="mt-3 copyright"><?php echo date('Y') ?> | JS Digital System</p>
     </div>
 </div>
