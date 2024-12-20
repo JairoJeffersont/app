@@ -47,7 +47,7 @@ class Database {
             // Registra o erro no log
             $log->novoLog('db_error.log', $e->getMessage());
             // Redireciona para página de erro em caso de falha na conexão
-            header('Location: ?secao=fatal_error');
+            header('Location: ?secao=fatal-error');
             exit;
         }
     }

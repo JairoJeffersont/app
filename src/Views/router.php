@@ -10,11 +10,13 @@ $rotas = [
     'cadastro' => './src/Views/cadastro/cadastro.php',
     'novo-usuario' => './src/Views/cadastro/novo-usuario.php',
     'home' => './src/Views/home/home.php',
+    'fatal-error' => './src/Views/erros/fatal_error.php',
+
 
 ];
 
 if (array_key_exists($pagina, $rotas)) {
     include $rotas[$pagina];
 } else {
-    include '../src/views/404.php';
+    include './src/Views/erros/404.php';
 }
