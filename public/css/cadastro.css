@@ -14,9 +14,9 @@ body {
 input[type="email"],
 input[type="password"],
 input[type="text"] {
-    border-radius: 20px;
+    border-radius: 15px;
     /* Aqui você define o nível de arredondamento */
-    padding: 15px;
+    padding: 10px;
     padding-left: 25px;
     margin-bottom: 0;
     border: 1px solid #ccc;
