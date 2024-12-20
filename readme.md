@@ -13,19 +13,30 @@ Entre na pasta do aplicativo e digite `composer install`
 
 ## Configurar as Variáveis de Ambiente
 
-Antes de executar a aplicação, é necessário configurar as variáveis de configuração. Modifique o arquivo `.env` na raiz do projeto com as seguintes variáveis:
+Antes de executar a aplicação, é necessário configurar as variáveis de configuração. Modifique o arquivo `/src/Configs/configs.php` na raiz do projeto com as seguintes variáveis:
 
 ```
-DB_HOST=localhost
-DB_NAME=gabinete_digital
-DB_USER=root
-DB_PASS=root
+<?php
+return [
 
-SESSION_TIME=24
+    'database' => [
+        'host' => 'host do banco',
+        'name' => 'nome do banco',
+        'user' => 'usuario do banco',
+        'password' => 'senha',
+    ],
 
-MASTER_USER=Administrador
-MASTER_EMAIL=admin@admin.com
-MASTER_PASS=senha
+    'master_user' => [
+        'master_name' => 'usuario administrativo',
+        'master_email' => 'admin@admin.com',
+        'master_pass' => 'senha',
+    ],
+    
+    'app' => [
+        'session_time' => 24,//tempo de duração da sessão
+        'base_url' =>rtrim($_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/', '')
+    ]
+];
 
 ```
 ## Sincronizar as tabelas do banco
