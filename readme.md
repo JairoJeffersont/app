@@ -41,3 +41,12 @@ return [
 ```
 ## Sincronizar as tabelas do banco
 Importe o sript sql no seu banco de dados. /mysql/db.sql
+
+## Dependências Principais
+
+O projeto utiliza as seguintes dependências principais:
+
+PHPMailer (v6.9.3): Biblioteca robusta para envio de e-mails via SMTP.
+Requer extensões do PHP: ext-ctype, ext-filter, ext-hash, ext-mbstring (opcional para codificações multibyte), e ext-openssl (opcional para envio SMTP seguro).
+
+Certifique-se de verificar as extensões do PHP necessárias e habilitá-las no servidor.
