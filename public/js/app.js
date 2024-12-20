@@ -31,6 +31,14 @@ $('button[name="btn_salvar"]').on('click', function (event) {
     }
 });
 
+
+$('button[name="btn_recuperar"]').on('click', function (event) {
+    const confirmacao = confirm("Tem certeza que deseja receber o email de recuperação?");
+    if (!confirmacao) {
+        event.preventDefault();
+    }
+});
+
 $('button[name="btn_login"]').on('click', function (event) {
     const confirmacao = confirm("Seu cadastro será enviada para ativação.");
     if (!confirmacao) {
@@ -46,7 +54,7 @@ $('button[name="btn_atualizar"]').on('click', function (event) {
     }
 });
 
-$('#btn-sair').on('click', function(event) {
+$('#btn-sair').on('click', function (event) {
     event.preventDefault(); // Impede a navegação imediata
 
     // Exibe a mensagem de confirmação

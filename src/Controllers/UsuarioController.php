@@ -200,7 +200,7 @@ class UsuarioController {
      * @return array Retorna um array com o status da operação, mensagem e dados do usuário ou mensagem de usuário não encontrado.
      */
     public function buscarUsuario($coluna, $valor) {
-        $colunasPermitidas = ['usuario_id', 'usuario_email'];
+        $colunasPermitidas = ['usuario_id', 'usuario_email', 'usuario_token'];
 
         if (!in_array($coluna, $colunasPermitidas)) {
             return ['status' => 'bad_request', 'message' => 'Coluna inválida. Apenas usuario_id e usuario_email são permitidos.'];
