@@ -39,27 +39,27 @@ class EmailSender {
      * @return array Retorna um array associativo com o status da operação ('success' ou 'error') e uma mensagem.
      */
     public function sendEmail($toEmail, $assunto, $message) {
-
-
         try {
-            $this->mailer->IsSMTP();
-            $this->mailer->Host = "smtp.politikaassessoria.com.br";
+            $this->mailer = new PHPMailer(true);
+            $this->mailer->isSMTP();
+            $this->mailer->Host = 'smtp.kinghost.net';
             $this->mailer->SMTPAuth = true;
             $this->mailer->Port = 587;
-            $this->mailer->SMTPSecure = false;
-            $this->mailer->SMTPAutoTLS = true;
+            $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mailer->Username = 'contato@politikaassessoria.com.br';
-            $this->mailer->Password = 'Intell@01';
-
-            $this->mailer->addAddress($toEmail);
+            $this->mailer->Password = 'Intell@3103';
+            $this->mailer->Sender = 'contato@politikaassessoria.com.br';
+            $this->mailer->From = 'contato@politikaassessoria.com.br';
+            $this->mailer->FromName = 'Contato';
+            $this->mailer->addAddress($toEmail, 'Nome - Recebe1');
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $assunto;
-            $this->mailer->Body    = $message;
+            $this->mailer->Body = $message;
 
-            //$this->mailer->send();
+            $this->mailer->send();
             return ['status' => 'success', 'message' => 'Email enviado com sucesso.'];
-        } catch (Exception $e) {
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('email_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];

@@ -42,6 +42,7 @@ class LoginController {
      */
     private $emailSender;
 
+    
     /**
      * Construtor do LoginController.
      * 
@@ -151,6 +152,7 @@ class LoginController {
             // Busca o usuário no banco de dados usando o email
             $busca = $this->usuarioModel->buscar('usuario_email', $email);
 
+
             if (empty($busca)) {
                 return ['status' => 'not_found', 'message' => 'Usuário não encontrado.'];
             }
@@ -164,7 +166,7 @@ class LoginController {
 
             if ($result) {
                 // Envia o email de recuperação com o token
-                $resp = $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', 'CORPO DO EMAIL' . $uniqid); // Criar corpo do email
+                $resp = $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', $this->config['app']['base_url'].'?secao=recuperar-senha&token=' . $uniqid); // Criar corpo do email
                 return ['status' => 'success', 'message' => $resp['message']];
             }
         } catch (PDOException $e) {

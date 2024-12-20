@@ -32,6 +32,11 @@ class ClienteController {
     private $emailSender;
 
     /**
+     * @var Configs Instância as configurações do sitema.
+     */
+    private $configs;
+
+    /**
      * Construtor do ClienteController.
      *
      * Inicializa as instâncias do modelo ClienteModel e do Logger para gerenciamento de logs.
@@ -39,8 +44,8 @@ class ClienteController {
     public function __construct() {
         $this->clienteModel = new ClienteModel();
         $this->logger = new Logger();
-
         $this->emailSender = new EmailSender();
+        $this->configs = require dirname(__DIR__, 2) . '/src/Configs/config.php';
     }
 
     /**
@@ -67,7 +72,9 @@ class ClienteController {
 
         try {
             $this->clienteModel->criar($dados);
-            $this->emailSender->sendEmail($dados['cliente_email'], 'Gabinete Digital - Instruções para acesso', 'CORPO DO EMAIL'); //CRIAR CORPO DO EMAIL 
+            $buscaUltimo = $this->listarClientes();
+            $clienteid = $buscaUltimo['dados'][0]['cliente_id'];
+            $this->emailSender->sendEmail($dados['cliente_email'], 'Gabinete Digital - Instruções para acesso', $this->configs['app']['base_url'].'?secao=novo-usuario&token='.$clienteid); 
             return ['status' => 'success', 'message' => 'Cliente inserido com sucesso. Em breve você receberá um email com as instruções para acesso.'];
         } catch (PDOException $e) {
             if (strpos($e->getMessage(), 'Duplicate entry') !== false) {

@@ -5,6 +5,7 @@ namespace GabineteDigital\Controllers;
 use GabineteDigital\Middleware\FileUploader;
 use GabineteDigital\Models\UsuarioModel;
 use GabineteDigital\Middleware\Logger;
+use GabineteDigital\Models\ClienteModel;
 use PDOException;
 
 /**
@@ -19,6 +20,11 @@ class UsuarioController {
      * @var UsuarioModel Instância do modelo UsuarioModel para interagir com os dados.
      */
     private $usuarioModel;
+
+    /**
+     * @var ClienteModel Instância do modelo UsuarioModel para interagir com os dados.
+     */
+    private $clienteModel;
 
     /**
      * @var Logger Instância do Logger para registrar erros.
@@ -43,6 +49,7 @@ class UsuarioController {
      */
     public function __construct() {
         $this->usuarioModel = new UsuarioModel();
+        $this->clienteModel = new ClienteModel();
         $this->logger = new Logger();
         $this->fileUploader = new FileUploader();
         $this->pasta_foto = 'public/arquivos/fotos_usuarios';
@@ -67,6 +74,15 @@ class UsuarioController {
 
         if (!filter_var($dados['usuario_email'], FILTER_VALIDATE_EMAIL)) {
             return ['status' => 'invalid_email', 'message' => 'Email inválido.'];
+        }
+
+
+        $usuariosCount = count($this->usuarioModel->buscar('usuario_cliente', $dados['usuario_cliente']));
+        $clienteBusca = $this->clienteModel->buscar('cliente_id', $dados['usuario_cliente']);
+        $clienteAssinatura = $clienteBusca[0]['cliente_assinaturas'] ?? 1;
+
+        if ($usuariosCount >= $clienteAssinatura) {
+            return ['status' => 'forbidden', 'message' => "Não existem mais assinaturas disponíveis. Contate o gestor do sistema"];
         }
 
         if (!empty($dados['foto']['tmp_name'])) {
