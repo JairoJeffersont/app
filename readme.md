@@ -46,6 +46,10 @@ Importe o sript sql no seu banco de dados. /mysql/db.sql
 
 O projeto utiliza as seguintes dependências principais:
 
+PHP >= 7.4.0
+
+Mysql >= 5.3
+
 PHPMailer (v6.9.3): Biblioteca robusta para envio de e-mails via SMTP.
 
 Requer extensões do PHP: ext-ctype, ext-filter, ext-hash, ext-mbstring (opcional para codificações multibyte), e ext-openssl (opcional para envio SMTP seguro).
