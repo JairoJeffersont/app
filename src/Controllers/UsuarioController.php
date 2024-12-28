@@ -122,7 +122,7 @@ class UsuarioController {
      */
     public function atualizarUsuario($usuario_id, $dados) {
 
-        $camposObrigatorios = ['usuario_nome', 'usuario_email', 'usuario_telefone', 'usuario_senha', 'usuario_nivel', 'usuario_ativo', 'usuario_aniversario', 'usuario_cliente'];
+        $camposObrigatorios = ['usuario_nome', 'usuario_email', 'usuario_telefone', 'usuario_nivel', 'usuario_ativo', 'usuario_aniversario'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {

@@ -28,7 +28,7 @@ $busca = $usuarioController->listarUsuarios($_SESSION['usuario_cliente']);
             <div class="card mb-2 card-description ">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-people-fill"></i> Adicionar usuários</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-0">Todos os campos são obrigatórios (exceto a foto) <br> A foto deve ser em JPG ou PNG</p>
+                    <p class="card-text mb-0">Todos os campos são obrigatórios (exceto a foto) <br> A foto deve ser em JPG ou PNG e ter no máximo 2MB</p>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@ $busca = $usuarioController->listarUsuarios($_SESSION['usuario_cliente']);
                             } else if ($result['status'] == 'forbidden') {
                                 echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . '</div>';
                             } else if ($result['status'] == 'error') {
-                                echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['id_erro']) ? ' | Código do erro: ' . $result['id_erro'] : '') . '</div>';
+                                echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['error_id']) ? ' | Código do erro: ' . $result['error_id'] : '') . '</div>';
                             }
                         }
                     }
