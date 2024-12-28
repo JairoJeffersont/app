@@ -2,7 +2,7 @@
 return [
 
     'database' => [
-        'host' => 'jscloud.com.br',
+        'host' => 'localhost',
         'name' => 'gabinete_digital',
         'user' => 'jairo',
         'password' => 'intell01',
