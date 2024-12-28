@@ -11,6 +11,7 @@ $rotas = [
     'novo-usuario' => './src/Views/cadastro/novo-usuario.php',
     'home' => './src/Views/home/home.php',
     'fatal-error' => './src/Views/erros/fatal_error.php',
+    'usuarios' => './src/Views/usuarios/usuarios.php',
 
 
 ];
