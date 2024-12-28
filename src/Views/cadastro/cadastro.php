@@ -72,7 +72,6 @@ $clienteController = new ClienteController();
                     <option value="" disabled selected>Escolha o deputado do Gabinete</option>
                     <option value="204379" data-nome="Acácio Favacho" data-siglauf="AP">Acácio Favacho/AP</option>
                 </select>
-
             </div>
             <input type="hidden" name="cliente_deputado_id" id="dep_id">
             <input type="hidden" name="cliente_deputado_nome" id="dep_nome">
