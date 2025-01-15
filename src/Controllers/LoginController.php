@@ -16,7 +16,8 @@ use PDOException;
  * 
  * @package GabineteDigital\Controllers
  */
-class LoginController {
+class LoginController
+{
 
     /**
      * @var UsuarioModel
@@ -42,13 +43,14 @@ class LoginController {
      */
     private $emailSender;
 
-    
+
     /**
      * Construtor do LoginController.
      * 
      * Inicializa o controlador de usuários, configurações e o logger para registro de atividades.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->usuarioModel = new UsuarioModel();
         $this->config = require './src/Configs/config.php'; // Carrega as configurações do aplicativo
         $this->logger = new Logger();
@@ -64,7 +66,8 @@ class LoginController {
      * @param string $senha
      * @return array
      */
-    public function Logar($email, $senha) {
+    public function Logar($email, $senha)
+    {
 
         // Valida o formato do email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -89,8 +92,18 @@ class LoginController {
                 'cliente_assinaturas' => 1,
             ];
 
-            // Loga a informação do usuário mestre
-            $this->logger->novoLog('login_log', $this->config['master_user']['master_name']);
+            // Obter informações do usuário
+            $userInfo = $this->logger->get_user_info();
+
+            // Criar a mensagem do log
+            $logMessage = $this->config['master_user']['master_name'] . ' | ' .
+                'IP: ' . $userInfo['ip'] . ' | ' .
+                'Navegador: ' . $userInfo['browser'] . ' | ' .
+                'Sistema: ' . $userInfo['os'] . ' | ' .
+                'User Agent: ' . $userInfo['user_agent'];
+
+            // Gravar no log
+            $this->logger->novoLog('login_log', $logMessage);
 
             return ['status' => 'success', 'message' => 'Usuário verificado com sucesso.'];
         }
@@ -127,7 +140,17 @@ class LoginController {
                     'cliente_assinaturas' => $busca[0]['cliente_assinaturas'],
                 ];
 
-                $this->logger->novoLog('login_log', $busca[0]['usuario_nome']);
+                $userInfo = $this->logger->get_user_info();
+
+                $logMessage = $busca[0]['usuario_nome'] . ' | ' .
+                    'IP: ' . $userInfo['ip'] . ' | ' .
+                    'Navegador: ' . $userInfo['browser'] . ' | ' .
+                    'Sistema: ' . $userInfo['os'] . ' | ' .
+                    'User Agent: ' . $userInfo['user_agent'];
+
+                // Gravar no log
+                $this->logger->novoLog('login_log', $logMessage);
+
                 return ['status' => 'success', 'message' => 'Usuário verificado com sucesso.'];
             } else {
                 return ['status' => 'wrong_password', 'message' => 'Senha incorreta.'];
@@ -147,7 +170,8 @@ class LoginController {
      * @param string $email
      * @return array
      */
-    public function recuperarSenha($email) {
+    public function recuperarSenha($email)
+    {
         try {
             // Busca o usuário no banco de dados usando o email
             $busca = $this->usuarioModel->buscar('usuario_email', $email);
@@ -166,7 +190,7 @@ class LoginController {
 
             if ($result) {
                 // Envia o email de recuperação com o token
-                $resp = $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', $this->config['app']['base_url'].'?secao=nova-senha&token=' . $uniqid); // Criar corpo do email
+                $resp = $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', $this->config['app']['base_url'] . '?secao=nova-senha&token=' . $uniqid); // Criar corpo do email
                 return ['status' => 'success', 'message' => $resp['message']];
             }
         } catch (PDOException $e) {
@@ -183,7 +207,8 @@ class LoginController {
      * @param string $senha
      * @return array
      */
-    public function novaSenha($token, $senha) {
+    public function novaSenha($token, $senha)
+    {
         try {
             // Busca o usuário pelo token
             $busca = $this->usuarioModel->buscar('usuario_token', $token);
