@@ -2,7 +2,6 @@
 
 ob_start();
 
-
 require './src/Middleware/VerificaLogado.php';
 
 require_once './vendor/autoload.php';
