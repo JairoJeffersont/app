@@ -59,7 +59,7 @@ class OrgaoController
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 
@@ -102,7 +102,7 @@ class OrgaoController
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 
@@ -134,7 +134,7 @@ class OrgaoController
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_error', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
-            return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
+            return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 
@@ -157,7 +157,7 @@ class OrgaoController
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 
@@ -186,7 +186,7 @@ class OrgaoController
 
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 }

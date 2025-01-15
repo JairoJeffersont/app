@@ -17,12 +17,10 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
 
 $itens = isset($_GET['itens']) ? (int) $_GET['itens'] : 10;
 $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
-$ordenarPor = isset($_GET['ordenarPor']) && in_array(htmlspecialchars($_GET['ordenarPor']), ['orgao_nome', 'orgao_estado', 'orgao_municipio', 'orgao_tipo_nome', 'orgao_criado_por']) ? htmlspecialchars($_GET['ordenarPor']) : 'orgao_nome';
+$ordenarPor = isset($_GET['ordenarPor']) && in_array(htmlspecialchars($_GET['ordenarPor']), ['orgao_nome', 'orgao_estado', 'orgao_municipio', 'orgao_tipo_nome', 'orgao_criado_por', 'orgao_criado_em']) ? htmlspecialchars($_GET['ordenarPor']) : 'orgao_nome';
 $ordem = isset($_GET['ordem']) ? strtolower(htmlspecialchars($_GET['ordem'])) : 'asc';
 $termo = isset($_GET['termo']) ? htmlspecialchars($_GET['termo']) : null;
 $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado'] : null;
-
-
 
 ?>
 
@@ -87,7 +85,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                         } else if ($result['status'] == 'duplicated' || $result['status'] == 'bad_request' || $result['status'] == 'invalid_email') {
                             echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" role="alert" data-timeout="3">' . $result['message'] . '</div>';
                         } else if ($result['status'] == 'error') {
-                            echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['id_erro']) ? ' | Código do erro: ' . $result['id_erro'] : '') . '</div>';
+                            echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['error_id']) ? ' | Código do erro: ' . $result['error_id'] : '') . '</div>';
                         }
                     }
                     ?>
