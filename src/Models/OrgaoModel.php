@@ -90,7 +90,7 @@ class OrgaoModel
         return $stmt->execute();
     }
 
-        /**
+    /**
      * Método para listar órgãos com paginação e filtros.
      *
      * Este método permite listar os órgãos com base em critérios específicos, 
@@ -129,7 +129,7 @@ class OrgaoModel
                 $termo = '%' . $termo . '%';
             }
         }
-        
+
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindValue(':itens', $itens, PDO::PARAM_INT);
@@ -143,8 +143,6 @@ class OrgaoModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
 
     /**
      * Método para buscar órgãos por uma coluna específica e seu valor.

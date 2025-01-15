@@ -12,7 +12,8 @@ use PDOException;
  * Controla as operações relacionadas a órgãos, incluindo criação, atualização, listagem,
  * busca e exclusão de registros.
  */
-class OrgaoController {
+class OrgaoController
+{
 
     /**
      * @var OrgaoModel Instância do modelo OrgaoModel para interagir com os dados.
@@ -29,7 +30,8 @@ class OrgaoController {
      *
      * Inicializa as instâncias do modelo OrgaoModel e do Logger para gerenciamento de logs.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->orgaoModel = new OrgaoModel();
         $this->logger = new Logger();
     }
@@ -38,11 +40,11 @@ class OrgaoController {
      * Método para criar um novo órgão.
      *
      * @param array $dados Associativo com os dados do órgão a serem inseridos. Campos obrigatórios:
-     *                     orgao_nome, orgao_email, orgao_telefone, orgao_endereco, orgao_bairro,
-     *                     orgao_municipio, orgao_estado, orgao_cep, orgao_tipo, orgao_criado_por, orgao_cliente.
+     *                     orgao_nome, orgao_email, orgao_municipio, orgao_estado, orgao_tipo, orgao_criado_por, orgao_cliente.
      * @return array Retorna um array com o status da operação e mensagem.
      */
-    public function criarOrgao($dados) {
+    public function criarOrgao($dados)
+    {
         $camposObrigatorios = ['orgao_nome', 'orgao_email', 'orgao_municipio', 'orgao_estado', 'orgao_tipo', 'orgao_criado_por', 'orgao_cliente'];
 
         foreach ($camposObrigatorios as $campo) {
@@ -57,7 +59,7 @@ class OrgaoController {
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
         }
     }
 
@@ -68,9 +70,19 @@ class OrgaoController {
      * @param array $dados Associativo com os dados atualizados do órgão.
      * @return array Retorna um array com o status da operação e mensagem.
      */
-    public function atualizarOrgao($orgao_id, $dados) {
-        $camposObrigatorios = ['orgao_nome', 'orgao_email', 'orgao_telefone', 'orgao_endereco', 'orgao_bairro',
-                                'orgao_municipio', 'orgao_estado', 'orgao_cep', 'orgao_tipo'];
+    public function atualizarOrgao($orgao_id, $dados)
+    {
+        $camposObrigatorios = [
+            'orgao_nome',
+            'orgao_email',
+            'orgao_telefone',
+            'orgao_endereco',
+            'orgao_bairro',
+            'orgao_municipio',
+            'orgao_estado',
+            'orgao_cep',
+            'orgao_tipo'
+        ];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
@@ -90,7 +102,7 @@ class OrgaoController {
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
         }
     }
 
@@ -106,19 +118,23 @@ class OrgaoController {
      * @param int $cliente ID do cliente associado.
      * @return array Retorna um array com o status da operação, mensagem e lista de órgãos.
      */
-    public function listarOrgaos($itens, $pagina, $ordem, $ordenarPor, $termo, $estado, $cliente) {
+    public function listarOrgaos($itens, $pagina, $ordem, $ordenarPor, $termo, $estado, $cliente)
+    {
         try {
-            $orgaos = $this->orgaoModel->listar($itens, $pagina, $ordem, $ordenarPor, $termo, $estado, $cliente);
+            $result = $this->orgaoModel->listar($itens, $pagina, $ordem, $ordenarPor, $termo, $estado, $cliente);
 
-            if (empty($orgaos)) {
+            $total = (isset($result[0]['total'])) ? $result[0]['total'] : 0;
+            $totalPaginas = ceil($total / $itens);
+
+            if (empty($result)) {
                 return ['status' => 'empty', 'message' => 'Nenhum órgão encontrado.'];
             }
 
-            return ['status' => 'success', 'message' => count($orgaos) . ' órgão(s) encontrado(s)', 'dados' => $orgaos];
+            return ['status' => 'success', 'total_paginas' => $totalPaginas, 'dados' => $result];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+            $this->logger->novoLog('orgao_error', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
+            return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
         }
     }
 
@@ -129,7 +145,8 @@ class OrgaoController {
      * @param mixed $valor Valor correspondente à coluna para busca.
      * @return array Retorna um array com o status da operação, mensagem e dados ou mensagem de registro não encontrado.
      */
-    public function buscarOrgao($coluna, $valor) {
+    public function buscarOrgao($coluna, $valor)
+    {
         try {
             $orgao = $this->orgaoModel->buscar($coluna, $valor);
             if ($orgao) {
@@ -140,7 +157,7 @@ class OrgaoController {
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
         }
     }
 
@@ -150,7 +167,8 @@ class OrgaoController {
      * @param string $orgao_id ID do órgão a ser apagado.
      * @return array Retorna um array com o status da operação e mensagem de sucesso ou erro.
      */
-    public function apagarOrgao($orgao_id) {
+    public function apagarOrgao($orgao_id)
+    {
         try {
             $orgao = $this->buscarOrgao('orgao_id', $orgao_id);
 
@@ -168,7 +186,7 @@ class OrgaoController {
 
             $erro_id = uniqid();
             $this->logger->novoLog('orgao_log', $e->getMessage() . ' | ' . $erro_id);
-            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'id_erro' => $erro_id];
         }
     }
 }
