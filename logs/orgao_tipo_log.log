@@ -1,0 +1,5 @@
+2025-01-15 09:06:32 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gabinete_digital.view_orgaoss_tipos' doesn't exist | 6787a4c8a2f7d
+2025-01-15 09:06:32 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gabinete_digital.view_orgaoss_tipos' doesn't exist | 6787a4c8a38fe
+2025-01-15 09:07:38 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gabinete_digital.view_orgaoss_tipos' doesn't exist | 6787a50a89eb7
+2025-01-15 09:07:38 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'gabinete_digital.view_orgaoss_tipos' doesn't exist | 6787a50a8a5fc
+2025-01-15 09:18:48 SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`gabinete_digital`.`orgaos`, CONSTRAINT `fk_orgao_tipo` FOREIGN KEY (`orgao_tipo`) REFERENCES `orgaos_tipos` (`orgao_tipo_id`)) | 6787a7a8283c6

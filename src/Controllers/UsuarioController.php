@@ -241,6 +241,11 @@ class UsuarioController {
             $this->usuarioModel->apagar($usuario_id);
             return ['status' => 'success', 'message' => 'Usuário apagado com sucesso.'];
         } catch (PDOException $e) {
+
+            if (strpos($e->getMessage(), 'FOREIGN KEY') !== false) {
+                return ['status' => 'error', 'status_code' => 400, 'message' => 'Não é possível apagar o tipo de órgão. Existem registros dependentes.'];
+            }
+            
             $erro_id = uniqid();
             $this->logger->novoLog('usuario_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];

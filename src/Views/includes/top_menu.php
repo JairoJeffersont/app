@@ -7,7 +7,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Configurações</a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="?secao=orgaos-tipos">Tipos de órgãos</a>
+                        <a class="dropdown-item" href="?secao=tipos-orgaos">Tipos de órgãos</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?secao=pessoas-tipos">Tipos de pessoas</a>
                         <a class="dropdown-item" href="?secao=profissoes">Profissões</a>

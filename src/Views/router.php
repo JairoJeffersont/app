@@ -13,6 +13,9 @@ $rotas = [
     'fatal-error' => './src/Views/erros/fatal_error.php',
     'usuarios' => './src/Views/usuarios/usuarios.php',
     'usuario' => './src/Views/usuarios/editar-usuario.php',
+    'tipos-orgaos' => './src/Views/orgaos/tipos-orgaos.php',
+    'tipo-orgao' => './src/Views/orgaos/editar-tipo-orgao.php',
+    'tipos-pessoas' => './src/Views/pessoas/tipos-pessoas.php',
 
 
 ];

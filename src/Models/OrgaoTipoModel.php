@@ -75,7 +75,7 @@ class OrgaoTipoModel {
      * @return array Retorna um array associativo com os dados de todos os tipos de órgãos.
      */
     public function listar($cliente) {
-        $query = "SELECT * FROM view_orgaos_tipos WHERE orgao_tipo_cliente = :cliente ORDER BY orgao_tipo_nome ASC";
+        $query = "SELECT * FROM view_orgaos_tipos WHERE orgao_tipo_cliente = :cliente OR orgao_tipo_cliente = 1 ORDER BY orgao_tipo_nome ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
