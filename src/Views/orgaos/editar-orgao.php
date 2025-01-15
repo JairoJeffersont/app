@@ -51,7 +51,7 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
                                     <li class="nav-item">
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_tipo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo tipo</button>
-                                            <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_imprimir" type="button"><i class="bi bi-printer-fill"></i> Imprimir</button>
+                                            <!--<button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_imprimir" type="button"><i class="bi bi-printer-fill"></i> Imprimir</button>-->
                                         </a>
                                     </li>
                                 </ul>
@@ -232,7 +232,7 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
     $('#tipo').change(function() {
         if ($('#tipo').val() == '+') {
             if (window.confirm("Você realmente deseja inserir um novo tipo?")) {
-                window.location.href = "?secao=orgaos-tipos";
+                window.location.href = "?secao=tipos-orgaos";
             } else {
                 $('#tipo').val(1000).change();
             }
@@ -241,7 +241,7 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
 
     $('#btn_novo_tipo').click(function() {
         if (window.confirm("Você realmente deseja inserir um novo tipo?")) {
-            window.location.href = "?secao=orgaos-tipos";
+            window.location.href = "?secao=tipos-orgaos";
         } else {
             return false;
         }
