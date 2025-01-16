@@ -166,6 +166,38 @@ CREATE TABLE oficios(
     CONSTRAINT fk_oficio_cliente FOREIGN KEY (oficio_cliente) REFERENCES cliente(cliente_id)
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
+CREATE TABLE proposicoes (
+    proposicao_id INT NOT NULL,
+    proposicao_numero INT NOT NULL,
+    proposicao_titulo VARCHAR(255) NOT NULL,
+    proposicao_ano INT NOT NULL,
+    proposicao_tipo VARCHAR(10) NOT NULL,
+    proposicao_ementa TEXT NOT NULL,
+    proposicao_apresentacao DATETIME NULL DEFAULT NULL,
+    proposicao_arquivada TINYINT(1) NOT NULL DEFAULT 0,
+    proposicao_aprovada TINYINT(1) NOT NULL DEFAULT 0,
+    proposicao_principal INT DEFAULT NULL,
+    PRIMARY KEY (proposicao_id)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE proposicoes_autores (
+    proposicao_id INT NOT NULL,
+    proposicao_autor_id INT NOT NULL,
+    proposicao_autor_nome TEXT NOT NULL,
+    proposicao_autor_partido VARCHAR(255) DEFAULT NULL,
+    proposicao_autor_estado VARCHAR(255) DEFAULT NULL,
+    proposicao_autor_proponente INT NOT NULL,
+    proposicao_autor_assinatura INT NOT NULL,
+    proposicao_autor_ano INT NOT NULL,
+    INDEX (proposicao_id, proposicao_autor_id)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
 CREATE VIEW view_orgaos_tipos AS SELECT orgaos_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM orgaos_tipos INNER JOIN usuario on orgaos_tipos.orgao_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON orgaos_tipos.orgao_tipo_cliente = cliente.cliente_id;
 CREATE VIEW view_pessoas_tipos AS SELECT pessoas_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM pessoas_tipos INNER JOIN usuario ON pessoa_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON pessoas_tipos.pessoa_tipo_cliente = cliente.cliente_id;
