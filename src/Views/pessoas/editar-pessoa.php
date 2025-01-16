@@ -71,7 +71,7 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
                         $dados = [
                             'pessoa_nome' => htmlspecialchars($_POST['nome'], ENT_QUOTES, 'UTF-8'),
                             'pessoa_email' => htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8'),
-                            'pessoa_aniversario' => "2000-" . implode('-', array_reverse(explode('/', htmlspecialchars($_POST['aniversario'], ENT_QUOTES, 'UTF-8')))),
+                            'pessoa_aniversario' => htmlspecialchars($_POST['aniversario'], ENT_QUOTES, 'UTF-8'),
                             'pessoa_telefone' => htmlspecialchars($_POST['telefone'], ENT_QUOTES, 'UTF-8'),
                             'pessoa_endereco' => htmlspecialchars($_POST['endereco'], ENT_QUOTES, 'UTF-8'),
                             'pessoa_cep' => htmlspecialchars($_POST['cep'], ENT_QUOTES, 'UTF-8'),

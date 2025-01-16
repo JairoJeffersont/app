@@ -25,7 +25,7 @@ $buscaAnivesariantes = $pessoaController->buscarPessoa('pessoa_aniversario', dat
                 </div>
                 <div class="card-body p-2">
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered table-striped mb-0 custom-table" style="background-image: url('public/img/cake.png'); background-size: cover;">
+                        <table class="table table-hover table-bordered table-striped mb-0 custom-table" style="background-image: url('./public/img/cake.png'); background-size: cover;">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
