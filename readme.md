@@ -33,8 +33,7 @@ return [
     ],
     
     'app' => [
-        'session_time' => 24,//tempo de duração da sessão
-        'base_url' =>rtrim($_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/', '')
+        'session_time' => 24,//tempo de duração da sessão...
     ]
 ];
 
