@@ -20,7 +20,7 @@ $pessoaProfissaoController = new PessoaProfissaoController;
         <div class="container-fluid p-2">
             <div class="card mb-2 ">
                 <div class="card-body p-1">
-                    <a class="btn btn-primary btn-sm custom-nav card-description" href="?pagina=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
+                    <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
                 </div>
             </div>
             <div class="card mb-2 card-description">

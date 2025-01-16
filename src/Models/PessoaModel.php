@@ -179,7 +179,7 @@ class PessoaModel
      */
     public function buscar($coluna, $valor)
     {
-        $query = "SELECT * FROM view_pessoas WHERE $coluna = :valor";
+        $query = "SELECT * FROM view_pessoas WHERE $coluna = :valor ORDER BY pessoa_nome ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);

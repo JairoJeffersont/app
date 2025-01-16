@@ -29,7 +29,7 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
         <div class="container-fluid p-2">
             <div class="card mb-2 ">
                 <div class="card-body p-1">
-                    <a class="btn btn-primary btn-sm custom-nav card-description" href="?pagina=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
+                    <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
                     <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=orgaos" role="button"><i class="bi bi-arrow-left"></i> Voltar</a>
                 </div>
             </div>

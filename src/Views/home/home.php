@@ -37,7 +37,7 @@ $buscaAnivesariantes = $pessoaController->buscarPessoa('pessoa_aniversario', dat
                                 if ($buscaAnivesariantes['status'] == 'success') {
                                     foreach ($buscaAnivesariantes['dados'] as $pessoa) {
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap; font-weight:500"><a href="?secao=pessoa&id=' . $pessoa['pessoa_id'] . '">' . $pessoa['pessoa_nome'] . '</a></td>';                                        
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=pessoa&id=' . $pessoa['pessoa_id'] . '">' . $pessoa['pessoa_nome'] . '</a></td>';                                        
                                         echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_tipo_nome'] . '</td>';
                                         echo '</tr>';
                                     }
