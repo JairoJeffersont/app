@@ -14,7 +14,7 @@ $clienteController = new ClienteController();
 
         <img src="public/img/logo_white.png" alt="" class="img_logo" />
         <h2 class="login_title mb-1">Gabinete Digital</h2>
-        <h6 class="host mb-3">Novo Cliente</h6>
+        <h6 class="host mb-3">Novo Gabinete</h6>
 
         <?php
 
