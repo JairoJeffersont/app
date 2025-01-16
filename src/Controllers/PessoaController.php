@@ -76,6 +76,11 @@ class PessoaController
             $this->pessoaModel->criar($dados);
             return ['status' => 'success', 'message' => 'Pessoa criada com sucesso.'];
         } catch (PDOException $e) {
+
+            if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                return ['status' => 'duplicated', 'message' => 'O e-mail já está cadastrado.'];
+            }
+
             $erro_id = uniqid();
             $this->logger->novoLog('pessoa_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
@@ -91,7 +96,7 @@ class PessoaController
      */
     public function atualizarPessoa($pessoa_id, $dados)
     {
-        $camposObrigatorios = ['pessoa_nome', 'pessoa_email', 'pessoa_aniversario', 'pessoa_municipio', 'pessoa_estado', 'pessoa_criada_por', 'pessoa_cliente'];
+        $camposObrigatorios = ['pessoa_nome', 'pessoa_email', 'pessoa_aniversario', 'pessoa_municipio', 'pessoa_estado'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
@@ -199,6 +204,10 @@ class PessoaController
 
             if ($pessoa['status'] == 'not_found') {
                 return $pessoa;
+            }
+
+            if (isset($pessoa['dados'][0]['pessoa_foto'])) {
+                $this->fileUploader->deleteFile($pessoa['dados'][0]['pessoa_foto']);
             }
 
             $this->pessoaModel->apagar($pessoa_id);
