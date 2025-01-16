@@ -70,7 +70,6 @@ $clienteController = new ClienteController();
             <div class="col-md-12 col-12">
                 <select class="form-select form-select-sm form_dep" id="usuario_nivel" name="usuario_nivel" required>
                     <option value="" disabled selected>Escolha o deputado do Gabinete</option>
-                    <option value="204379" data-nome="Acácio Favacho" data-siglauf="AP">Acácio Favacho/AP</option>
                 </select>
             </div>
             <input type="hidden" name="cliente_deputado_id" id="dep_id">
@@ -86,6 +85,18 @@ $clienteController = new ClienteController();
 </div>
 
 <script>
+    $(document).ready(function() {
+        carregarDeputados();
+    });
+
+    function carregarDeputados() {
+        $.getJSON('https://dadosabertos.camara.leg.br/api/v2/deputados?itens=1000&ordem=ASC&ordenarPor=nome', function(data) {
+            $.each(data.dados, function(i, deputado) {
+                $('#usuario_nivel').append('<option value="' + deputado.id + '" data-nome="' + deputado.nome + '" data-siglauf="' + deputado.siglaUf + '">' + deputado.nome + '/' + deputado.siglaUf + '</option>');
+            });
+        });
+    }
+
     document.getElementById('form_novo').addEventListener('submit', function(e) {
         const select = document.getElementById('usuario_nivel');
         const selectedOption = select.options[select.selectedIndex];
