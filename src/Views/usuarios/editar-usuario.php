@@ -45,6 +45,7 @@ if ($buscaUsuario['status'] == 'not_found' || is_integer($usuarioGet) || $buscaU
                             'usuario_aniversario' => "2000-" . implode('-', array_reverse(explode('/', htmlspecialchars($_POST['usuario_aniversario'], ENT_QUOTES, 'UTF-8')))),
                             'usuario_ativo' => htmlspecialchars($_POST['usuario_ativo'], ENT_QUOTES, 'UTF-8'),
                             'usuario_nivel' => htmlspecialchars($_POST['usuario_nivel'], ENT_QUOTES, 'UTF-8'),
+                            'usuario_senha' => htmlspecialchars($buscaUsuario['dados'][0]['usuario_senha'], ENT_QUOTES, 'UTF-8'),
                             'foto' => $_FILES['foto'],
                             'foto_link' => $buscaUsuario['dados'][0]['usuario_foto'] ?? ''
                         ];
