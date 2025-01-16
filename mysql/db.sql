@@ -178,9 +178,7 @@ CREATE TABLE proposicoes (
     proposicao_aprovada TINYINT(1) NOT NULL DEFAULT 0,
     proposicao_principal INT DEFAULT NULL,
     PRIMARY KEY (proposicao_id)
-) ENGINE=InnoDB 
-  DEFAULT CHARSET=utf8mb4 
-  COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 CREATE TABLE proposicoes_autores (
@@ -193,9 +191,7 @@ CREATE TABLE proposicoes_autores (
     proposicao_autor_assinatura INT NOT NULL,
     proposicao_autor_ano INT NOT NULL,
     INDEX (proposicao_id, proposicao_autor_id)
-) ENGINE=InnoDB 
-  DEFAULT CHARSET=utf8mb4 
-  COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
