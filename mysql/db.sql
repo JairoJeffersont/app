@@ -114,55 +114,6 @@ CREATE TABLE pessoas_profissoes (
 
 
 INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao,pessoas_profissoes_criado_por, pessoas_profissoes_cliente) VALUES (1, 'Profissão não informada', 'Profissão não informada', 1, 1);
-INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao, pessoas_profissoes_criado_por, pessoas_profissoes_cliente) 
-VALUES 
-(2, 'Médico', 'Profissional responsável por diagnosticar e tratar doenças', 1, 1),
-(3, 'Engenheiro de Software', 'Profissional especializado em desenvolvimento e manutenção de sistemas de software', 1, 1),
-(4, 'Advogado', 'Profissional que oferece consultoria e representação legal', 1, 1),
-(5, 'Professor', 'Profissional responsável por ministrar aulas e orientar estudantes', 1, 1),
-(6, 'Enfermeiro', 'Profissional da saúde que cuida e monitoriza pacientes', 1, 1),
-(7, 'Arquiteto', 'Profissional que projeta e planeja edifícios e espaços urbanos', 1, 1),
-(8, 'Contador', 'Profissional que gerencia contas e prepara relatórios financeiros', 1, 1),
-(9, 'Designer Gráfico', 'Profissional especializado em criação visual e design', 1, 1),
-(10, 'Jornalista', 'Profissional que coleta, escreve e distribui notícias', 1, 1),
-(11, 'Chef de Cozinha', 'Profissional que planeja, dirige e prepara refeições em restaurantes', 1, 1);
-INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao, pessoas_profissoes_criado_por, pessoas_profissoes_cliente) 
-VALUES 
-(12, 'Psicólogo', 'Profissional que realiza avaliações psicológicas e oferece terapia', 1, 1),
-(13, 'Fisioterapeuta', 'Profissional que ajuda na reabilitação física de pacientes', 1, 1),
-(14, 'Veterinário', 'Profissional responsável pelo cuidado e tratamento de animais', 1, 1),
-(15, 'Fotógrafo', 'Profissional que captura e edita imagens fotográficas', 1, 1),
-(16, 'Tradutor', 'Profissional que converte textos de um idioma para outro', 1, 1),
-(17, 'Administrador', 'Profissional que gerencia operações e processos em uma organização', 1, 1),
-(18, 'Biólogo', 'Profissional que estuda organismos vivos e seus ecossistemas', 1, 1),
-(19, 'Economista', 'Profissional que analisa dados econômicos e desenvolve modelos de previsão', 1, 1),
-(20, 'Programador', 'Profissional que escreve e testa códigos de software', 1, 1),
-(21, 'Cientista de Dados', 'Profissional que analisa e interpreta grandes volumes de dados', 1, 1);
-INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao, pessoas_profissoes_criado_por, pessoas_profissoes_cliente) 
-VALUES 
-(22, 'Analista de Marketing', 'Profissional que desenvolve e implementa estratégias de marketing', 1, 1),
-(23, 'Engenheiro Civil', 'Profissional que projeta e constrói infraestrutura como pontes e edifícios', 1, 1),
-(24, 'Cozinheiro', 'Profissional que prepara e cozinha alimentos em ambientes como restaurantes', 1, 1),
-(25, 'Social Media', 'Profissional que gerencia e cria conteúdo para redes sociais', 1, 1),
-(26, 'Auditor', 'Profissional que examina e avalia registros financeiros e operacionais', 1, 1),
-(27, 'Técnico em Informática', 'Profissional que presta suporte técnico e manutenção de hardware e software', 1, 1),
-(28, 'Líder de Projeto', 'Profissional que coordena e supervisiona projetos para garantir a conclusão bem-sucedida', 1, 1),
-(29, 'Químico', 'Profissional que realiza pesquisas e experimentos químicos', 1, 1),
-(30, 'Gerente de Recursos Humanos', 'Profissional responsável pela gestão de pessoal e políticas de recursos humanos', 1, 1),
-(31, 'Engenheiro Eletricista', 'Profissional que projeta e implementa sistemas elétricos e eletrônicos', 1, 1);
-INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao, pessoas_profissoes_criado_por, pessoas_profissoes_cliente) 
-VALUES 
-(32, 'Designer de Moda', 'Profissional que cria e desenvolve roupas e acessórios', 1, 1),
-(33, 'Engenheiro Mecânico', 'Profissional que projeta e desenvolve sistemas mecânicos e máquinas', 1, 1),
-(34, 'Web Designer', 'Profissional que cria e mantém layouts e interfaces de sites', 1, 1),
-(35, 'Geólogo', 'Profissional que estuda a composição e estrutura da Terra', 1, 1),
-(36, 'Segurança da Informação', 'Profissional que protege sistemas e dados contra ameaças e ataques', 1, 1),
-(37, 'Consultor Financeiro', 'Profissional que oferece orientação sobre gestão e planejamento financeiro', 1, 1),
-(38, 'Artista Plástico', 'Profissional que cria obras de arte em diversos meios e materiais', 1, 1),
-(39, 'Logístico', 'Profissional que coordena e gerencia operações de logística e cadeia de suprimentos', 1, 1),
-(40, 'Fonoaudiólogo', 'Profissional que avalia e trata problemas de comunicação e linguagem', 1, 1),
-(41, 'Corretor de Imóveis', 'Profissional que facilita a compra, venda e aluguel de propriedades', 1, 1);
-
 
 CREATE TABLE pessoas (
     pessoa_id varchar(36) NOT NULL DEFAULT (UUID()),
