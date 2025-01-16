@@ -9,7 +9,7 @@
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="?secao=tipos-orgaos">Tipos de órgãos</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="?secao=pessoas-tipos">Tipos de pessoas</a>
+                        <a class="dropdown-item" href="?secao=tipos-pessoas">Tipos de pessoas</a>
                         <a class="dropdown-item" href="?secao=profissoes">Profissões</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?secao=postagens-status">Status das postagens</a>

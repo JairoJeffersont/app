@@ -75,7 +75,7 @@ class PessoaProfissaoModel {
      * @return array Retorna um array associativo com os dados de todas as profissões.
      */
     public function listar($cliente) {
-        $query = "SELECT * FROM view_pessoas_profissoes WHERE pessoas_profissoes_cliente = :cliente ORDER BY pessoas_profissoes_nome ASC";
+        $query = "SELECT * FROM view_pessoas_profissoes WHERE pessoas_profissoes_cliente = :cliente or pessoas_profissoes_cliente = 1 ORDER BY pessoas_profissoes_nome ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);

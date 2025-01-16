@@ -75,7 +75,7 @@ class PessoaTipoModel {
      * @return array Retorna um array associativo com os dados de todos os tipos de pessoas.
      */
     public function listar($cliente) {
-        $query = "SELECT * FROM view_pessoas_tipos WHERE pessoa_tipo_cliente = :cliente ORDER BY pessoa_tipo_nome ASC";
+        $query = "SELECT * FROM view_pessoas_tipos WHERE pessoa_tipo_cliente = :cliente or pessoa_tipo_cliente = 1 ORDER BY pessoa_tipo_nome ASC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
