@@ -64,7 +64,7 @@ $busca = $usuarioController->listarUsuarios($_SESSION['usuario_cliente']);
                             if ($result['status'] == 'success') {
                                 $busca = $usuarioController->listarUsuarios($_SESSION['usuario_cliente']);
                                 echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
-                            } else if ($result['status'] == 'duplicated' || $result['status'] == 'bad_request' || $result['status'] == 'invalid_email') {
+                            } else if ($result['status'] == 'duplicated' || $result['status'] == 'file_not_permited' || $result['status'] == 'too_big' || $result['status'] == 'bad_request' || $result['status'] == 'invalid_email') {
                                 echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                             } else if ($result['status'] == 'forbidden') {
                                 echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . '</div>';

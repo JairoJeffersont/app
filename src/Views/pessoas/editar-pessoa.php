@@ -95,7 +95,7 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
                         if ($result['status'] == 'success') {
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '. Aguarde...</div>';
                             $buscaPessoa = $pessoaController->buscarPessoa('pessoa_id', $pessoaGet);
-                        } else if ($result['status'] == 'duplicated' || $result['status'] == 'bad_request' || $result['status'] == 'invalid_email') {
+                        } else if ($result['status'] == 'duplicated' || $result['status'] == 'file_not_permited' || $result['status'] == 'too_big' || $result['status'] == 'bad_request' || $result['status'] == 'invalid_email') {
                             echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                         } else if ($result['status'] == 'error' || $result['status'] == 'forbidden' || $result['status'] == 'file_not_permitted' || $result['status'] == 'file_too_large') {
                             echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . '</div>';
