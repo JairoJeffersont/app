@@ -142,7 +142,7 @@ class LoginController
 
                 $userInfo = $this->logger->get_user_info();
 
-                $logMessage = $busca[0]['usuario_nome'] . ' | ' .
+                $logMessage =  $busca[0]['cliente_deputado_nome'].' | '.$busca[0]['usuario_nome'] . ' | ' .
                     'IP: ' . $userInfo['ip'] . ' | ' .
                     'Navegador: ' . $userInfo['browser'] . ' | ' .
                     'Sistema: ' . $userInfo['os'] . ' | ' .

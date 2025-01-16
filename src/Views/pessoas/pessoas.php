@@ -129,7 +129,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                             <input type="text" class="form-control form-control-sm" name="bairro" placeholder="Bairro ">
                         </div>
                         <div class="col-md-2 col-6">
-                            <input type="text" class="form-control form-control-sm" name="cep" placeholder="CEP (Somente números)" maxlength="8" data-mask="00000-000">
+                            <input type="text" class="form-control form-control-sm" name="cep" placeholder="CEP (Somente números)" maxlength="9" data-mask="00000-000">
                         </div>
                         <div class="col-md-1 col-6">
                             <select class="form-select form-select-sm" id="estado" name="estado" required>
