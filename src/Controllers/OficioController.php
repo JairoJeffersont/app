@@ -65,7 +65,7 @@ class OficioController
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['arquivo'], ['pdf'], 5);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['oficio_cliente'], $dados['arquivo'], ['pdf'], 5);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -117,7 +117,7 @@ class OficioController
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['arquivo'], ['pdf'], 5);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['oficio_cliente'], $dados['arquivo'], ['pdf'], 5);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;

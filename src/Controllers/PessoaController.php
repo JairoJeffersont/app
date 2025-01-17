@@ -63,7 +63,7 @@ class PessoaController
 
 
         if (!empty($dados['foto']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['pessoa_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -96,7 +96,7 @@ class PessoaController
      */
     public function atualizarPessoa($pessoa_id, $dados)
     {
-        $camposObrigatorios = ['pessoa_nome', 'pessoa_email', 'pessoa_aniversario', 'pessoa_municipio', 'pessoa_estado'];
+        $camposObrigatorios = ['pessoa_nome', 'pessoa_email', 'pessoa_aniversario', 'pessoa_municipio', 'pessoa_estado', 'pessoa_cliente'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
@@ -111,7 +111,7 @@ class PessoaController
         }
 
         if (!empty($dados['foto']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['pessoa_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
