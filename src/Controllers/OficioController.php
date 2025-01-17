@@ -78,6 +78,15 @@ class OficioController
             $this->oficioModel->criar($dados);
             return ['status' => 'success', 'message' => 'Ofício criado com sucesso.'];
         } catch (PDOException $e) {
+
+            if (!empty($dados['arquivo']['tmp_name'])) {
+                $this->fileUploader->deleteFile($dados['oficio_arquivo'] ?? null);
+            }
+
+            if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                return ['status' => 'duplicated', 'message' => 'Esse ofício já está cadastrado.'];
+            }
+
             $erro_id = uniqid();
             $this->logger->novoLog('oficio_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];

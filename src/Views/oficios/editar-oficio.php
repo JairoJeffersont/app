@@ -49,7 +49,7 @@ if ($buscaOficio['status'] == 'not_found' || is_integer($oficioGet) || $buscaOfi
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_atualizar'])) {
 
                         $dados = [
-                            'oficio_titulo' => htmlspecialchars($_POST['oficio_titulo'], ENT_QUOTES, 'UTF-8'),
+                            'oficio_titulo' => htmlspecialchars($_POST['oficio_titulo'], ENT_QUOTES, 'UTF-8') . '/' . htmlspecialchars($_POST['oficio_ano'], ENT_QUOTES, 'UTF-8'),
                             'oficio_resumo' => htmlspecialchars($_POST['oficio_resumo'], ENT_QUOTES, 'UTF-8'),
                             'arquivo' =>  $_FILES['arquivo'],
                             'oficio_ano' => htmlspecialchars($_POST['oficio_ano'], ENT_QUOTES, 'UTF-8'),

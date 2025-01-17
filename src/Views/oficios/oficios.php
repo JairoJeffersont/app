@@ -32,8 +32,8 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-archive"></i> Arquivar ofício</div>
                 <div class="card-body p-2">
                     <p class="card-text mb-2">Seção para arquivamento de ofícios.
-                    <p class="card-text mb-2">Todos os campos são obrigatórios</p>
-                    <p class="card-text mb-0">O arquivo deve ser em PDF e ter até 5mb</p>
+                    <p class="card-text mb-2">Todos os campos são <b>obrigatórios</b></p>
+                    <p class="card-text mb-0">O arquivo deve ser em <b>PDF</b> e ter até <b>5mb</b></p>
                 </div>
             </div>
             <div class="card shadow-sm mb-2">
@@ -41,7 +41,7 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                     <?php
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_salvar'])) {
                         $dados = [
-                            'oficio_titulo' => htmlspecialchars($_POST['oficio_titulo'], ENT_QUOTES, 'UTF-8'),
+                            'oficio_titulo' => htmlspecialchars($_POST['oficio_titulo'], ENT_QUOTES, 'UTF-8') . '/' . htmlspecialchars($_POST['oficio_ano'], ENT_QUOTES, 'UTF-8'),
                             'oficio_resumo' => htmlspecialchars($_POST['oficio_resumo'], ENT_QUOTES, 'UTF-8'),
                             'arquivo' =>  $_FILES['arquivo'],
                             'oficio_ano' => htmlspecialchars($_POST['oficio_ano'], ENT_QUOTES, 'UTF-8'),
@@ -154,7 +154,7 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                                 if ($busca['status'] == 'success') {
                                     foreach ($busca['dados'] as $oficio) {
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap;"><a href="?secao=oficio&id=' . $oficio['oficio_id'] . '">' . $oficio['oficio_titulo'] . '/' . $oficio['oficio_ano'] . '</a></td>';
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=oficio&id=' . $oficio['oficio_id'] . '">' . $oficio['oficio_titulo'] . '</a></td>';
                                         echo '<td style="white-space: nowrap;">' . $oficio['oficio_resumo'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $oficio['orgao_nome'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $oficio['usuario_nome'] . ' - ' . date('d/m', strtotime($oficio['oficio_criado_em'])) . '</td>';
@@ -175,8 +175,6 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
     </div>
 </div>
 <script>
-    
-
     $('#orgao').change(function() {
         if ($('#orgao').val() == '+') {
             if (window.confirm("Você realmente deseja inserir um novo órgão?")) {
@@ -186,6 +184,4 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
             }
         }
     });
-
-    
 </script>
