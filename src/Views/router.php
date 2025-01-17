@@ -22,6 +22,7 @@ $rotas = [
     'profissoes' => './src/Views/pessoas/profissoes.php',
     'profissao' => './src/Views/pessoas/editar-profissoes.php',
     'pessoas' => './src/Views/pessoas/pessoas.php',
+    'estatisticas' => './src/Views/pessoas/estatisticas.php',
     'pessoa' => './src/Views/pessoas/editar-pessoa.php',
     'oficios' => './src/Views/oficios/oficios.php',
     'oficio' => './src/Views/oficios/editar-oficio.php',

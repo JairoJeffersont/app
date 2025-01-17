@@ -42,7 +42,7 @@ if ($buscaUsuario['status'] == 'not_found' || is_integer($usuarioGet) || $buscaU
                             'usuario_nome' => htmlspecialchars($_POST['usuario_nome'], ENT_QUOTES, 'UTF-8'),
                             'usuario_email' => htmlspecialchars($_POST['usuario_email'], ENT_QUOTES, 'UTF-8'),
                             'usuario_telefone' => htmlspecialchars($_POST['usuario_telefone'], ENT_QUOTES, 'UTF-8'),
-                            'usuario_aniversario' => "2000-" . implode('-', array_reverse(explode('/', htmlspecialchars($_POST['usuario_aniversario'], ENT_QUOTES, 'UTF-8')))),
+                            'usuario_aniversario' => htmlspecialchars($_POST['usuario_aniversario'], ENT_QUOTES, 'UTF-8'),
                             'usuario_ativo' => htmlspecialchars($_POST['usuario_ativo'], ENT_QUOTES, 'UTF-8'),
                             'usuario_nivel' => htmlspecialchars($_POST['usuario_nivel'], ENT_QUOTES, 'UTF-8'),
                             'usuario_senha' => htmlspecialchars($buscaUsuario['dados'][0]['usuario_senha'], ENT_QUOTES, 'UTF-8'),
@@ -82,6 +82,10 @@ if ($buscaUsuario['status'] == 'not_found' || is_integer($usuarioGet) || $buscaU
                         echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">Você não tem autorização editar usuários</div>';
                     }
 
+                    if ($buscaUsuario['dados'][0]['usuario_aniversario'] == date('d/m')) {
+                        echo '<div class="alert alert-warning px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">Hoje é aniversário de <b>' . $buscaUsuario['dados'][0]['usuario_nome'] . '</b>! Parabéns!</div>';
+                    }
+
                     ?>
 
                     <form class="row g-2 form_custom" id="form_novo" method="POST" enctype="multipart/form-data">
@@ -95,7 +99,7 @@ if ($buscaUsuario['status'] == 'not_found' || is_integer($usuarioGet) || $buscaU
                             <input type="text" class="form-control form-control-sm" name="usuario_telefone" placeholder="Celular (com DDD)" data-mask="(00) 00000-0000" maxlength="11" value="<?php echo $buscaUsuario['dados'][0]['usuario_telefone'] ?>" required>
                         </div>
                         <div class="col-md-2 col-6">
-                            <input type="text" class="form-control form-control-sm" name="usuario_aniversario" data-mask="00/00" placeholder="Aniversário (dd/mm)" value="<?php echo date('d/m', strtotime($buscaUsuario['dados'][0]['usuario_aniversario'])) ?>" required>
+                            <input type="text" class="form-control form-control-sm" name="usuario_aniversario" data-mask="00/00" placeholder="Aniversário (dd/mm)" value="<?php echo $buscaUsuario['dados'][0]['usuario_aniversario'] ?>" required>
                         </div>
                         <div class="col-md-2 col-6">
                             <select class="form-select form-select-sm" name="usuario_ativo" required>

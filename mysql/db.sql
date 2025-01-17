@@ -39,7 +39,7 @@ CREATE TABLE usuario (
 
 
 INSERT INTO usuario (usuario_id, usuario_nome, usuario_email, usuario_telefone, usuario_senha, usuario_nivel, usuario_ativo, usuario_aniversario, usuario_cliente) 
-VALUES ('1', 'USUÁRIO SISTEMA', 'email@email.com', '000000', 'sd9fasdfasd9fasd89fsad9f8', 1, 1, '2000-01-01', '1');
+VALUES ('1', 'USUÁRIO SISTEMA', 'email@email.com', '000000', 'sd9fasdfasd9fasd89fsad9f8', 1, 1, '01/01', '1');
 
 CREATE TABLE orgaos_tipos (
     orgao_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
