@@ -28,6 +28,7 @@ $rotas = [
     'oficio' => './src/Views/oficios/editar-oficio.php',
     'status-postagens' => './src/Views/postagens/status-postagens.php',
     'status-postagem' => './src/Views/postagens/editar-status-postagens.php',    
+    'postagens' => './src/Views/postagens/postagens.php',    
 
 
 ];

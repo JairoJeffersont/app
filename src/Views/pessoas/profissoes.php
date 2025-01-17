@@ -94,7 +94,7 @@ $pessoaProfissaoController = new PessoaProfissaoController;
                                 } else if ($busca['status'] == 'empty') {
                                     echo '<tr><td colspan="4">' . $busca['message'] . '</td></tr>';
                                 } else if ($busca['status'] == 'error') {
-                                    echo '<tr><td colspan="4">Erro ao carregar os dados.</td></tr>';
+                                    echo '<tr><td colspan="4">' . $busca['message'] . ' | Código do erro: ' . $busca['id_erro'] . '</td></tr>';
                                 }
                                 
                                 ?>
