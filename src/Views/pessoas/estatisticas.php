@@ -55,7 +55,7 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                         if ($resultado['status'] == 'success') {
                             $quantidade = count($resultado['dados']);
                             echo "<p class='card-text mb-0'><i class='$icone'></i> $sexo: $quantidade</p>";
-                        } 
+                        }
                     }
                     ?>
                 </div>
@@ -71,7 +71,7 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                             if ($resultado['status'] == 'success') {
                                 $quantidade = count($resultado['dados']);
                                 echo "<p class='card-text mb-0'><i class='bi bi-person'></i> {$tipo['pessoa_tipo_nome']}: $quantidade</p>";
-                            } 
+                            }
                         }
                     } else {
                         echo "<p class='text-danger mb-0'>{$buscaTipos['message']}</p>";
@@ -97,31 +97,59 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                     }
                     ?>
                 </div>
-            </div>            
+            </div>
+            <?php
+            $estados = [
+                'AC' => 'Acre',
+                'AL' => 'Alagoas',
+                'AP' => 'Amapá',
+                'AM' => 'Amazonas',
+                'BA' => 'Bahia',
+                'CE' => 'Ceará',
+                'DF' => 'Distrito Federal',
+                'ES' => 'Espírito Santo',
+                'GO' => 'Goiás',
+                'MA' => 'Maranhão',
+                'MT' => 'Mato Grosso',
+                'MS' => 'Mato Grosso do Sul',
+                'MG' => 'Minas Gerais',
+                'PA' => 'Pará',
+                'PB' => 'Paraíba',
+                'PR' => 'Paraná',
+                'PE' => 'Pernambuco',
+                'PI' => 'Piauí',
+                'RJ' => 'Rio de Janeiro',
+                'RN' => 'Rio Grande do Norte',
+                'RS' => 'Rio Grande do Sul',
+                'RO' => 'Rondônia',
+                'RR' => 'Roraima',
+                'SC' => 'Santa Catarina',
+                'SP' => 'São Paulo',
+                'SE' => 'Sergipe',
+                'TO' => 'Tocantins'
+            ];
+            ?>
             <div class="card mb-2">
                 <div class="card-body p-2">
-                    <h6 class="card-title mb-2">Estados</h6>
-                    <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                    <h6 class="card-title mb-2">Pessoas por Estado</h6>
+                    <table class="table table-sm table-bordered">
                         <thead>
-                            <tr>
+                            <tr>                                
                                 <th>Estado</th>
                                 <th>Quantidade</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $estados = [
-                                'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'
-                            ];
-                            foreach ($estados as $estado) {
-                                $resultado = $pessoaController->buscarPessoa('pessoa_estado', $estado);
+                            foreach ($estados as $sigla => $nome) {
+                                $resultado = $pessoaController->buscarPessoa('pessoa_estado', $sigla);
                                 if ($resultado['status'] == 'success') {
                                     $quantidade = count($resultado['dados']);
                                     echo "
-                                    <tr>
-                                        <td><i class='bi bi-geo-alt'></i> $estado</td>
-                                        <td>$quantidade</td>
-                                    </tr>";
+                                        <tr>
+                                            <td><i class='bi bi-geo-alt'></i> $sigla - $nome</td>                                            
+                                            <td>$quantidade</td>
+                                        </tr>";
                                 }
                             }
                             ?>
@@ -130,7 +158,8 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                 </div>
             </div>
 
-            </div>
+
         </div>
     </div>
+</div>
 </div>
