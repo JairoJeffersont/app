@@ -57,7 +57,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_tipo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo tipo</button>
                                             <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_nova_profissao" type="button"><i class="bi bi-plus-circle-fill"></i> Nova profissao</button>
-                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>                                            
+                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
                                         </a>
                                     </li>
                                 </ul>
@@ -66,7 +66,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                     </nav>
                 </div>
             </div>
-            
+
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <?php
@@ -183,7 +183,11 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                                 $buscaTipo = $pessoaTipoController->listarPessoasTipos($_SESSION['usuario_cliente']);
                                 if ($buscaTipo['status'] === 'success') {
                                     foreach ($buscaTipo['dados'] as $tipo) {
-                                        echo '<option value="' . $tipo['pessoa_tipo_id'] . '">' . $tipo['pessoa_tipo_nome'] . '</option>';
+                                        if ($tipo['pessoa_tipo_id'] == 1) {
+                                            echo '<option value="' . $tipo['pessoa_tipo_id'] . '" selected>' . $tipo['pessoa_tipo_nome'] . '</option>';
+                                        } else {
+                                            echo '<option value="' . $tipo['pessoa_tipo_id'] . '">' . $tipo['pessoa_tipo_nome'] . '</option>';
+                                        }
                                     }
                                 }
                                 ?>
