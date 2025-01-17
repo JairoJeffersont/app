@@ -116,6 +116,10 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
                         }
                     }
 
+                    if ($buscaPessoa['dados'][0]['pessoa_aniversario'] == date('d/m')) {
+                        echo '<div class="alert alert-warning px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">Hoje é aniversário de <b>' . $buscaPessoa['dados'][0]['pessoa_nome'] . '</b>! Parabéns!</div>';
+                    }
+
                     ?>
 
                     <form class="row g-2 form_custom" id="form_novo" method="POST" enctype="multipart/form-data">
