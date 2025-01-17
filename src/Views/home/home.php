@@ -22,9 +22,7 @@ $buscaAnivesariantes = $pessoaController->buscarPessoa('pessoa_aniversario', dat
             <div class="row">
                 <div class="col-lg-4 col-12">
                     <div class="card mb-2 card-description">
-                        <div class="card-header bg-primary card-background text-white px-2 py-1 ">
-                            <i class="bi bi-cake2"></i> Aniversáriantes do dia - <?php echo date('d/M'); ?>
-                        </div>
+                        
                         <div class="card-body p-2">
                             <div class="list-group" style="background-image: url('./public/img/cake.png'); background-size: cover;">
                                 <?php
@@ -50,10 +48,10 @@ $buscaAnivesariantes = $pessoaController->buscarPessoa('pessoa_aniversario', dat
                                             echo '</a>';
                                         }
                                     } else {
-                                        echo '<div class="list-group-item">Nenhum aniversariante para hoje</div>';
+                                        echo '<div class="list-group-item"><i class="bi bi-cake2"></i> Nenhum aniversariante para hoje</div>';
                                     }
                                 } else if ($buscaAnivesariantes['status'] == 'not_found') {
-                                    echo '<div class="list-group-item">Nenhum aniversariante para hoje</div>';
+                                    echo '<div class="list-group-item"><i class="bi bi-cake2"></i> Nenhum aniversariante para hoje</div>';
                                 } else if ($buscaAnivesariantes['status'] == 'error') {
                                     echo '<div class="list-group-item">' . $buscaAnivesariantes['message'] . ' | Código do erro: ' . $buscaAnivesariantes['error_id'] . '</div>';
                                 }
@@ -78,16 +76,14 @@ $buscaAnivesariantes = $pessoaController->buscarPessoa('pessoa_aniversario', dat
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-12">
+                <!--<div class="col-lg-4 col-12">
                     <div class="card mb-2 card-description">
-                        <div class="card-header bg-primary card-background text-white px-2 py-1 ">
-                            <i class="bi bi-cake2"></i> Aniversáriantes do dia - <?php echo date('d/M'); ?>
-                        </div>
+                        
                         <div class="card-body p-2">
                             
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
