@@ -25,15 +25,20 @@ class OficioController
      */
     private $logger;
 
+    /**
+     * @var FileUploader Instância do FileUploader para manipulação de arquivos.
+     */
     private $fileUploader;
+
+    /**
+     * @var string Caminho da pasta onde os arquivos de ofícios serão armazenados.
+     */
     private $pasta_foto;
-
-
 
     /**
      * Construtor do OficioController.
      *
-     * Inicializa as instâncias do modelo OficioModel e do Logger.
+     * Inicializa as instâncias necessárias para manipulação de ofícios.
      */
     public function __construct()
     {
@@ -44,10 +49,10 @@ class OficioController
     }
 
     /**
-     * Método para criar um novo ofício.
+     * Criar um novo ofício.
      *
-     * @param array $dados Associativo com os dados do ofício a serem inseridos.
-     * @return array Retorna um array com o status da operação e mensagem.
+     * @param array $dados Dados do ofício a serem inseridos.
+     * @return array Resultado da operação.
      */
     public function criarOficio($dados)
     {
@@ -58,7 +63,6 @@ class OficioController
                 return ['status' => 'bad_request', 'message' => "O campo '$campo' é obrigatório."];
             }
         }
-
 
         if (!empty($dados['arquivo']['tmp_name'])) {
             $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['arquivo'], ['pdf'], 5);
@@ -81,11 +85,11 @@ class OficioController
     }
 
     /**
-     * Método para atualizar os dados de um ofício.
+     * Atualizar os dados de um ofício existente.
      *
      * @param string $oficio_id ID do ofício a ser atualizado.
-     * @param array $dados Associativo com os dados atualizados do ofício.
-     * @return array Retorna um array com o status da operação e mensagem.
+     * @param array $dados Dados atualizados do ofício.
+     * @return array Resultado da operação.
      */
     public function atualizarOficio($oficio_id, $dados)
     {
@@ -116,7 +120,7 @@ class OficioController
 
             $dados['oficio_arquivo'] = $uploadResult['file_path'];
         } else {
-            $dados['oficio_arquivo'] = $usuario['dados'][0]['oficio_arquivo'] ?? null;
+            $dados['oficio_arquivo'] = $oficio['dados'][0]['oficio_arquivo'] ?? null;
         }
 
         try {
@@ -130,11 +134,12 @@ class OficioController
     }
 
     /**
-     * Método para listar ofícios com base no ano e um termo de busca.
+     * Listar ofícios com base no ano, termo de busca e cliente.
      *
-     * @param int $ano Ano dos ofícios a serem filtrados.
+     * @param int $ano Ano para filtrar os ofícios.
      * @param string|null $busca Termo de busca opcional.
-     * @return array Retorna um array com o status da operação, mensagem e lista de ofícios.
+     * @param string $cliente Cliente relacionado aos ofícios.
+     * @return array Resultado da operação.
      */
     public function listarOficios($ano, $busca, $cliente)
     {
@@ -154,11 +159,11 @@ class OficioController
     }
 
     /**
-     * Método para buscar um ofício específico baseado em uma coluna e valor fornecido.
+     * Buscar um ofício específico.
      *
-     * @param string $coluna Nome da coluna a ser pesquisada.
-     * @param mixed $valor Valor correspondente à coluna para busca.
-     * @return array Retorna um array com o status da operação e dados encontrados ou mensagem de registro não encontrado.
+     * @param string $coluna Nome da coluna para busca.
+     * @param mixed $valor Valor a ser buscado.
+     * @return array Resultado da busca.
      */
     public function buscarOficio($coluna, $valor)
     {
@@ -177,12 +182,11 @@ class OficioController
     }
 
     /**
-     * Método para apagar um ofício.
+     * Apagar um ofício existente.
      *
      * @param string $oficio_id ID do ofício a ser apagado.
-     * @return array Retorna um array com o status da operação e mensagem de sucesso ou erro.
+     * @return array Resultado da operação.
      */
-
     public function apagarOficio($oficio_id)
     {
         try {
@@ -197,7 +201,7 @@ class OficioController
             }
 
             $this->oficioModel->apagar($oficio_id);
-            return ['status' => 'success', 'message' => 'Usuário apagado com sucesso.'];
+            return ['status' => 'success', 'message' => 'Ofício apagado com sucesso.'];
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('oficio_log', $e->getMessage() . ' | ' . $erro_id);
