@@ -86,7 +86,7 @@ class UsuarioController {
         }
 
         if (!empty($dados['foto']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['usuario_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -141,7 +141,7 @@ class UsuarioController {
         }
 
         if (!empty($dados['foto']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['foto'], ['jpg', 'jpeg'], 2);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['usuario_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
