@@ -7,13 +7,15 @@ require_once './vendor/autoload.php';
 
 use GabineteDigital\Controllers\OrgaoController;
 use GabineteDigital\Controllers\OrgaoTipoController;
+use GabineteDigital\Controllers\PessoaController;
 
 $orgaoController = new OrgaoController();
 $orgaoTipoController = new OrgaoTipoController();
-
+$pessoaController = new PessoaController();
 
 $orgaoGet = (isset($_GET['id'])) ? $_GET['id'] : 0;
 $busca = $orgaoController->buscarOrgao('orgao_id', $orgaoGet);
+$buscaPessoa = $pessoaController->buscarPessoa('pessoa_orgao', $orgaoGet);
 
 if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status'] == 'error') {
     header('Location: ?secao=orgaos');
@@ -166,6 +168,50 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
                             <button type="submit" class="btn btn-danger btn-sm" name="btn_apagar"><i class="bi bi-floppy-fill"></i> Apagar</button>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div class="card shadow-sm mb-2">
+                <div class="card-body p-2">
+                    <p class="card-text mb-2">Pessoas desse órgão: <?php echo count($buscaPessoa['dados']) ?></p>
+                    <div class="table-responsive mb-0">
+                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Telefone</th>
+                                    <th scope="col">Endereço</th>
+                                    <th scope="col">UF/Município</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Profissão</th>
+                                    <th scope="col">Criado em | por</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($buscaPessoa['status'] == 'success') {
+                                    $total_de_registros = count($buscaPessoa['dados']);
+                                    foreach ($buscaPessoa['dados'] as $pessoa) {
+                                        echo '<tr>';
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=pessoa&id=' . $pessoa['pessoa_id'] . '">' . $pessoa['pessoa_nome'] . '</a></td>';
+                                        echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_email'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_telefone'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_endereco'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_municipio'] . '/' . $pessoa['pessoa_estado'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_tipo_nome'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $pessoa['pessoas_profissoes_nome'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . date('d/m/Y', strtotime($pessoa['pessoa_criada_em'])) . ' | ' . $pessoa['usuario_nome'] . '</td>';
+                                        echo '</tr>';
+                                    }
+                                } else if ($buscaPessoa['status'] == 'empty') {
+                                    echo '<tr><td colspan="11">' . $buscaPessoa['message'] . '</td></tr>';
+                                } else if ($buscaPessoa['status'] == 'error') {
+                                    echo '<tr><td colspan="11">' . $buscaPessoa['message'] . ' | Código do erro: ' . $buscaPessoa['id_erro'] . '</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
