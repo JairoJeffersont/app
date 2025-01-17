@@ -26,6 +26,8 @@ $rotas = [
     'pessoa' => './src/Views/pessoas/editar-pessoa.php',
     'oficios' => './src/Views/oficios/oficios.php',
     'oficio' => './src/Views/oficios/editar-oficio.php',
+    'status-postagens' => './src/Views/postagens/status-postagens.php',
+    'status-postagem' => './src/Views/postagens/editar-status-postagens.php',    
 
 
 ];

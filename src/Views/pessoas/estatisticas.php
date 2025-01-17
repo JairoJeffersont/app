@@ -39,7 +39,7 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                     <p class="card-text mb-0">Nesta seção, é possível ver informações sobre as pessoas de interesse do mandato.</p>
                 </div>
             </div>
-            <div class="card mb-2">
+            <div class="card mb-2 card-description">
                 <div class="card-body p-2">
                     <h6 class="card-title mb-2">Gênero</h6>
                     <?php
@@ -62,7 +62,7 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                     ?>
                 </div>
             </div>
-            <div class="card mb-2">
+            <div class="card mb-2 card-description">
                 <div class="card-body p-2">
                     <h6 class="card-title mb-2">Tipo</h6>
                     <?php
@@ -83,7 +83,7 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                     ?>
                 </div>
             </div>
-            <div class="card mb-2">
+            <div class="card mb-2 card-description">
                 <div class="card-body p-2">
                     <h6 class="card-title mb-2">Profissão</h6>
                     <?php
@@ -135,10 +135,10 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                 'TO' => 'Tocantins'
             ];
             ?>
-            <div class="card mb-2">
+            <div class="card mb-2 card-description">
                 <div class="card-body p-2">
                     <h6 class="card-title mb-2">Pessoas por Estado</h6>
-                    <table class="table table-sm table-bordered">
+                    <table class="table table-sm table-bordered mb-0">
                         <thead>
                             <tr>
                                 <th>Estado</th>
