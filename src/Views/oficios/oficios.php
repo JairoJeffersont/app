@@ -15,7 +15,6 @@ $termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
 
 $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario_cliente']);
 
-
 ?>
 
 <div class="d-flex" id="wrapper">
@@ -34,6 +33,23 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                     <p class="card-text mb-2">Seção para arquivamento de ofícios.
                     <p class="card-text mb-2">Todos os campos são <b>obrigatórios</b></p>
                     <p class="card-text mb-0">O arquivo deve ser em <b>PDF</b> e ter até <b>5mb</b></p>
+                </div>
+            </div>
+            <div class="card shadow-sm mb-2 ">
+                <div class="card-body p-0">
+                    <nav class="navbar navbar-expand bg-body-tertiary p-0 ">
+                        <div class="container-fluid p-0">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-0 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active p-1" aria-current="page" href="#">                                            
+                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
                 </div>
             </div>
             <div class="card shadow-sm mb-2">
@@ -182,6 +198,14 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
             } else {
                 $('#orgao').val(1000).change();
             }
+        }
+    });
+
+    $('#btn_novo_orgao').click(function() {
+        if (window.confirm("Você realmente deseja inserir um novo órgão?")) {
+            window.location.href = "?secao=orgaos";
+        } else {
+            return false;
         }
     });
 </script>

@@ -42,6 +42,23 @@ if ($buscaOficio['status'] == 'not_found' || is_integer($oficioGet) || $buscaOfi
                     <p class="card-text mb-0">Todos os campos são obrigatórios</p>
                 </div>
             </div>
+            <div class="card shadow-sm mb-2 ">
+                <div class="card-body p-0">
+                    <nav class="navbar navbar-expand bg-body-tertiary p-0 ">
+                        <div class="container-fluid p-0">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-0 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active p-1" aria-current="page" href="#">                                            
+                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
 
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
@@ -150,6 +167,14 @@ if ($buscaOficio['status'] == 'not_found' || is_integer($oficioGet) || $buscaOfi
             } else {
                 $('#orgao').val(1000).change();
             }
+        }
+    });
+
+    $('#btn_novo_orgao').click(function() {
+        if (window.confirm("Você realmente deseja inserir um novo órgão?")) {
+            window.location.href = "?secao=orgaos";
+        } else {
+            return false;
         }
     });
 </script>

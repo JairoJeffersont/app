@@ -57,6 +57,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_tipo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo tipo</button>
                                             <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_nova_profissao" type="button"><i class="bi bi-plus-circle-fill"></i> Nova profissao</button>
+                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
                                         </a>
                                     </li>
                                 </ul>
@@ -416,6 +417,14 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
     $('#btn_novo_tipo').click(function() {
         if (window.confirm("Você realmente deseja inserir um novo tipo de pessoa?")) {
             window.location.href = "?secao=tipos-pessoas";
+        } else {
+            return false;
+        }
+    });
+
+    $('#btn_novo_orgao').click(function() {
+        if (window.confirm("Você realmente deseja inserir um novo órgão?")) {
+            window.location.href = "?secao=orgaos";
         } else {
             return false;
         }

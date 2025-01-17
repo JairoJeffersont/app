@@ -54,6 +54,7 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_tipo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo tipo</button>
                                             <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_nova_profissao" type="button"><i class="bi bi-plus-circle-fill"></i> Nova profissao</button>
+                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
                                         </a>
                                     </li>
                                 </ul>
@@ -334,6 +335,15 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
             return false;
         }
     });
+
+    $('#btn_novo_orgao').click(function() {
+        if (window.confirm("Você realmente deseja inserir um novo órgão?")) {
+            window.location.href = "?secao=orgaos";
+        } else {
+            return false;
+        }
+    });
+
 
     $('#btn_nova_profissao').click(function() {
         if (window.confirm("Você realmente deseja inserir uma nova profissão?")) {
