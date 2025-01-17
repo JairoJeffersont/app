@@ -88,6 +88,7 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
                             'pessoa_cargo' => htmlspecialchars($_POST['cargo'], ENT_QUOTES, 'UTF-8'),
                             'pessoa_orgao' => htmlspecialchars($_POST['orgao'], ENT_QUOTES, 'UTF-8'),
                             'pessoa_informacoes' => htmlspecialchars($_POST['informacoes'], ENT_QUOTES, 'UTF-8'),
+                            'pessoa_cliente' => $_SESSION['usuario_cliente'],
                             'foto' => $_FILES['foto']
                         ];
 
