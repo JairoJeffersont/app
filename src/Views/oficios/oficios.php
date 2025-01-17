@@ -33,7 +33,7 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                 <div class="card-body p-2">
                     <p class="card-text mb-2">Seção para arquivamento de ofícios.
                     <p class="card-text mb-2">Todos os campos são obrigatórios</p>
-                    <p class="card-text mb-0">O arquivo deve ser em DOCX, DOC ou PDF e ter até 5mb</p>
+                    <p class="card-text mb-0">O arquivo deve ser em PDF e ter até 5mb</p>
                 </div>
             </div>
             <div class="card shadow-sm mb-2">
@@ -54,7 +54,7 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
 
                         if ($result['status'] == 'success') {
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
-                        } else if ($result['status'] == 'duplicated' || $result['status'] == 'bad_request') {
+                        } else if ($result['status'] == 'duplicated' || $result['status'] == 'file_not_permited' || $result['status'] == 'too_big' ||  $result['status'] == 'bad_request') {
                             echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                         } else if ($result['status'] == 'error') {
                             echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['id_erro']) ? ' | Código do erro: ' . $result['id_erro'] : '') . '</div>';

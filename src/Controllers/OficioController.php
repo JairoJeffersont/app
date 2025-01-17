@@ -61,7 +61,7 @@ class OficioController
 
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['arquivo'], ['doc', 'docx', 'pdf', 'png'], 5);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['arquivo'], ['pdf'], 5);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -69,8 +69,6 @@ class OficioController
 
             $dados['oficio_arquivo'] = $uploadResult['file_path'];
         }
-
-
 
         try {
             $this->oficioModel->criar($dados);
@@ -91,7 +89,7 @@ class OficioController
      */
     public function atualizarOficio($oficio_id, $dados)
     {
-        $camposObrigatorios = ['oficio_titulo', 'oficio_resumo', 'oficio_arquivo', 'oficio_ano', 'oficio_orgao'];
+        $camposObrigatorios = ['oficio_titulo', 'oficio_resumo', 'arquivo', 'oficio_ano', 'oficio_orgao'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
@@ -103,6 +101,22 @@ class OficioController
 
         if ($oficio['status'] == 'not_found') {
             return $oficio;
+        }
+
+        if (!empty($dados['arquivo']['tmp_name'])) {
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto, $dados['arquivo'], ['pdf'], 5);
+
+            if ($uploadResult['status'] !== 'success') {
+                return $uploadResult;
+            }
+
+            if (!empty($oficio['dados'][0]['oficio_arquivo'])) {
+                $this->fileUploader->deleteFile($oficio['dados'][0]['oficio_arquivo']);
+            }
+
+            $dados['oficio_arquivo'] = $uploadResult['file_path'];
+        } else {
+            $dados['oficio_arquivo'] = $usuario['dados'][0]['oficio_arquivo'] ?? null;
         }
 
         try {
@@ -168,6 +182,7 @@ class OficioController
      * @param string $oficio_id ID do ofício a ser apagado.
      * @return array Retorna um array com o status da operação e mensagem de sucesso ou erro.
      */
+
     public function apagarOficio($oficio_id)
     {
         try {
@@ -177,8 +192,12 @@ class OficioController
                 return $oficio;
             }
 
+            if (isset($oficio['dados'][0]['oficio_arquivo'])) {
+                $this->fileUploader->deleteFile($oficio['dados'][0]['oficio_arquivo']);
+            }
+
             $this->oficioModel->apagar($oficio_id);
-            return ['status' => 'success', 'message' => 'Ofício apagado com sucesso.'];
+            return ['status' => 'success', 'message' => 'Usuário apagado com sucesso.'];
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('oficio_log', $e->getMessage() . ' | ' . $erro_id);
