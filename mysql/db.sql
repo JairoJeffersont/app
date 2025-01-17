@@ -97,7 +97,7 @@ CREATE TABLE pessoas_tipos (
 
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-INSERT INTO pessoas_tipos (pessoa_tipo_id, pessoa_tipo_nome, pessoa_tipo_descricao, pessoa_tipo_criado_por, pessoa_tipo_cliente) VALUES (1, 'Sem tipo definido', 'Sem tipo definido', 1, 1);
+INSERT INTO pessoas_tipos (pessoa_tipo_id, pessoa_tipo_nome, pessoa_tipo_descricao, pessoa_tipo_criado_por, pessoa_tipo_cliente) VALUES (1, 'Sem tipo definido', 'Sem tipo definido', 1, 1), (2, 'Deputado Federal', 'Deputado Federal', 1, 1);
 
 CREATE TABLE pessoas_profissoes (
     pessoas_profissoes_id varchar(36) NOT NULL DEFAULT (UUID()),

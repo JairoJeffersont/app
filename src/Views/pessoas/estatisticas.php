@@ -55,6 +55,8 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                         if ($resultado['status'] == 'success') {
                             $quantidade = count($resultado['dados']);
                             echo "<p class='card-text mb-0'><i class='$icone'></i> $sexo: $quantidade</p>";
+                        } else if ($resultado['status'] == 'not_found') {
+                            echo "<p class='card-text mb-0'><i class='$icone'></i> $sexo: 0</p>";
                         }
                     }
                     ?>
@@ -71,6 +73,8 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                             if ($resultado['status'] == 'success') {
                                 $quantidade = count($resultado['dados']);
                                 echo "<p class='card-text mb-0'><i class='bi bi-person'></i> {$tipo['pessoa_tipo_nome']}: $quantidade</p>";
+                            } else if ($resultado['status'] == 'not_found') {
+                                echo "<p class='card-text mb-0'><i class='bi bi-person'></i> {$tipo['pessoa_tipo_nome']}: 0</p>";
                             }
                         }
                     } else {
@@ -90,6 +94,8 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                             if ($resultado['status'] == 'success') {
                                 $quantidade = count($resultado['dados']);
                                 echo "<p class='card-text mb-0'><i class='bi bi-person-badge'></i> {$profissao['pessoas_profissoes_nome']}: $quantidade</p>";
+                            } else if ($resultado['status'] == 'not_found') {
+                                echo "<p class='card-text mb-0'><i class='bi bi-person-badge'></i> {$profissao['pessoas_profissoes_nome']}: 0</p>";
                             }
                         }
                     } else {
@@ -134,13 +140,14 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                     <h6 class="card-title mb-2">Pessoas por Estado</h6>
                     <table class="table table-sm table-bordered">
                         <thead>
-                            <tr>                                
+                            <tr>
                                 <th>Estado</th>
                                 <th>Quantidade</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
+                            $nenhumEncontrado = false;
                             foreach ($estados as $sigla => $nome) {
                                 $resultado = $pessoaController->buscarPessoa('pessoa_estado', $sigla);
                                 if ($resultado['status'] == 'success') {
@@ -150,6 +157,9 @@ $estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0][
                                             <td><i class='bi bi-geo-alt'></i> $sigla - $nome</td>                                            
                                             <td>$quantidade</td>
                                         </tr>";
+                                } else if ($resultado['status'] == 'not_found' && !$nenhumEncontrado) {
+                                    echo "<tr colspan=2><td>Nenhum usuário encontrado<td></tr>";
+                                    $nenhumEncontrado = true; // Marca que já foi exibido
                                 }
                             }
                             ?>

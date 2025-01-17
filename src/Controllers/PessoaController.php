@@ -63,7 +63,7 @@ class PessoaController
 
 
         if (!empty($dados['foto']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['pessoa_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto . '/' . $dados['pessoa_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -111,7 +111,7 @@ class PessoaController
         }
 
         if (!empty($dados['foto']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['pessoa_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto . '/' . $dados['pessoa_cliente'], $dados['foto'], ['jpg', 'jpeg', 'png'], 2);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
