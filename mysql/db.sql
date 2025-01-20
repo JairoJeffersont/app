@@ -27,7 +27,7 @@ CREATE TABLE usuario (
     usuario_senha varchar(255) NOT NULL,
     usuario_nivel int NOT NULL,
     usuario_ativo tinyint(1) NOT NULL,
-    usuario_aniversario date NOT NULL,
+    usuario_aniversario varchar(255) NOT NULL,
     usuario_foto varchar(255) DEFAULT NULL,
     usuario_cliente varchar(36) NOT NULL,
     usuario_token varchar(255) DEFAULT NULL,
