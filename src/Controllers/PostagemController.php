@@ -173,6 +173,16 @@ class PostagemController
                 return $postagem;
             }
 
+            $pasta = $postagem['dados'][0]['postagem_pasta'];
+
+            if (is_dir($pasta)) {
+                $files = array_diff(scandir($pasta), ['.', '..']);
+                foreach ($files as $file) {
+                    unlink($pasta . DIRECTORY_SEPARATOR . $file);
+                }
+                rmdir($pasta);
+            }
+
             $this->postagemModel->apagar($postagem_id);
             return ['status' => 'success', 'message' => 'Postagem apagada com sucesso.'];
         } catch (PDOException $e) {

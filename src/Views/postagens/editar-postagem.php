@@ -1,5 +1,7 @@
 <?php
 
+ob_start() ;
+
 require './src/Middleware/VerificaLogado.php';
 require_once './vendor/autoload.php';
 
@@ -66,6 +68,16 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                             echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['error_id']) ? ' | Código do erro: ' . $result['error_id'] : '') . '</div>';
                         }
                     }
+
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_apagar'])) {
+                        $resultado = $postagemController->apagarPostagem($postagemGet);
+
+                        if ($resultado['status'] === 'success') {
+                            header('Location: ?secao=postagens');
+                        } elseif ($resultado['status'] === 'error' || $resultado['status'] === 'invalid_id' || $resultado['status'] === 'delete_conflict') {
+                            echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['error_id']) ? ' | Código do erro: ' . $result['error_id'] : '') . '</div>';
+                        }
+                    }
                     ?>
                     <form class="row g-2 form_custom" id="form_novo" method="POST" enctype="multipart/form-data">
                         <div class="col-md-3 col-12">
@@ -101,6 +113,8 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                         </div>
                         <div class="col-md-3 col-12">
                             <button type="submit" class="btn btn-success btn-sm" name="btn_atualizar"><i class="bi bi-floppy-fill"></i> Atualizar</button>
+                            <button type="submit" class="btn btn-danger btn-sm" name="btn_apagar"><i class="bi bi-trash-fill"></i> Apagar</button>
+
                         </div>
                     </form>
                 </div>
@@ -129,7 +143,6 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                         </div>
                         <div class="col-md-3 col-12">
                             <button type="submit" class="btn btn-primary btn-sm" name="btn_upload"><i class="bi bi-floppy"></i> Salvar Arquivo</button>
-
                         </div>
                     </form>
                 </div>
@@ -158,9 +171,18 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
 
                             foreach ($arquivos as $arquivo) {
                                 $caminhoArquivo = $pasta . '/' . $arquivo;
+                                $extensao = pathinfo($arquivo, PATHINFO_EXTENSION);
+                                $dataHora = date('d/m/Y H:i:s', filemtime($caminhoArquivo));
+
+                                if (in_array(strtolower($extensao), ['jpg', 'jpeg', 'png'])) {
+                                    $link = '<a href="' . htmlspecialchars($caminhoArquivo) . '" target="_blank">' . htmlspecialchars($arquivo) . '</a>';
+                                } else {
+                                    $link = '<a href="' . htmlspecialchars($caminhoArquivo) . '" download>' . htmlspecialchars($arquivo) . '</a>';
+                                }
+
                                 echo '<tr>';
-                                echo '<td>' . htmlspecialchars($arquivo) . '</td>';
-                                echo '<td>' . htmlspecialchars(date('d/m/Y H:i:s', filemtime($caminhoArquivo))) . '</td>';
+                                echo '<td>' . $link . '</td>';
+                                echo '<td>' . htmlspecialchars($dataHora) . '</td>';
                                 echo '</tr>';
                             }
 
@@ -173,6 +195,7 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                         echo '<p class="text-danger mb-0">A pasta especificada não existe.</p>';
                     }
                     ?>
+
 
                 </div>
             </div>
