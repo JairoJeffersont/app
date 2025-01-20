@@ -31,6 +31,13 @@ $('button[name="btn_apagar_arquivo"]').on('click', function (event) {
     }
 });
 
+$('button[name="btn_upload"]').on('click', function (event) {
+    const confirmacao = confirm("Tem certeza que deseja fazer upload desse arquivo?");
+    if (!confirmacao) {
+        event.preventDefault();
+    }
+});
+
 $('button[name="btn_salvar"]').on('click', function (event) {
     const confirmacao = confirm("Tem certeza que deseja inserir esse registro?");
     if (!confirmacao) {

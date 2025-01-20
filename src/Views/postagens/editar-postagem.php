@@ -166,11 +166,10 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                             return !in_array($arquivo, ['.', '..']) && is_file($pasta . '/' . $arquivo);
                         });
 
-                        // Ordenar os arquivos pela data de criação (do mais novo para o mais antigo)
                         usort($arquivos, function ($a, $b) use ($pasta) {
                             $dataA = filemtime($pasta . '/' . $a);
                             $dataB = filemtime($pasta . '/' . $b);
-                            return $dataB - $dataA; // Maior para menor (do mais novo para o mais antigo)
+                            return $dataB - $dataA;
                         });
 
                         if (!empty($arquivos)) {
