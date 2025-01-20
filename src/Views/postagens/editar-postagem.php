@@ -41,7 +41,7 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-stickies"></i> Editar Postagem</div>
                 <div class="card-body p-2">
                     <p class="card-text mb-2">Pasta para arquivamento da postagem.
-                    <p class="card-text mb-0">Salve os arquivos das postagens para arquivar.</p>
+                    <p class="card-text mb-0">Salve os arquivos das postagens para arquivar. O arquivo deve ter no máximo <b>200MB</b></p>
                 </div>
             </div>
             <div class="card shadow-sm mb-2">
@@ -124,7 +124,7 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                     <?php
 
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_upload'])) {
-                        $uploadResult = $fileUploader->uploadFile($buscaPostagem['dados'][0]['postagem_pasta'], $_FILES['arquivo'], ['jpg', 'jpeg', 'png', 'psd', 'ai'], 100, false);
+                        $uploadResult = $fileUploader->uploadFile($buscaPostagem['dados'][0]['postagem_pasta'], $_FILES['arquivo'], ['jpg', 'jpeg', 'png', 'psd', 'ai', 'cdr'], 100, false);
 
                         if ($uploadResult['status'] == 'success') {
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $uploadResult['message'] . '</div>';
@@ -142,7 +142,7 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                             <input type="file" class="form-control form-control-sm" name="arquivo" required>
                         </div>
                         <div class="col-md-3 col-12">
-                            <button type="submit" class="btn btn-primary btn-sm" name="btn_upload"><i class="bi bi-floppy"></i> Salvar Arquivo</button>
+                            <button type="submit" class="btn btn-primary btn-sm" name="btn_upload"><i class="bi bi-cloud-arrow-up"></i> Upload</button>
                         </div>
                     </form>
                 </div>
