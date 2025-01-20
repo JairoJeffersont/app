@@ -1,6 +1,6 @@
 <?php
 
-ob_start() ;
+ob_start();
 
 require './src/Middleware/VerificaLogado.php';
 require_once './vendor/autoload.php';
@@ -150,6 +150,15 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <?php
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_apagar_arquivo'])) {
+                        $deleteResult = $fileUploader->deleteFile($_POST['arquivo_para_apagar']);
+                        if ($deleteResult['status'] == 'success') {
+                            echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $deleteResult['message'] . '</div>';
+                        } else if ($deleteResult['status'] == 'delete_error' || $deleteResult['status'] == 'file_not_found') {
+                            echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $deleteResult['message'] . '</div>';
+                        }
+                    }
+
                     $pasta = $buscaPostagem['dados'][0]['postagem_pasta'];
 
                     if (is_dir($pasta)) {
@@ -165,6 +174,7 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                             echo '<tr>';
                             echo '<th>Nome do Arquivo</th>';
                             echo '<th>Data e Hora</th>';
+                            echo '<th>Apagar</th>';
                             echo '</tr>';
                             echo '</thead>';
                             echo '<tbody>';
@@ -183,6 +193,7 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                                 echo '<tr>';
                                 echo '<td>' . $link . '</td>';
                                 echo '<td>' . htmlspecialchars($dataHora) . '</td>';
+                                echo '<td><form method="POST"><input type="hidden" name="arquivo_para_apagar" value="' . htmlspecialchars($caminhoArquivo) . '"><button type="submit" style="font-size:0.8em" class="btn btn-danger btn-sm" name="btn_apagar_arquivo">Apagar</button></form></td>';
                                 echo '</tr>';
                             }
 
