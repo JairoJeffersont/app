@@ -151,20 +151,18 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                 <div class="card-body p-2">
                     <?php
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_apagar_arquivo'])) {
-                        $deleteResult = $fileUploader->deleteFile($_POST['arquivo_para_apagar']);
-                        if ($deleteResult['status'] == 'success') {
-                            echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $deleteResult['message'] . '</div>';
-                        } else if ($deleteResult['status'] == 'delete_error' || $deleteResult['status'] == 'file_not_found') {
-                            echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $deleteResult['message'] . '</div>';
-                        }
+                        $arquivoParaApagar = $_POST['arquivo_para_apagar'] ?? '';
+                        $deleteResult = $fileUploader->deleteFile($arquivoParaApagar);
+
+                        $statusClass = $deleteResult['status'] === 'success' ? 'success' : 'danger';
+                        echo '<div class="alert alert-' . htmlspecialchars($statusClass) . ' px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">'
+                            . htmlspecialchars($deleteResult['message']) . '</div>';
                     }
 
-                    $pasta = $buscaPostagem['dados'][0]['postagem_pasta'];
+                    $pasta = $buscaPostagem['dados'][0]['postagem_pasta'] ?? '';
 
                     if (is_dir($pasta)) {
-                        $arquivos = scandir($pasta);
-
-                        $arquivos = array_filter($arquivos, function ($arquivo) use ($pasta) {
+                        $arquivos = array_filter(scandir($pasta), function ($arquivo) use ($pasta) {
                             return !in_array($arquivo, ['.', '..']) && is_file($pasta . '/' . $arquivo);
                         });
 
@@ -181,19 +179,22 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
 
                             foreach ($arquivos as $arquivo) {
                                 $caminhoArquivo = $pasta . '/' . $arquivo;
-                                $extensao = pathinfo($arquivo, PATHINFO_EXTENSION);
+                                $extensao = strtolower(pathinfo($arquivo, PATHINFO_EXTENSION));
                                 $dataHora = date('d/m/Y H:i:s', filemtime($caminhoArquivo));
 
-                                if (in_array(strtolower($extensao), ['jpg', 'jpeg', 'png'])) {
-                                    $link = '<a href="' . htmlspecialchars($caminhoArquivo) . '" target="_blank">' . htmlspecialchars($arquivo) . '</a>';
-                                } else {
-                                    $link = '<a href="' . htmlspecialchars($caminhoArquivo) . '" download>' . htmlspecialchars($arquivo) . '</a>';
-                                }
+                                $link = '<a href="' . htmlspecialchars($caminhoArquivo) . '" ';
+                                $link .= in_array($extensao, ['jpg', 'jpeg', 'png']) ? 'target="_blank">' : 'download>';
+                                $link .= htmlspecialchars($arquivo) . '</a>';
 
                                 echo '<tr>';
                                 echo '<td>' . $link . '</td>';
                                 echo '<td>' . htmlspecialchars($dataHora) . '</td>';
-                                echo '<td><form method="POST"><input type="hidden" name="arquivo_para_apagar" value="' . htmlspecialchars($caminhoArquivo) . '"><button type="submit" style="font-size:0.8em" class="btn btn-danger btn-sm" name="btn_apagar_arquivo">Apagar</button></form></td>';
+                                echo '<td>';
+                                echo '<form method="POST">';
+                                echo '<input type="hidden" name="arquivo_para_apagar" value="' . htmlspecialchars($caminhoArquivo) . '">';
+                                echo '<button type="submit" class="btn btn-danger btn-sm" style="font-size: 0.8em" name="btn_apagar_arquivo">Apagar</button>';
+                                echo '</form>';
+                                echo '</td>';
                                 echo '</tr>';
                             }
 
@@ -206,10 +207,9 @@ if ($buscaPostagem['status'] == 'not_found' || $buscaPostagem['status'] == 'erro
                         echo '<p class="text-danger mb-0">A pasta especificada não existe.</p>';
                     }
                     ?>
-
-
                 </div>
             </div>
+
 
         </div>
     </div>
