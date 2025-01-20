@@ -2,7 +2,8 @@
 
 namespace GabineteDigital\Middleware;
 
-class FileUploader {
+class FileUploader
+{
 
     /**
      * Método responsável por fazer o upload de arquivos.
@@ -13,7 +14,8 @@ class FileUploader {
      * @param int $maxSize Tamanho máximo permitido para o arquivo em megabytes.
      * @return array Retorna um array associativo com o status e mensagem do upload.
      */
-    public function uploadFile($directory, $file, $allowedTypes, $maxSize) {
+    public function uploadFile($directory, $file, $allowedTypes, $maxSize, $uniqueFlag = true)
+    {
 
         // Verifica se houve algum erro no upload
         if ($file['error'] !== UPLOAD_ERR_OK) {
@@ -36,8 +38,14 @@ class FileUploader {
         }
 
         // Gera um nome único para o arquivo
-        $uniqueName = uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
-        $destination = $directory . DIRECTORY_SEPARATOR . $uniqueName;
+        if ($uniqueFlag) {
+            $uniqueName = uniqid() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+            $destination = $directory . DIRECTORY_SEPARATOR . $uniqueName;
+        }else{
+            $fileName = $file['name'];
+            $destination = $directory . DIRECTORY_SEPARATOR . $fileName;
+        }
+
 
         // Verifica se o arquivo já existe
         if (file_exists($destination)) {
@@ -62,7 +70,8 @@ class FileUploader {
      * @param string $filePath Caminho completo do arquivo a ser deletado.
      * @return array Retorna um array associativo com o status e mensagem da operação.
      */
-    public function deleteFile($filePath) {
+    public function deleteFile($filePath)
+    {
         $filePath = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $filePath);  // Normalizando caminho
 
         // Verifica se o arquivo existe

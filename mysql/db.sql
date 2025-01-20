@@ -199,7 +199,7 @@ CREATE TABLE postagens(
     PRIMARY KEY(postagem_id),
     CONSTRAINT fk_postagem_criada_por FOREIGN KEY (postagem_criada_por) REFERENCES usuario(usuario_id),
     CONSTRAINT fk_postagem_status FOREIGN KEY (postagem_status) REFERENCES postagem_status(postagem_status_id),
-        CONSTRAINT fk_postagem_cliente FOREIGN KEY (postagem_cliente) REFERENCES cliente(cliente_id)
+    CONSTRAINT fk_postagem_cliente FOREIGN KEY (postagem_cliente) REFERENCES cliente(cliente_id)
 
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 

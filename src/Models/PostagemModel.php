@@ -64,15 +64,14 @@ class PostagemModel
      */
     public function atualizar($postagem_id, $dados)
     {
-        $query = "UPDATE postagens SET postagem_titulo = :postagem_titulo, postagem_data = :postagem_data, postagem_pasta = :postagem_pasta, 
+        $query = "UPDATE postagens SET postagem_titulo = :postagem_titulo, postagem_data = :postagem_data, 
                   postagem_informacoes = :postagem_informacoes, postagem_midias = :postagem_midias, postagem_status = :postagem_status
                   WHERE postagem_id = :postagem_id";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':postagem_titulo', $dados['postagem_titulo'], PDO::PARAM_STR);
-        $stmt->bindParam(':postagem_data', $dados['postagem_data'], PDO::PARAM_STR);
-        $stmt->bindParam(':postagem_pasta', $dados['postagem_pasta'], PDO::PARAM_STR);
+        $stmt->bindParam(':postagem_data', $dados['postagem_data'], PDO::PARAM_STR);        
         $stmt->bindParam(':postagem_informacoes', $dados['postagem_informacoes'], PDO::PARAM_STR);
         $stmt->bindParam(':postagem_midias', $dados['postagem_midias'], PDO::PARAM_STR);
         $stmt->bindParam(':postagem_status', $dados['postagem_status'], PDO::PARAM_STR);
