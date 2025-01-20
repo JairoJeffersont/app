@@ -11,11 +11,12 @@ $postagemStatusController = new PostagemStatusController;
 $postagemController = new PostagemController;
 
 
-$itens = isset($_GET['itens']) ? (int) $_GET['itens'] : 1;
+$itens = isset($_GET['itens']) ? (int) $_GET['itens'] : 10;
 $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
 $ordenarPor = isset($_GET['ordenarPor']) && in_array(htmlspecialchars($_GET['ordenarPor']), ['postagem_titulo', 'postagem_status', 'postagem_data', 'postagem_criada_em']) ? htmlspecialchars($_GET['ordenarPor']) : 'postagem_criada_em';
 $ordem = isset($_GET['ordem']) ? strtolower(htmlspecialchars($_GET['ordem'])) : 'desc';
 $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
+$situacao = isset($_GET['situacao']) ? strtolower(htmlspecialchars($_GET['situacao'])) : 'all';
 ?>
 <div class="d-flex" id="wrapper">
     <?php include './src/Views/includes/side_bar.php'; ?>
@@ -119,7 +120,18 @@ $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
                                         <option value="desc" <?php echo $ordem == 'desc' ? 'selected' : ''; ?>>Ordem Decrescente</option>
                                     </select>
                                 </div>
-                                <div class="col-md-2 col-2">
+                                <div class="col-md-2 col-12">
+                                    <select class="form-select form-select-sm" name="situacao" required>
+                                        <option value="all" <?php echo $situacao == 'all' ? 'selected' : ''; ?>>Mostrar tudo</option>
+                                        <?php
+                                        $buscaSituacao = $postagemStatusController->listarPostagensStatus($_SESSION['usuario_cliente']);
+                                        foreach ($buscaSituacao['dados'] as $status) {
+                                            echo '<option value="' . $status['postagem_status_id'] . '" ' . ($buscaSituacao == $status['postagem_status_id'] ? 'selected' : '') . '>' . $status['postagem_status_nome'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-4">
                                     <input type="text" class="form-control form-control-sm" name="ano" value="<?php echo $ano ?>">
                                 </div>
                                 <div class="col-md-2 col-6">
@@ -153,7 +165,7 @@ $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
                             </thead>
                             <tbody>
                                 <?php
-                                $busca = $postagemController->listarPostagens($itens, $pagina, $ordem, $ordenarPor, $ano, $_SESSION['usuario_cliente']);
+                                $busca = $postagemController->listarPostagens($itens, $pagina, $ordem, $ordenarPor, $situacao, $ano, $_SESSION['usuario_cliente']);
                                 if ($busca['status'] == 'success') {
                                     foreach ($busca['dados'] as $postagem) {
                                         echo '<tr>';

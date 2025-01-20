@@ -112,10 +112,10 @@ class PostagemController
      * @param string $cliente ID do cliente.
      * @return array Retorna um array com o status da operação, mensagem e lista de postagens.
      */
-    public function listarPostagens($itens, $pagina, $ordem, $ordenarPor, $ano, $cliente)
+    public function listarPostagens($itens, $pagina, $ordem, $ordenarPor, $situacao, $ano, $cliente)
     {
         try {
-            $postagens = $this->postagemModel->listar($itens, $pagina, $ordem, $ordenarPor, $ano, $cliente);
+            $postagens = $this->postagemModel->listar($itens, $pagina, $ordem, $ordenarPor, $situacao, $ano, $cliente);
 
             $total = (isset($postagens[0]['total'])) ? $postagens[0]['total'] : 0;
             $totalPaginas = ceil($total / $itens);
