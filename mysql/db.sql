@@ -186,7 +186,7 @@ INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_
 
 CREATE TABLE postagens(
     postagem_id varchar(36) NOT NULL DEFAULT (UUID()),
-    postagem_titulo VARCHAR(255) NOT NULL,
+    postagem_titulo VARCHAR(255) NOT NULL UNIQUE,
     postagem_data TIMESTAMP NULL,
     postagem_pasta TEXT, 
     postagem_informacoes TEXT,

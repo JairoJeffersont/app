@@ -54,10 +54,10 @@ class PostagemController
         }
 
         try {
-            $dados['postagem_pasta'] = 'arquivos/postagens/'.$dados['postagem_cliente'];
+            $dados['postagem_pasta'] = './public/arquivos/postagens/' . $dados['postagem_cliente'] . '/' . uniqid();
 
-            if (!is_dir('arquivos/postagens/'.$dados['postagem_pasta'])) {
-                mkdir('arquivos/postagens/'.$dados['postagem_pasta'], 0777, true);
+            if (!is_dir($dados['postagem_pasta'])) {
+                mkdir($dados['postagem_pasta'], 0777, true);
             }
 
             $this->postagemModel->criar($dados);

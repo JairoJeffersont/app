@@ -44,10 +44,8 @@ $postagemController = new PostagemController;
                             'postagem_cliente' => $_SESSION['usuario_cliente'],
                         ];
 
-                        // Chama o método para criar a postagem
                         $result = $postagemController->criarPostagem($dados);
-
-                        // Exibe o resultado com base no status da operação
+                        
                         if ($result['status'] == 'success') {
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                         } else if ($result['status'] == 'duplicated' || $result['status'] == 'bad_request') {
@@ -68,7 +66,8 @@ $postagemController = new PostagemController;
                             <input type="date" class="form-control form-control-sm" name="postagem_data" value="<?php echo date('Y-m-d') ?>" required>
                         </div>
                         <div class="col-md-3 col-12">
-                            <select class="form-select form-select-sm" name="postagem_status" required>
+                            <select class="form-select form-select-sm" name="postagem_status" id="status_postagem" required>
+
                                 <?php
                                 $status_postagens = $postagemStatusController->listarPostagensStatus($_SESSION['usuario_cliente']);
                                 if ($status_postagens['status'] == 'success') {
@@ -82,6 +81,7 @@ $postagemController = new PostagemController;
                                 }
 
                                 ?>
+                                <option value="+">Novo tipo + </option>
                             </select>
                         </div>
                         <div class="col-md-12 col-12">
@@ -108,7 +108,7 @@ $postagemController = new PostagemController;
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php                                
+                                <?php
                                 $busca = $postagemController->listarPostagens($_SESSION['usuario_cliente']);
                                 if ($busca['status'] == 'success') {
                                     foreach ($busca['dados'] as $postagem) {
@@ -134,3 +134,15 @@ $postagemController = new PostagemController;
         </div>
     </div>
 </div>
+
+<script>
+    $('#status_postagem').change(function() {
+        if ($('#status_postagem').val() == '+') {
+            if (window.confirm("Você realmente deseja inserir um novo status?")) {
+                window.location.href = "?secao=status-postagens";
+            } else {
+                $('#orgao').val(1000).change();
+            }
+        }
+    });
+</script>
