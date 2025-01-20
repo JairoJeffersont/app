@@ -10,6 +10,12 @@ use GabineteDigital\Controllers\PostagemStatusController;
 $postagemStatusController = new PostagemStatusController;
 $postagemController = new PostagemController;
 
+
+$itens = isset($_GET['itens']) ? (int) $_GET['itens'] : 1;
+$pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+$ordenarPor = isset($_GET['ordenarPor']) && in_array(htmlspecialchars($_GET['ordenarPor']), ['postagem_titulo', 'postagem_status', 'postagem_data', 'postagem_criada_em']) ? htmlspecialchars($_GET['ordenarPor']) : 'postagem_criada_em';
+$ordem = isset($_GET['ordem']) ? strtolower(htmlspecialchars($_GET['ordem'])) : 'desc';
+$ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
 ?>
 <div class="d-flex" id="wrapper">
     <?php include './src/Views/includes/side_bar.php'; ?>
@@ -45,7 +51,7 @@ $postagemController = new PostagemController;
                         ];
 
                         $result = $postagemController->criarPostagem($dados);
-                        
+
                         if ($result['status'] == 'success') {
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                         } else if ($result['status'] == 'duplicated' || $result['status'] == 'bad_request') {
@@ -93,7 +99,45 @@ $postagemController = new PostagemController;
                     </form>
                 </div>
             </div>
-
+            <div class="row ">
+                <div class="col-12">
+                    <div class="card shadow-sm mb-2">
+                        <div class="card-body p-2">
+                            <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
+                                <div class="col-md-2 col-6">
+                                    <input type="hidden" name="secao" value="postagens" />
+                                    <select class="form-select form-select-sm" name="ordenarPor" required>
+                                        <option value="postagem_titulo" <?php echo $ordenarPor == 'postagem_titulo' ? 'selected' : ''; ?>>Ordenar por | Titulo</option>
+                                        <option value="postagem_data" <?php echo $ordenarPor == 'postagem_data' ? 'selected' : ''; ?>>Ordenar por | Data</option>
+                                        <option value="postagem_status " <?php echo $ordenarPor == 'postagem_status ' ? 'selected' : ''; ?>>Ordenar por | Situação</option>
+                                        <option value="postagem_criada_por " <?php echo $ordenarPor == 'postagem_criada_por ' ? 'selected' : ''; ?>>Ordenar por | Criação</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="form-select form-select-sm" name="ordem" required>
+                                        <option value="asc" <?php echo $ordem == 'asc' ? 'selected' : ''; ?>>Ordem Crescente</option>
+                                        <option value="desc" <?php echo $ordem == 'desc' ? 'selected' : ''; ?>>Ordem Decrescente</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-2">
+                                    <input type="text" class="form-control form-control-sm" name="ano" value="<?php echo $ano ?>">
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="form-select form-select-sm" name="itens" required>
+                                        <option value="5" <?php echo $itens == 5 ? 'selected' : ''; ?>>5 itens</option>
+                                        <option value="10" <?php echo $itens == 10 ? 'selected' : ''; ?>>10 itens</option>
+                                        <option value="25" <?php echo $itens == 25 ? 'selected' : ''; ?>>25 itens</option>
+                                        <option value="50" <?php echo $itens == 50 ? 'selected' : ''; ?>>50 itens</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1 col-2">
+                                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <div class="table-responsive">
@@ -109,7 +153,7 @@ $postagemController = new PostagemController;
                             </thead>
                             <tbody>
                                 <?php
-                                $busca = $postagemController->listarPostagens($_SESSION['usuario_cliente']);
+                                $busca = $postagemController->listarPostagens($itens, $pagina, $ordem, $ordenarPor, $ano, $_SESSION['usuario_cliente']);
                                 if ($busca['status'] == 'success') {
                                     foreach ($busca['dados'] as $postagem) {
                                         echo '<tr>';
@@ -123,11 +167,31 @@ $postagemController = new PostagemController;
                                 } else if ($busca['status'] == 'empty') {
                                     echo '<tr><td colspan="5">' . $busca['message'] . '</td></tr>';
                                 } else if ($busca['status'] == 'error') {
-                                    echo '<tr><td colspan="5">' . $busca['message'] . ' | Código do erro: ' . $busca['id_erro'] . '</td></tr>';
+                                    echo '<tr><td colspan="5">' . $busca['message'] . ' | Código do erro: ' . $busca['error_id'] . '</td></tr>';
                                 }
                                 ?>
                             </tbody>
                         </table>
+                        <?php
+                        if (isset($busca['total_paginas'])) {
+                            $totalPagina = $busca['total_paginas'];
+                        } else {
+                            $totalPagina = 0;
+                        }
+
+                        if ($totalPagina > 0 && $totalPagina != 1) {
+                            echo '<ul class="pagination custom-pagination mt-2 mb-0">';
+                            echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=postagens&itens=' . $itens . '&pagina=1&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&ano=' . $ano . '">Primeira</a></li>';
+
+                            for ($i = 1; $i < $totalPagina - 1; $i++) {
+                                $pageNumber = $i + 1;
+                                echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=postagens&itens=' . $itens . '&pagina=' . $pageNumber . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&ano=' . $ano . '">' . $pageNumber . '</a></li>';
+                            }
+
+                            echo '<li class="page-item ' . ($pagina == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=postagens&itens=' . $itens . '&pagina=' . $totalPagina . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&ano=' . $ano . '">Última</a></li>';
+                            echo '</ul>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>

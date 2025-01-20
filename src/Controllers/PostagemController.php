@@ -112,16 +112,19 @@ class PostagemController
      * @param string $cliente ID do cliente.
      * @return array Retorna um array com o status da operação, mensagem e lista de postagens.
      */
-    public function listarPostagens($cliente)
+    public function listarPostagens($itens, $pagina, $ordem, $ordenarPor, $ano, $cliente)
     {
         try {
-            $postagens = $this->postagemModel->listar($cliente);
+            $postagens = $this->postagemModel->listar($itens, $pagina, $ordem, $ordenarPor, $ano, $cliente);
+
+            $total = (isset($postagens[0]['total'])) ? $postagens[0]['total'] : 0;
+            $totalPaginas = ceil($total / $itens);
 
             if (empty($postagens)) {
                 return ['status' => 'empty', 'message' => 'Nenhuma postagem registrada.'];
             }
 
-            return ['status' => 'success', 'message' => count($postagens) . ' postagem(s) encontrada(s)', 'dados' => $postagens];
+            return ['status' => 'success', 'message' => count($postagens) . ' postagem(s) encontrada(s)', 'dados' => $postagens, 'total_paginas' => $totalPaginas,];
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('postagem_log', $e->getMessage() . ' | ' . $erro_id);

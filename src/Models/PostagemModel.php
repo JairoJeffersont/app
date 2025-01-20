@@ -71,7 +71,7 @@ class PostagemModel
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':postagem_titulo', $dados['postagem_titulo'], PDO::PARAM_STR);
-        $stmt->bindParam(':postagem_data', $dados['postagem_data'], PDO::PARAM_STR);        
+        $stmt->bindParam(':postagem_data', $dados['postagem_data'], PDO::PARAM_STR);
         $stmt->bindParam(':postagem_informacoes', $dados['postagem_informacoes'], PDO::PARAM_STR);
         $stmt->bindParam(':postagem_midias', $dados['postagem_midias'], PDO::PARAM_STR);
         $stmt->bindParam(':postagem_status', $dados['postagem_status'], PDO::PARAM_STR);
@@ -86,12 +86,19 @@ class PostagemModel
      * @param string $cliente ID do cliente associado.
      * @return array Retorna um array associativo com os dados de todas as postagens do cliente.
      */
-    public function listar($cliente)
+    public function listar($itens, $pagina, $ordem, $ordenarPor, $ano, $cliente)
     {
-        $query = "SELECT * FROM view_postagens WHERE postagem_cliente = :cliente ORDER BY postagem_titulo ASC";
+        $pagina = (int)$pagina;
+        $itens = (int)$itens;
+        $offset = ($pagina - 1) * $itens;
+
+        $query = "SELECT *, (SELECT COUNT(*) FROM view_postagens WHERE postagem_cliente = :cliente) AS total FROM view_postagens WHERE postagem_cliente = :cliente AND YEAR(postagem_data) = :ano ORDER BY $ordenarPor $ordem LIMIT :offset, :itens";
 
         $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':itens', $itens, PDO::PARAM_INT);
         $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':ano', $ano, PDO::PARAM_STR);
 
         $stmt->execute();
 
