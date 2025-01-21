@@ -67,6 +67,7 @@ class ClippingModel
         $query = "UPDATE clipping 
                   SET clipping_resumo = :clipping_resumo, 
                       clipping_titulo = :clipping_titulo, 
+                      clipping_data = :clipping_data, 
                       clipping_link = :clipping_link, 
                       clipping_orgao = :clipping_orgao, 
                       clipping_arquivo = :clipping_arquivo, 
@@ -77,6 +78,7 @@ class ClippingModel
 
         $stmt->bindParam(':clipping_resumo', $dados['clipping_resumo'], PDO::PARAM_STR);
         $stmt->bindParam(':clipping_titulo', $dados['clipping_titulo'], PDO::PARAM_STR);
+        $stmt->bindParam(':clipping_data', $dados['clipping_data'], PDO::PARAM_STR);
         $stmt->bindParam(':clipping_link', $dados['clipping_link'], PDO::PARAM_STR);
         $stmt->bindParam(':clipping_orgao', $dados['clipping_orgao'], PDO::PARAM_STR);
         $stmt->bindParam(':clipping_arquivo', $dados['clipping_arquivo'], PDO::PARAM_STR);
