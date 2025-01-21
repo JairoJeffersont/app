@@ -14,8 +14,6 @@ $clippingTipoController = new ClippingTipoController;
 $clippingController = new ClippingController;
 $orgaoController = new OrgaoController;
 
-
-
 $clippingGet = $_GET['id'];
 
 $buscaClipping = $clippingController->buscarClipping('clipping_id', $clippingGet);
@@ -25,7 +23,6 @@ if ($buscaClipping['status'] == 'not_found' || is_integer($clippingGet) || $busc
 }
 
 ?>
-
 
 <div class="d-flex" id="wrapper">
     <?php include './src/Views/includes/side_bar.php'; ?>
