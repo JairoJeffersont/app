@@ -203,6 +203,19 @@ CREATE TABLE postagens(
 
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
+CREATE TABLE clipping_tipos (
+    clipping_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    clipping_tipo_nome varchar(255) NOT NULL UNIQUE,
+    clipping_tipo_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+    clipping_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    clipping_tipo_criado_por varchar(36) NOT NULL,
+    clipping_tipo_cliente varchar(36) NOT NULL,
+    PRIMARY KEY (clipping_tipo_id),
+    CONSTRAINT fk_clipping_tipo_criado_por FOREIGN KEY (clipping_tipo_criado_por) REFERENCES usuario(usuario_id),
+    CONSTRAINT fk_clipping_tipo_cliente FOREIGN KEY (clipping_tipo_cliente) REFERENCES cliente(cliente_id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+INSERT INTO clipping_tipos (clipping_tipo_id, clipping_tipo_nome, clipping_tipo_descricao, clipping_tipo_criado_por, clipping_tipo_cliente) VALUES (1, 'Sem tipo definido', 'Sem tipo definido', 1,1);
 
 CREATE TABLE proposicoes (
     proposicao_id INT NOT NULL,
@@ -232,6 +245,7 @@ CREATE TABLE proposicoes_autores (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
 CREATE VIEW view_orgaos_tipos AS SELECT orgaos_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM orgaos_tipos INNER JOIN usuario on orgaos_tipos.orgao_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON orgaos_tipos.orgao_tipo_cliente = cliente.cliente_id;
 CREATE VIEW view_pessoas_tipos AS SELECT pessoas_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM pessoas_tipos INNER JOIN usuario ON pessoa_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON pessoas_tipos.pessoa_tipo_cliente = cliente.cliente_id;
@@ -239,5 +253,6 @@ CREATE VIEW view_pessoas_profissoes AS SELECT pessoas_profissoes.*, usuario.usua
 CREATE VIEW view_orgaos AS SELECT orgaos.*, orgaos_tipos.orgao_tipo_nome, usuario.usuario_nome, cliente.cliente_nome FROM orgaos INNER JOIN orgaos_tipos ON orgaos.orgao_tipo = orgaos_tipos.orgao_tipo_id INNER JOIN usuario ON orgaos.orgao_criado_por = usuario.usuario_id INNER JOIN cliente ON orgaos.orgao_cliente = cliente_id;
 CREATE VIEW view_pessoas AS SELECT pessoas.*, usuario.usuario_nome, cliente.cliente_nome, pessoas_tipos.pessoa_tipo_nome, pessoas_profissoes.pessoas_profissoes_nome, orgaos.orgao_nome FROM pessoas INNER JOIN usuario ON pessoas.pessoa_criada_por = usuario.usuario_id INNER JOIN cliente ON pessoas.pessoa_cliente = cliente.cliente_id INNER JOIN pessoas_tipos ON pessoas.pessoa_tipo = pessoas_tipos.pessoa_tipo_id INNER JOIN pessoas_profissoes ON pessoas.pessoa_profissao = pessoas_profissoes.pessoas_profissoes_id INNER JOIN orgaos ON pessoas.pessoa_orgao = orgaos.orgao_id;
 CREATE VIEW view_oficios AS SELECT oficios.*, orgaos.orgao_nome, orgaos.orgao_id, usuario.usuario_nome FROM oficios INNER JOIN orgaos ON oficios.oficio_orgao = orgaos.orgao_id INNER JOIN usuario ON oficios.oficio_criado_por = usuario.usuario_id;
-CREATE VIEW view_postagens_status AS SELECT postagem_status.*, usuario.usuario_nome, cliente.cliente_nome FROM postagem_status INNER JOIN usuario ON postagem_status.postagem_status_criado_por = usuario.usuario_id INNER JOIN cliente ON postagem_status.postagem_status_cliente - cliente.cliente_id ORDER BY postagem_status.postagem_status_nome ASC;
+CREATE VIEW view_postagens_status AS SELECT postagem_status.*, usuario.usuario_nome, cliente.cliente_nome FROM postagem_status INNER JOIN usuario ON postagem_status.postagem_status_criado_por = usuario.usuario_id INNER JOIN cliente ON postagem_status.postagem_status_cliente = cliente.cliente_id ORDER BY postagem_status.postagem_status_nome ASC;
 CREATE VIEW view_postagens AS SELECT postagens.*, usuario.usuario_nome, postagem_status.postagem_status_id, postagem_status.postagem_status_nome, postagem_status.postagem_status_descricao, cliente.cliente_nome FROM postagens INNER JOIN usuario ON postagens.postagem_criada_por = usuario.usuario_id INNER JOIN postagem_status ON postagens.postagem_status = postagem_status.postagem_status_id INNER JOIN cliente ON postagens.postagem_cliente = cliente.cliente_id; 
+CREATE VIEW view_tipo_clipping AS SELECT clipping_tipos.*, usuario.usuario_nome FROM clipping_tipos INNER JOIN usuario ON clipping_tipos.clipping_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping_tipos.clipping_tipo_cliente = cliente.cliente_id;
