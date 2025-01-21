@@ -43,7 +43,7 @@ $situacao = isset($_GET['situacao']) ? strtolower(htmlspecialchars($_GET['situac
                                 <ul class="navbar-nav me-auto mb-0 mb-lg-0">
                                     <li class="nav-item">
                                         <a class="nav-link active p-1" aria-current="page" href="#">
-                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_nova_situacao" type="button"><i class="bi bi-plus-circle-fill"></i> Nova situação</button>                                            
+                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_nova_situacao" type="button"><i class="bi bi-plus-circle-fill"></i> Nova situação</button>
                                         </a>
                                     </li>
                                 </ul>
