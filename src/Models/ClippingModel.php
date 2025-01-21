@@ -101,13 +101,11 @@ class ClippingModel
             $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
             $stmt->bindValue(':ano', $ano, PDO::PARAM_STR);
         } else {
-            $query = 'SELECT * FROM clipping WHERE (clipping_titulo LIKE :busca OR clipping_resumo LIKE :busca) AND  YEAR(clipping_data) = :ano AND clipping_cliente = :cliente ORDER BY clipping_criado_em DESC';
+            $query = 'SELECT * FROM view_clipping WHERE (clipping_titulo LIKE :busca OR clipping_resumo LIKE :busca) AND clipping_cliente = :cliente ORDER BY clipping_criado_em DESC';
             $stmt = $this->conn->prepare($query);
             $busca = '%' . $busca . '%';
             $stmt->bindValue(':busca', $busca, PDO::PARAM_STR);
             $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
-            $stmt->bindValue(':ano', $ano, PDO::PARAM_STR);
-
         }
 
         $stmt->execute();

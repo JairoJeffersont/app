@@ -33,7 +33,7 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
             <div class="card mb-2 card-description">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-newspaper"></i> Adicionar Tipo de Clipping</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-2">Adicionar Clipping.</p>
+                    <p class="card-text mb-2">Seção para arquivamento de todos o tipo de conteúdo sobre o deputado</p>
                     <p class="card-text mb-0">Arquivos permitidos: PDF, JPG, PNG. Todos os campos são obrigatórios</p>
                 </div>
             </div>
@@ -41,6 +41,7 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                 <div class="card-body p-2">
                     <?php
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_salvar'])) {
+
                         $clipping = [
                             'clipping_resumo' => $_POST['clipping_resumo'],
                             'clipping_data' => $_POST['clipping_data'],
@@ -65,7 +66,6 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                     }
                     ?>
                     <form class="row g-2 form_custom" id="form_novo" method="POST" enctype="multipart/form-data">
-
                         <div class="col-md-2 col-12">
                             <input type="url" class="form-control form-control-sm" name="clipping_link" placeholder="Link (http://...)" required>
                         </div>
@@ -76,7 +76,7 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                             <input type="date" class="form-control form-control-sm" name="clipping_data" value="<?php echo date('Y-m-d') ?>" placeholder="Data" required>
                         </div>
                         <div class="col-md-2 col-12">
-                            <select class="form-select form-select-sm" name="clipping_orgao" id="clipping_orgao" required>
+                            <select class="form-select form-select-sm" name="clipping_orgao" id="orgao" required>
                                 <option value="1">Veículo não informado</option>
                                 <?php
                                 $buscaOrgaos = $orgaoController->listarOrgaos(1000, 1, 'asc', 'orgao_nome', null, null, $_SESSION['usuario_cliente']);
@@ -90,7 +90,7 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                                     }
                                 }
                                 ?>
-                                <option value="+">Novo órgão + </option>
+                                <option value="+">Novo veículo + </option>
                             </select>
                         </div>
 
@@ -111,8 +111,8 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                                 <option value="+">Novo tipo + </option>
                             </select>
                         </div>
-                        <div class="col-md-2 col-12">
-                            <input type="file" class="form-control form-control-sm" name="arquivo" placeholder="Arquivo">
+                        <div class="col-md-3 col-12">
+                            <input type="file" class="form-control form-control-sm" name="arquivo" placeholder="Arquivo" required>
                         </div>
                         <div class="col-md-12 col-12">
                             <textarea class="form-control form-control-sm" name="clipping_resumo" rows="10" placeholder="Texto do clipping" required></textarea>
@@ -123,7 +123,26 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                     </form>
                 </div>
             </div>
-
+            <div class="row ">
+                <div class="col-12">
+                    <div class="card shadow-sm mb-2">
+                        <div class="card-body p-2">
+                            <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
+                                <div class="col-md-1 col-3">
+                                    <input type="hidden" name="secao" value="clippings" />
+                                    <input type="text" class="form-control form-control-sm" name="ano" value="<?php echo $ano ?>">
+                                </div>
+                                <div class="col-md-3 col-7">
+                                    <input type="text" class="form-control form-control-sm" name="termo" value="<?php echo $termo ?>" placeholder="Buscar...">
+                                </div>
+                                <div class="col-md-1 col-2">
+                                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <div class="table-responsive">
@@ -168,6 +187,16 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                 window.location.href = "?secao=tipos-clipping";
             } else {
                 $('#clipping_tipo').val(1).change();
+            }
+        }
+    });
+
+    $('#orgao').change(function() {
+        if ($('#orgao').val() == '+') {
+            if (window.confirm("Você realmente deseja inserir um novo órgão?")) {
+                window.location.href = "?secao=orgaos";
+            } else {
+                $('#orgao').val(1000).change();
             }
         }
     });
