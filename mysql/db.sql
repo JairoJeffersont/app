@@ -217,6 +217,29 @@ CREATE TABLE clipping_tipos (
 
 INSERT INTO clipping_tipos (clipping_tipo_id, clipping_tipo_nome, clipping_tipo_descricao, clipping_tipo_criado_por, clipping_tipo_cliente) VALUES (1, 'Sem tipo definido', 'Sem tipo definido', 1,1);
 
+
+CREATE TABLE clipping (
+    clipping_id varchar(36) NOT NULL DEFAULT (UUID()),
+    clipping_resumo TEXT NOT NULL,
+    clipping_titulo TEXT NOT NULL,
+    clipping_link VARCHAR(255) NOT NULL UNIQUE,
+    clipping_orgao varchar(36) NOT NULL,
+    clipping_arquivo VARCHAR(255),
+    clipping_data date NOT NULL,
+    clipping_tipo varchar(36) NOT NULL,
+    clipping_criado_por varchar(36) NOT NULL,
+    clipping_cliente varchar(36) NOT NULL,
+    clipping_criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    clipping_atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (clipping_id),
+    CONSTRAINT fk_clipping_criado_por FOREIGN KEY (clipping_criado_por) REFERENCES usuario(usuario_id),
+    CONSTRAINT fk_clipping_orgao FOREIGN KEY (clipping_orgao) REFERENCES orgaos(orgao_id),
+    CONSTRAINT fk_clipping_tipo FOREIGN KEY (clipping_tipo) REFERENCES clipping_tipos(clipping_tipo_id),
+    CONSTRAINT fk_clipping_cliente FOREIGN KEY (clipping_cliente) REFERENCES cliente(cliente_id)
+
+)ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+
 CREATE TABLE proposicoes (
     proposicao_id INT NOT NULL,
     proposicao_numero INT NOT NULL,
@@ -256,3 +279,4 @@ CREATE VIEW view_oficios AS SELECT oficios.*, orgaos.orgao_nome, orgaos.orgao_id
 CREATE VIEW view_postagens_status AS SELECT postagem_status.*, usuario.usuario_nome, cliente.cliente_nome FROM postagem_status INNER JOIN usuario ON postagem_status.postagem_status_criado_por = usuario.usuario_id INNER JOIN cliente ON postagem_status.postagem_status_cliente = cliente.cliente_id ORDER BY postagem_status.postagem_status_nome ASC;
 CREATE VIEW view_postagens AS SELECT postagens.*, usuario.usuario_nome, postagem_status.postagem_status_id, postagem_status.postagem_status_nome, postagem_status.postagem_status_descricao, cliente.cliente_nome FROM postagens INNER JOIN usuario ON postagens.postagem_criada_por = usuario.usuario_id INNER JOIN postagem_status ON postagens.postagem_status = postagem_status.postagem_status_id INNER JOIN cliente ON postagens.postagem_cliente = cliente.cliente_id; 
 CREATE VIEW view_tipo_clipping AS SELECT clipping_tipos.*, usuario.usuario_nome FROM clipping_tipos INNER JOIN usuario ON clipping_tipos.clipping_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping_tipos.clipping_tipo_cliente = cliente.cliente_id;
+CREATE VIEW view_clipping AS SELECT clipping.*, usuario.usuario_nome, orgaos.orgao_nome, cliente.cliente_nome, clipping_tipos.clipping_tipo_nome FROM clipping INNER JOIN clipping_tipos ON clipping.clipping_tipo = clipping_tipos.clipping_tipo_id INNER JOIN orgaos ON clipping.clipping_orgao = orgaos.orgao_id INNER JOIN usuario ON clipping.clipping_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping.clipping_cliente = cliente.cliente_id;
