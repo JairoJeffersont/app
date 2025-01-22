@@ -203,4 +203,56 @@ class PessoaModel
 
         return $stmt->execute();
     }
+
+    public function buscarSexo($estado, $cliente)
+    {
+        if ($estado != null) {
+            $query = "SELECT pessoa_sexo, COUNT(*) as contagem, (SELECT COUNT(*) FROM pessoas WHERE pessoa_cliente = :cliente AND pessoa_estado = :estado) AS total
+            FROM view_pessoas
+            WHERE pessoa_cliente = :cliente 
+            AND pessoa_estado = :estado
+            GROUP BY pessoa_sexo
+            ORDER BY contagem DESC";
+        } else {
+            $query = "SELECT pessoa_sexo, COUNT(*) as contagem, (SELECT COUNT(*) FROM pessoas WHERE pessoa_cliente = :cliente ) AS total
+              FROM view_pessoas
+              WHERE pessoa_cliente = :cliente 
+              GROUP BY pessoa_sexo
+              ORDER BY contagem DESC";
+        }
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarProfissao($estado, $cliente)
+    {
+        if ($estado != null) {
+            $query = "SELECT pessoa_profissao, pessoas_profissoes_nome, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_pessoas WHERE pessoa_cliente = :cliente AND pessoa_estado = :estado) AS total
+            FROM view_pessoas
+            WHERE pessoa_cliente = :cliente 
+            AND pessoa_estado = :estado
+            GROUP BY pessoa_profissao
+            ORDER BY contagem DESC";
+        } else {
+            $query = "SELECT pessoa_profissao, pessoas_profissoes_nome, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_pessoas WHERE pessoa_cliente = :cliente ) AS total
+              FROM view_pessoas
+              WHERE pessoa_cliente = :cliente 
+              GROUP BY pessoa_profissao
+              ORDER BY contagem DESC";
+        }
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
