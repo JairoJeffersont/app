@@ -274,4 +274,21 @@ class PessoaController
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
+
+    public function buscarBairro($municipio, $cliente)
+    {
+        try {
+            $pessoa = $this->pessoaModel->buscarBairro($municipio, $cliente);
+
+            if ($pessoa) {
+                return ['status' => 'success', 'dados' => $pessoa];
+            } else {
+                return ['status' => 'not_found', 'message' => 'Nada encontrado.'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('pessoa_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
 }

@@ -281,4 +281,22 @@ class PessoaModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarBairro($municipio, $cliente)
+    {
+        $query = "SELECT pessoa_bairro, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_pessoas WHERE pessoa_cliente = :cliente AND pessoa_municipio = :municipio) AS total
+        FROM view_pessoas
+        WHERE pessoa_cliente = :cliente 
+        AND pessoa_municipio = :municipio
+        GROUP BY pessoa_bairro 
+        ORDER BY contagem DESC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':municipio', $municipio, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

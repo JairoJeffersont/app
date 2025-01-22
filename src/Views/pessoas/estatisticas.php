@@ -21,8 +21,7 @@ $buscaCliente = $clienteController->buscarCliente('cliente_id', $_SESSION['usuar
 
 $estadoDep = $_SESSION['cliente_deputado_estado'];
 
-$estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : null;
-
+$estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_SESSION['cliente_deputado_estado'] : null;
 
 ?>
 
@@ -164,7 +163,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
                                     foreach ($buscaGenero['dados'] as $genero) {
                                         $porcentagem = ($genero['contagem'] / $totalPessoas) * 100; // Calcula a porcentagem
                                         echo '<tr>';
-                                        echo '<td>' . $genero['pessoa_municipio'] . '/' . $genero['pessoa_estado'] . '</td>';
+                                        echo '<td><a href="?secao=bairros&municipio='.$genero['pessoa_municipio'].'">' . $genero['pessoa_municipio'] . '/' . $genero['pessoa_estado'] . '</a></td>';
                                         echo '<td>' . $genero['contagem'] . '</td>';
                                         echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>'; // Exibe a porcentagem formatada
                                         echo '</tr>';
