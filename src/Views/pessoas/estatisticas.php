@@ -158,7 +158,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
                             </thead>
                             <tbody>
                                 <?php
-                                $buscaGenero = $pessoaController->buscarMunicipio($estado, $_SESSION['usuario_cliente']);                                
+                                $buscaGenero = $pessoaController->buscarMunicipio($estado, $_SESSION['usuario_cliente']);
                                 if ($buscaGenero['status'] == 'success') {
                                     $totalPessoas = $buscaGenero['dados'][0]['total'];
                                     foreach ($buscaGenero['dados'] as $genero) {
