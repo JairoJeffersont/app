@@ -172,7 +172,7 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
             </div>
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
-                    <p class="card-text mb-2">Pessoas desse órgão: <?php echo $buscaPessoa['dados'] == 'success' ? count($buscaPessoa['dados']) : 0 ?></p>
+                    <p class="card-text mb-2">Pessoas desse órgão: <?php echo  isset($buscaPessoa['dados']) ? count($buscaPessoa['dados']) : 0 ?></p>
                     <div class="table-responsive mb-0">
                         <table class="table table-hover table-bordered table-striped mb-0 custom-table">
                             <thead>
