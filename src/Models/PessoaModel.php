@@ -204,6 +204,13 @@ class PessoaModel
         return $stmt->execute();
     }
 
+    /**
+     * Método para buscar pessoas por sexo, agrupadas por estado e cliente.
+     *
+     * @param string|null $estado Filtro de estado para limitar os resultados (opcional).
+     * @param int $cliente ID do cliente associado à pessoa.
+     * @return array Retorna um array contendo o sexo das pessoas e a contagem de cada sexo.
+     */
     public function buscarSexo($estado, $cliente)
     {
         if ($estado != null) {
@@ -230,6 +237,13 @@ class PessoaModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Método para buscar pessoas por profissão, agrupadas por estado e cliente.
+     *
+     * @param string|null $estado Filtro de estado para limitar os resultados (opcional).
+     * @param int $cliente ID do cliente associado à pessoa.
+     * @return array Retorna um array contendo a profissão das pessoas e a contagem de cada profissão.
+     */
     public function buscarProfissao($estado, $cliente)
     {
         if ($estado != null) {
@@ -256,6 +270,13 @@ class PessoaModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Método para buscar pessoas por município, agrupadas por estado e cliente.
+     *
+     * @param string|null $estado Filtro de estado para limitar os resultados (opcional).
+     * @param int $cliente ID do cliente associado à pessoa.
+     * @return array Retorna um array contendo o município das pessoas e a contagem de cada município.
+     */
     public function buscarMunicipio($estado, $cliente)
     {
         if ($estado != null) {
@@ -282,6 +303,13 @@ class PessoaModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Método para buscar pessoas por bairro, agrupadas por município e cliente.
+     *
+     * @param string $municipio Município para filtrar as pessoas.
+     * @param int $cliente ID do cliente associado à pessoa.
+     * @return array Retorna um array contendo o bairro das pessoas e a contagem de cada bairro.
+     */
     public function buscarBairro($municipio, $cliente)
     {
         $query = "SELECT pessoa_bairro, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_pessoas WHERE pessoa_cliente = :cliente AND pessoa_municipio = :municipio) AS total

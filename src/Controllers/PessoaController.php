@@ -224,15 +224,22 @@ class PessoaController
         }
     }
 
+    /**
+     * Método para buscar registros de sexo.
+     *
+     * @param string $estado Estado onde o sexo deve ser buscado.
+     * @param int $cliente ID do cliente associado ao registro de sexo.
+     * @return array Retorna um array com o status da operação, mensagem e dados ou mensagem de registro não encontrado.
+     *               Exemplo de resposta: ['status' => 'success', 'dados' => [...]].
+     */
     public function buscarSexo($estado, $cliente)
     {
         try {
-            $pessoa = $this->pessoaModel->buscarSexo($estado, $cliente);
-
-            if ($pessoa) {
-                return ['status' => 'success', 'dados' => $pessoa];
+            $sexo = $this->pessoaModel->buscarSexo($estado, $cliente);
+            if ($sexo) {
+                return ['status' => 'success', 'dados' => $sexo];
             } else {
-                return ['status' => 'not_found', 'message' => 'Nada encontrado.'];
+                return ['status' => 'not_found', 'message' => 'Sexo não encontrado.'];
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
@@ -241,15 +248,22 @@ class PessoaController
         }
     }
 
+    /**
+     * Método para buscar registros de profissão.
+     *
+     * @param string $estado Estado onde a profissão deve ser buscada.
+     * @param int $cliente ID do cliente associado ao registro de profissão.
+     * @return array Retorna um array com o status da operação, mensagem e dados ou mensagem de registro não encontrado.
+     *               Exemplo de resposta: ['status' => 'success', 'dados' => [...]].
+     */
     public function buscarProfissao($estado, $cliente)
     {
         try {
-            $pessoa = $this->pessoaModel->buscarProfissao($estado, $cliente);
-
-            if ($pessoa) {
-                return ['status' => 'success', 'dados' => $pessoa];
+            $profissao = $this->pessoaModel->buscarProfissao($estado, $cliente);
+            if ($profissao) {
+                return ['status' => 'success', 'dados' => $profissao];
             } else {
-                return ['status' => 'not_found', 'message' => 'Nada encontrado.'];
+                return ['status' => 'not_found', 'message' => 'Profissão não encontrada.'];
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
@@ -258,15 +272,22 @@ class PessoaController
         }
     }
 
+    /**
+     * Método para buscar registros de município.
+     *
+     * @param string $estado Estado onde o município deve ser buscado.
+     * @param int $cliente ID do cliente associado ao registro de município.
+     * @return array Retorna um array com o status da operação, mensagem e dados ou mensagem de registro não encontrado.
+     *               Exemplo de resposta: ['status' => 'success', 'dados' => [...]].
+     */
     public function buscarMunicipio($estado, $cliente)
     {
         try {
-            $pessoa = $this->pessoaModel->buscarMunicipio($estado, $cliente);
-
-            if ($pessoa) {
-                return ['status' => 'success', 'dados' => $pessoa];
+            $municipio = $this->pessoaModel->buscarMunicipio($estado, $cliente);
+            if ($municipio) {
+                return ['status' => 'success', 'dados' => $municipio];
             } else {
-                return ['status' => 'not_found', 'message' => 'Nada encontrado.'];
+                return ['status' => 'not_found', 'message' => 'Município não encontrado.'];
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
@@ -275,15 +296,22 @@ class PessoaController
         }
     }
 
+    /**
+     * Método para buscar registros de bairro.
+     *
+     * @param string $municipio Município onde o bairro deve ser buscado.
+     * @param int $cliente ID do cliente associado ao registro de bairro.
+     * @return array Retorna um array com o status da operação, mensagem e dados ou mensagem de registro não encontrado.
+     *               Exemplo de resposta: ['status' => 'success', 'dados' => [...]].
+     */
     public function buscarBairro($municipio, $cliente)
     {
         try {
-            $pessoa = $this->pessoaModel->buscarBairro($municipio, $cliente);
-
-            if ($pessoa) {
-                return ['status' => 'success', 'dados' => $pessoa];
+            $bairro = $this->pessoaModel->buscarBairro($municipio, $cliente);
+            if ($bairro) {
+                return ['status' => 'success', 'dados' => $bairro];
             } else {
-                return ['status' => 'not_found', 'message' => 'Nada encontrado.'];
+                return ['status' => 'not_found', 'message' => 'Bairro não encontrado.'];
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
