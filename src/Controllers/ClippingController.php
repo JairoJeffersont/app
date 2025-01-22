@@ -216,4 +216,52 @@ class ClippingController
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
+
+    public function buscarAno($cliente)
+    {
+        try {
+            $anos = $this->clippingModel->buscarAno($cliente);
+            if ($anos) {
+                return ['status' => 'success', 'dados' => $anos];
+            } else {
+                return ['status' => 'not_found', 'message' => 'Ano não encontrado.'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('clipping_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
+
+    public function buscarTipo($ano, $cliente)
+    {
+        try {
+            $tipos = $this->clippingModel->buscarTipo($ano, $cliente);
+            if ($tipos) {
+                return ['status' => 'success', 'dados' => $tipos];
+            } else {
+                return ['status' => 'not_found', 'message' => 'Tipo não encontrado.'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('clipping_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
+
+    public function buscarOrgao($ano, $cliente)
+    {
+        try {
+            $orgaos = $this->clippingModel->buscarOrgao($ano, $cliente);
+            if ($orgaos) {
+                return ['status' => 'success', 'dados' => $orgaos];
+            } else {
+                return ['status' => 'not_found', 'message' => 'Órgão não encontrado.'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('clipping_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
 }

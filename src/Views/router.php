@@ -35,6 +35,8 @@ $rotas = [
     'tipo-clipping' => './src/Views/clipping/editar-tipos-clipping.php',        
     'clippings' => './src/Views/clipping/clippings.php',
     'clipping' => './src/Views/clipping/editar-clipping.php',
+    'estatisticas-clipping' => './src/Views/clipping/estatisticas.php',
+
 
 
 

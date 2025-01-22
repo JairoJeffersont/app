@@ -148,4 +148,56 @@ class ClippingModel
 
         return $stmt->execute();
     }
+
+
+    public function buscarAno($cliente)
+    {
+        $query = "SELECT clipping_data, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_clipping WHERE clipping_cliente = :cliente) AS total
+        FROM view_clipping
+        WHERE clipping_cliente = :cliente
+        GROUP BY clipping_data 
+        ORDER BY contagem DESC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarTipo($ano, $cliente)
+    {
+        $query = "SELECT clipping_tipo, clipping_tipo_nome,  COUNT(*) as contagem, (SELECT COUNT(*) FROM view_clipping WHERE clipping_cliente = :cliente AND YEAR(clipping_data) = :ano) AS total
+        FROM view_clipping
+        WHERE clipping_cliente = :cliente
+        AND YEAR(clipping_data) = :ano
+        GROUP BY clipping_tipo  
+        ORDER BY contagem DESC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':ano', $ano, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarOrgao($ano, $cliente)
+    {
+        $query = "SELECT clipping_orgao, orgao_nome,  COUNT(*) as contagem, (SELECT COUNT(*) FROM view_clipping WHERE clipping_cliente = :cliente AND YEAR(clipping_data) = :ano) AS total
+        FROM view_clipping
+        WHERE clipping_cliente = :cliente
+        AND YEAR(clipping_data) = :ano
+        GROUP BY orgao_nome, clipping_orgao
+        ORDER BY contagem DESC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':ano', $ano, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
