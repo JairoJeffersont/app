@@ -217,6 +217,15 @@ class ClippingController
         }
     }
 
+    /**
+     * Buscar clippings por ano.
+     *
+     * Retorna os clippings agrupados por ano, com o número de ocorrências de cada ano.
+     * Caso não haja resultados, retorna mensagem informando que o ano não foi encontrado.
+     *
+     * @param string $cliente ID do cliente para filtrar os clippings.
+     * @return array Resultado da operação, incluindo status e dados ou mensagem.
+     */
     public function buscarAno($cliente)
     {
         try {
@@ -233,6 +242,16 @@ class ClippingController
         }
     }
 
+    /**
+     * Buscar clippings por tipo.
+     *
+     * Retorna os clippings agrupados por tipo, com a contagem de ocorrências de cada tipo.
+     * Caso não haja resultados, retorna mensagem informando que o tipo não foi encontrado.
+     *
+     * @param string $ano Ano para filtrar os clippings.
+     * @param string $cliente ID do cliente para filtrar os clippings.
+     * @return array Resultado da operação, incluindo status e dados ou mensagem.
+     */
     public function buscarTipo($ano, $cliente)
     {
         try {
@@ -249,6 +268,16 @@ class ClippingController
         }
     }
 
+    /**
+     * Buscar clippings por órgão.
+     *
+     * Retorna os clippings agrupados por órgão, com a contagem de ocorrências de cada órgão.
+     * Caso não haja resultados, retorna mensagem informando que o órgão não foi encontrado.
+     *
+     * @param string $ano Ano para filtrar os clippings.
+     * @param string $cliente ID do cliente para filtrar os clippings.
+     * @return array Resultado da operação, incluindo status e dados ou mensagem.
+     */
     public function buscarOrgao($ano, $cliente)
     {
         try {

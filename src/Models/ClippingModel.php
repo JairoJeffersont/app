@@ -149,7 +149,15 @@ class ClippingModel
         return $stmt->execute();
     }
 
-
+    /**
+     * Método para buscar clippings agrupados por ano.
+     *
+     * Retorna a contagem de clippings por ano, agrupados por ano e cliente.
+     *
+     * @param string $cliente ID do cliente associado aos clippings.
+     *
+     * @return array Retorna um array contendo o ano, a contagem de clippings e o total de clippings para o cliente.
+     */
     public function buscarAno($cliente)
     {
         $query = "SELECT clipping_data, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_clipping WHERE clipping_cliente = :cliente) AS total
@@ -165,6 +173,16 @@ class ClippingModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Método para buscar clippings agrupados por tipo e ano.
+     *
+     * Retorna a contagem de clippings por tipo, agrupados por ano e cliente.
+     *
+     * @param string $ano Ano do clipping a ser agrupado.
+     * @param string $cliente ID do cliente associado aos clippings.
+     *
+     * @return array Retorna um array com o tipo do clipping, o nome do tipo e a contagem de clippings.
+     */
     public function buscarTipo($ano, $cliente)
     {
         $query = "SELECT clipping_tipo, clipping_tipo_nome,  COUNT(*) as contagem, (SELECT COUNT(*) FROM view_clipping WHERE clipping_cliente = :cliente AND YEAR(clipping_data) = :ano) AS total
@@ -183,6 +201,16 @@ class ClippingModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Método para buscar clippings agrupados por órgão e ano.
+     *
+     * Retorna a contagem de clippings por órgão, agrupados por ano e cliente.
+     *
+     * @param string $ano Ano do clipping a ser agrupado.
+     * @param string $cliente ID do cliente associado aos clippings.
+     *
+     * @return array Retorna um array com o órgão, nome do órgão e a contagem de clippings.
+     */
     public function buscarOrgao($ano, $cliente)
     {
         $query = "SELECT clipping_orgao, orgao_nome,  COUNT(*) as contagem, (SELECT COUNT(*) FROM view_clipping WHERE clipping_cliente = :cliente AND YEAR(clipping_data) = :ano) AS total
