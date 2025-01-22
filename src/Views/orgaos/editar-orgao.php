@@ -172,7 +172,7 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
             </div>
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
-                    <p class="card-text mb-2">Pessoas desse órgão: <?php echo count($buscaPessoa['dados']) ?></p>
+                    <p class="card-text mb-2">Pessoas desse órgão: <?php echo $buscaPessoa['dados'] == 'success' ? count($buscaPessoa['dados']) : 0 ?></p>
                     <div class="table-responsive mb-0">
                         <table class="table table-hover table-bordered table-striped mb-0 custom-table">
                             <thead>
@@ -203,7 +203,7 @@ if ($busca['status'] == 'not_found' || is_integer($orgaoGet) || $busca['status']
                                         echo '<td style="white-space: nowrap;">' . date('d/m/Y', strtotime($pessoa['pessoa_criada_em'])) . ' | ' . $pessoa['usuario_nome'] . '</td>';
                                         echo '</tr>';
                                     }
-                                } else if ($buscaPessoa['status'] == 'empty') {
+                                } else if ($buscaPessoa['status'] == 'not_found') {
                                     echo '<tr><td colspan="11">' . $buscaPessoa['message'] . '</td></tr>';
                                 } else if ($buscaPessoa['status'] == 'error') {
                                     echo '<tr><td colspan="11">' . $buscaPessoa['message'] . ' | Código do erro: ' . $buscaPessoa['id_erro'] . '</td></tr>';
