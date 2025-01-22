@@ -19,9 +19,10 @@ $pessoaProfissaoController = new PessoaProfissaoController();
 
 $buscaCliente = $clienteController->buscarCliente('cliente_id', $_SESSION['usuario_cliente']);
 
-
-$estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? null : $_SESSION['cliente_deputado_estado'];
 $estadoDep = $_SESSION['cliente_deputado_estado'];
+
+$estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : null;
+
 
 ?>
 
@@ -80,11 +81,11 @@ $estadoDep = $_SESSION['cliente_deputado_estado'];
                                 $totalPessoas = $buscaGenero['dados'][0]['total'];
                                 if ($buscaGenero['status'] == 'success') {
                                     foreach ($buscaGenero['dados'] as $genero) {
-                                        $porcentagem = ($genero['contagem'] / $totalPessoas) * 100; // Calcula a porcentagem
+                                        $porcentagem = ($genero['contagem'] / $totalPessoas) * 100;
                                         echo '<tr>';
                                         echo '<td>' . $genero['pessoa_sexo'] . '</td>';
                                         echo '<td>' . $genero['contagem'] . '</td>';
-                                        echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>'; // Exibe a porcentagem formatada
+                                        echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>';
                                         echo '</tr>';
                                     }
                                 }
@@ -115,6 +116,38 @@ $estadoDep = $_SESSION['cliente_deputado_estado'];
                                         $porcentagem = ($genero['contagem'] / $totalPessoas) * 100; // Calcula a porcentagem
                                         echo '<tr>';
                                         echo '<td>' . $genero['pessoas_profissoes_nome'] . '</td>';
+                                        echo '<td>' . $genero['contagem'] . '</td>';
+                                        echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>'; // Exibe a porcentagem formatada
+                                        echo '</tr>';
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2 card-description">
+                <div class="card-header bg-success text-white px-2 py-1">Municípios</div>
+                <div class="card-body p-2">
+                    <div class="table-responsive mb-0">
+                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Muncípio</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $buscaGenero = $pessoaController->buscarMunicipio($estado, $_SESSION['usuario_cliente']);
+                                $totalPessoas = $buscaGenero['dados'][0]['total'];
+                                if ($buscaGenero['status'] == 'success') {
+                                    foreach ($buscaGenero['dados'] as $genero) {
+                                        $porcentagem = ($genero['contagem'] / $totalPessoas) * 100; // Calcula a porcentagem
+                                        echo '<tr>';
+                                        echo '<td>' . $genero['pessoa_municipio'] . '/'.$genero['pessoa_estado'].'</td>';
                                         echo '<td>' . $genero['contagem'] . '</td>';
                                         echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>'; // Exibe a porcentagem formatada
                                         echo '</tr>';
