@@ -38,12 +38,8 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_SESSION['cl
             <div class="card mb-2 card-description">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-graph-up"></i> Estatísticas</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-2">
-                        Nesta seção, você pode consultar estatísticas sobre as pessoas relacionadas ao seu mandato, organizadas por gênero, profissão e município.
-                    </p>
-                    <p class="card-text mb-0">
-                        É possível filtrar os dados por estado para obter informações mais específicas.
-                    </p>
+                    <p class="card-text mb-2">Nesta seção, você pode consultar estatísticas sobre as pessoas relacionadas ao seu mandato, organizadas por gênero, profissão e município.</p>
+                    <p class="card-text mb-0">É possível filtrar os dados por estado para obter informações mais específicas.</p>
                 </div>
             </div>
             <div class="row ">
