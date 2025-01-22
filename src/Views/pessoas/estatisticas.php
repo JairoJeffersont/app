@@ -39,7 +39,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
             <div class="card mb-2 card-description">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-graph-up"></i> Estatísticas</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-0">Nesta seção, é possível ver informações sobre as pessoas de interesse do mandato.</p>
+                    <p class="card-text mb-0">Nesta seção, é possível ver estatisticas sobre as pessoas de interesse do mandato.</p>
                 </div>
             </div>
             <div class="row ">
@@ -78,8 +78,8 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
                             <tbody>
                                 <?php
                                 $buscaGenero = $pessoaController->buscarSexo($estado, $_SESSION['usuario_cliente']);
-                                $totalPessoas = $buscaGenero['dados'][0]['total'];
                                 if ($buscaGenero['status'] == 'success') {
+                                    $totalPessoas = $buscaGenero['dados'][0]['total'];
                                     foreach ($buscaGenero['dados'] as $genero) {
                                         $porcentagem = ($genero['contagem'] / $totalPessoas) * 100;
                                         echo '<tr>';
@@ -88,6 +88,14 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
                                         echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>';
                                         echo '</tr>';
                                     }
+                                } else if ($buscaGenero['status'] == 'not_found') {
+                                    echo '<tr>';
+                                    echo '<td colspan="3">' . $buscaGenero['message'] . '</td>';
+                                    echo '</tr>';
+                                } else if ($buscaGenero['status'] == 'error') {
+                                    echo '<tr>';
+                                    echo '<td colspan="3">' . $buscaGenero['message'] . ' | Código do erro: ' . $buscaGenero['error_id'] . '</td>';
+                                    echo '</tr>';
                                 }
                                 ?>
                             </tbody>
@@ -110,8 +118,9 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
                             <tbody>
                                 <?php
                                 $buscaGenero = $pessoaController->buscarProfissao($estado, $_SESSION['usuario_cliente']);
-                                $totalPessoas = $buscaGenero['dados'][0]['total'];
+
                                 if ($buscaGenero['status'] == 'success') {
+                                    $totalPessoas = $buscaGenero['dados'][0]['total'];
                                     foreach ($buscaGenero['dados'] as $genero) {
                                         $porcentagem = ($genero['contagem'] / $totalPessoas) * 100; // Calcula a porcentagem
                                         echo '<tr>';
@@ -120,6 +129,14 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
                                         echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>'; // Exibe a porcentagem formatada
                                         echo '</tr>';
                                     }
+                                } else if ($buscaGenero['status'] == 'not_found') {
+                                    echo '<tr>';
+                                    echo '<td colspan="3">' . $buscaGenero['message'] . '</td>';
+                                    echo '</tr>';
+                                } else if ($buscaGenero['status'] == 'error') {
+                                    echo '<tr>';
+                                    echo '<td colspan="3">' . $buscaGenero['message'] . ' | Código do erro: ' . $buscaGenero['error_id'] . '</td>';
+                                    echo '</tr>';
                                 }
                                 ?>
                             </tbody>
@@ -141,17 +158,25 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $estadoDep : 
                             </thead>
                             <tbody>
                                 <?php
-                                $buscaGenero = $pessoaController->buscarMunicipio($estado, $_SESSION['usuario_cliente']);
-                                $totalPessoas = $buscaGenero['dados'][0]['total'];
+                                $buscaGenero = $pessoaController->buscarMunicipio($estado, $_SESSION['usuario_cliente']);                                
                                 if ($buscaGenero['status'] == 'success') {
+                                    $totalPessoas = $buscaGenero['dados'][0]['total'];
                                     foreach ($buscaGenero['dados'] as $genero) {
                                         $porcentagem = ($genero['contagem'] / $totalPessoas) * 100; // Calcula a porcentagem
                                         echo '<tr>';
-                                        echo '<td>' . $genero['pessoa_municipio'] . '/'.$genero['pessoa_estado'].'</td>';
+                                        echo '<td>' . $genero['pessoa_municipio'] . '/' . $genero['pessoa_estado'] . '</td>';
                                         echo '<td>' . $genero['contagem'] . '</td>';
                                         echo '<td>' . number_format($porcentagem, 2, ',', '.') . '%</td>'; // Exibe a porcentagem formatada
                                         echo '</tr>';
                                     }
+                                } else if ($buscaGenero['status'] == 'not_found') {
+                                    echo '<tr>';
+                                    echo '<td colspan="3">' . $buscaGenero['message'] . '</td>';
+                                    echo '</tr>';
+                                } else if ($buscaGenero['status'] == 'error') {
+                                    echo '<tr>';
+                                    echo '<td colspan="3">' . $buscaGenero['message'] . ' | Código do erro: ' . $buscaGenero['error_id'] . '</td>';
+                                    echo '</tr>';
                                 }
                                 ?>
                             </tbody>
