@@ -7,10 +7,24 @@ class Logger
 
     function novoLog($title, $message)
     {
-        $logFile = dirname(__DIR__, 2) . '/logs/' .  $title . '.log';
+        // Define o diretório de logs
+        $logDir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'logs';
+
+        // Verifica se o diretório existe, se não, cria
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0755, true);
+        }
+
+        // Define o nome do arquivo de log (sem caracteres inválidos)
+        $logFile = $logDir . DIRECTORY_SEPARATOR . date('Y-m-d') . '_' . $title . '.log';
+
+        // Formata a mensagem do log
         $formattedMessage = date('Y-m-d H:i:s') . ' ' . $message . PHP_EOL;
+
+        // Escreve no arquivo de log
         file_put_contents($logFile, $formattedMessage, FILE_APPEND | LOCK_EX);
     }
+
 
     // Função para pegar o IP do usuário
     function get_client_ip()

@@ -75,8 +75,6 @@ $mes = $_GET['mes'] ?? date('m');
                                     <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
                                 </div>
                             </form>
-
-
                         </div>
                     </div>
                 </div>
