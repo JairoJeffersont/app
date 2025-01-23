@@ -148,7 +148,7 @@ $situacao = isset($_GET['situacao']) ? strtolower(htmlspecialchars($_GET['situac
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-4">
-                                    <input type="text" class="form-control form-control-sm" name="ano" value="<?php echo $ano ?>">
+                                    <input type="number" class="form-control form-control-sm" name="ano" value="<?php echo $ano ?>">
                                 </div>
                                 <div class="col-md-2 col-6">
                                     <select class="form-select form-select-sm" name="itens" required>

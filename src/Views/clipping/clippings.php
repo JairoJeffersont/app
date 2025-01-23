@@ -130,7 +130,7 @@ $busca = $clippingController->listarClippings($termo, $ano, $_SESSION['usuario_c
                             <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
                                 <div class="col-md-1 col-3">
                                     <input type="hidden" name="secao" value="clippings" />
-                                    <input type="text" class="form-control form-control-sm" name="ano" value="<?php echo $ano ?>">
+                                    <input type="number" class="form-control form-control-sm" name="ano" value="<?php echo $ano ?>">
                                 </div>
                                 <div class="col-md-3 col-7">
                                     <input type="text" class="form-control form-control-sm" name="termo" value="<?php echo $termo ?>" placeholder="Buscar...">

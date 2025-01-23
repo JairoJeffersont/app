@@ -83,17 +83,8 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                             <input type="text" class="form-control form-control-sm" name="oficio_titulo" placeholder="Titulo (Ex. OF 0000)" data-mask="OF 000" required>
                         </div>
                         <div class="col-md-1 col-12">
-                            <select class="form-select form-select-sm" name="oficio_ano" required>
-                                <?php
-                                for ($i = 1950; $i < (date('Y') + 1); $i++) {
-                                    if ($i == date('Y')) {
-                                        echo '<option value="' . $i . '" selected>' . $i . '</option>';
-                                    } else {
-                                        echo '<option value="' . $i . '">' . $i . '</option>';
-                                    }
-                                }
-                                ?>
-                            </select>
+                            <input type="number" class="form-control form-control-sm" name="oficio_ano" data-mask=0000 value="<?php echo $ano_busca ?>">
+
                         </div>
                         <div class="col-md-2 col-12">
                             <select class="form-select form-select-sm" name="oficio_orgao" id="orgao" required>
@@ -128,7 +119,7 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                             <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
                                 <div class="col-md-1 col-3">
                                     <input type="hidden" name="secao" value="oficios" />
-                                    <input type="text" class="form-control form-control-sm" name="busca_ano" data-mask=0000 value="<?php echo $ano_busca ?>">
+                                    <input type="number" class="form-control form-control-sm" name="busca_ano" data-mask=0000 value="<?php echo $ano_busca ?>">
 
                                 </div>
                                 <div class="col-md-3 col-7">
