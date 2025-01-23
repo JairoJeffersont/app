@@ -42,7 +42,7 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav me-auto mb-0 mb-lg-0">
                                     <li class="nav-item">
-                                        <a class="nav-link active p-1" aria-current="page" href="#">                                            
+                                        <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
                                         </a>
                                     </li>
@@ -128,17 +128,8 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                             <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
                                 <div class="col-md-1 col-3">
                                     <input type="hidden" name="secao" value="oficios" />
-                                    <select class="form-select form-select-sm" name="busca_ano" required>
-                                        <?php
-                                        for ($i = 1950; $i < (date('Y') + 1); $i++) {
-                                            if ($i == $ano_busca) {
-                                                echo '<option value="' . $i . '" selected>' . $i . '</option>';
-                                            } else {
-                                                echo '<option value="' . $i . '">' . $i . '</option>';
-                                            }
-                                        }
-                                        ?>
-                                    </select>
+                                    <input type="text" class="form-control form-control-sm" name="busca_ano" data-mask=0000 value="<?php echo $ano_busca ?>">
+
                                 </div>
                                 <div class="col-md-3 col-7">
                                     <input type="text" class="form-control form-control-sm" name="termo" value="<?php echo $termo ?>" placeholder="Buscar...">
