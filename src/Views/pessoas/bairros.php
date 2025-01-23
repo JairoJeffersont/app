@@ -6,16 +6,11 @@ require './src/Middleware/VerificaLogado.php';
 
 require_once './vendor/autoload.php';
 
-use GabineteDigital\Controllers\ClienteController;
+
 use GabineteDigital\Controllers\PessoaController;
-use GabineteDigital\Controllers\PessoaTipoController;
-use GabineteDigital\Controllers\PessoaProfissaoController;
 
 
 $pessoaController = new PessoaController();
-$clienteController = new ClienteController;
-$pessoaTipoController = new PessoaTipoController();
-$pessoaProfissaoController = new PessoaProfissaoController();
 
 $municipio = $_GET['municipio'];
 

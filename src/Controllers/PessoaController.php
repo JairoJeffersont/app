@@ -319,4 +319,20 @@ class PessoaController
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
+
+    public function buscarAniversarianteMes($mes, $cliente)
+    {
+        try {
+            $pessoas = $this->pessoaModel->buscarAniversarianteMes($mes, $cliente);
+            if ($pessoas) {
+                return ['status' => 'success', 'dados' => $pessoas];
+            } else {
+                return ['status' => 'not_found', 'message' => 'Nenhum aniversáriante para o mês.'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('pessoa_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
 }

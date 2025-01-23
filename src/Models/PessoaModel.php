@@ -327,4 +327,18 @@ class PessoaModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarAniversarianteMes($mes, $cliente)
+    {
+
+        $query = "SELECT * FROM view_pessoas WHERE MONTH( STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' ) ) = :mes AND pessoa_cliente = :cliente  ORDER BY DAY(STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' )) ASC;";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':mes', $mes, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
