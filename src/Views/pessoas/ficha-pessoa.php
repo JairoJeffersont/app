@@ -56,7 +56,7 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_editar" type="button"><i class="bi bi-pencil"></i> Editar</button>
                                             <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_imprimir" type="button"><i class="bi bi-printer"></i> Imprimir</button>
-                                            
+
                                         </a>
                                     </li>
                                 </ul>
@@ -82,7 +82,7 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
                         <p class="mb-0"><?php echo $buscaPessoa['dados'][0]['orgao_nome'] ?></p>
                         <p><?php echo $buscaPessoa['dados'][0]['pessoa_tipo_nome'] ?></p>
                         <div class="d-flex justify-content-center gap-2 mt-1">
-                            
+
                             <?php
                             if ($buscaPessoa['dados'][0]['pessoa_instagram'] != null) {
                                 echo '<a href="https://' . $buscaPessoa['dados'][0]['pessoa_instagram'] . '" target="_blank" class="btn btn-danger btn-sm px-2 py-1 shadow-sm" style="font-size: 0.850em;"><i class="bi bi-instagram"></i> Instagram</a>';
