@@ -88,10 +88,9 @@ $mes = $_GET['mes'] ?? date('m');
                         <?php
                         $buscaMes = $pessoaController->buscarAniversarianteMes($mes, $_SESSION['usuario_cliente']);
                         if ($buscaMes['status'] == 'success') {
-                            // Agrupar aniversariantes por dia
                             $grupos = [];
                             foreach ($buscaMes['dados'] as $aniversariante) {
-                                $foto = $aniversariante['pessoa_foto'] ?? 'public/img/not_found.jpg';
+                                $foto = isset($aniversariante['pessoa_foto']) && file_exists($aniversariante['pessoa_foto']) ? $aniversariante['pessoa_foto'] : 'public/img/not_found.jpg';
                                 $dia = explode('/', $aniversariante['pessoa_aniversario'])[0]; // Pega o dia
                                 $grupos[$dia][] = [
                                     'nome' => $aniversariante['pessoa_nome'],
@@ -111,9 +110,9 @@ $mes = $_GET['mes'] ?? date('m');
                                             </button>
                                         </h2>
                                         <div id="collapse<?= $dia ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $dia ?>" data-bs-parent="#accordionAniversariantes">
-                                            <div class="accordion-body">
+                                            <div class="accordion-body p-3">
                                                 <?php foreach ($aniversariantesDoDia as $aniversariante): ?>
-                                                    <a href="?secao=pessoa&id=<?= $aniversariante['id'] ?>" class="list-group-item list-group-item-action d-flex align-items-center">
+                                                    <a href="?secao=pessoa&id=<?= $aniversariante['id'] ?>" class="shadow-sm list-group-item list-group-item-action d-flex align-items-center">
                                                         <img src="<?= $aniversariante['foto'] ?>" alt="Foto de <?= $aniversariante['nome'] ?>" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
                                                         <div>
                                                             <h5 class="mb-1" style="font-size: 1.2em; font-weight: 600"><?= $aniversariante['nome'] ?></h5>
@@ -131,13 +130,13 @@ $mes = $_GET['mes'] ?? date('m');
                         } else if ($buscaMes['status'] == 'not_found') {
                             echo '<div class="list-group-item list-group-item-action d-flex align-items-center">                                       
                                         <div>
-                                            <h5 class="mb-0" style="font-size: 1.2em; font-weight: 600">Nenhum aniversariante neste mês</h5>
+                                            <h5 class="mb-0" style="font-size: 1em;">Nenhum aniversariante neste mês</h5>
                                         </div>
                                 </div>';
                         } else if ($buscaMes['status'] == 'error') {
                             echo '<div class="list-group-item list-group-item-action d-flex align-items-center">                                       
                                         <div>
-                                            <h5 class="mb-0" style="font-size: 1.2em; font-weight: 600">' . $buscaMes['message'] . ' | Código do erro: ' . $buscaMes['error_id'] . '</h5>
+                                            <h5 class="mb-0" style="font-size: 1em;">' . $buscaMes['message'] . ' | Código do erro: ' . $buscaMes['error_id'] . '</h5>
                                         </div>
                                 </div>';
                         }
