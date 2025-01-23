@@ -201,7 +201,12 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                                 $buscaProfissao = $pessoaProfissaoController->listarProfissoes($_SESSION['usuario_cliente']);
                                 if ($buscaProfissao['status'] === 'success') {
                                     foreach ($buscaProfissao['dados'] as $profissao) {
-                                        echo '<option value="' . $profissao['pessoas_profissoes_id'] . '">' . $profissao['pessoas_profissoes_nome'] . '</option>';
+                                        if ($profissao['pessoas_profissoes_id'] == 1) {
+                                            echo '<option value="' . $profissao['pessoas_profissoes_id'] . '" selected>' . $profissao['pessoas_profissoes_nome'] . '</option>';
+                                        }else{
+                                            echo '<option value="' . $profissao['pessoas_profissoes_id'] . '">' . $profissao['pessoas_profissoes_nome'] . '</option>';
+
+                                        }
                                     }
                                 }
                                 ?>
