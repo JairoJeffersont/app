@@ -32,7 +32,7 @@
 
         <form id="form_login" method="post" enctype="application/x-www-form-urlencoded" class="form-group">
             <div class="form-group">
-                <input type="email" class="form-control" name="email" id="email" placeholder="E-mail" value="jairojeffersont@gmail.com" required>
+                <input type="email" class="form-control" name="email" id="email" placeholder="E-mail" required>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <button type="submit" name="btn_recuperar" class="btn btn-primary">Enviar</button>
