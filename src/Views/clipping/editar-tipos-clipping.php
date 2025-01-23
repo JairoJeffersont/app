@@ -14,7 +14,7 @@ $tipoGet = $_GET['id'];
 
 $buscaTipo = $clippingTipoController->buscarClippingTipo('clipping_tipo_id', $tipoGet);
 
-if ($buscaTipo['status'] == 'not_found' || is_integer($tipoGet) || $buscaTipo['status'] == 'error') {
+if ($buscaTipo['status'] == 'not_found' || $buscaTipo['status'] == 'error') {
     header('Location: ?secao=tipos-clippings');
 }
 
@@ -28,7 +28,7 @@ if ($buscaTipo['status'] == 'not_found' || is_integer($tipoGet) || $buscaTipo['s
             <div class="card mb-2 ">
                 <div class="card-body p-1">
                     <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
-                    <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=tipos-clippings" role="button"><i class="bi bi-arrow-left"></i> Voltar</a>
+                    <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=tipos-clipping" role="button"><i class="bi bi-arrow-left"></i> Voltar</a>
                 </div>
             </div>
             <div class="card mb-2 card-description">

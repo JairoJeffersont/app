@@ -90,6 +90,10 @@ class ClippingTipoController
             return $clippingTipo;
         }
 
+        if ($clippingTipo['dados'][0]['clipping_tipo_cliente'] == 1) {
+            return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o tipo de clipping padrão.'];
+        }
+
         try {
             $this->clippingTipoModel->atualizar($clipping_tipo_id, $dados);
             return ['status' => 'success', 'message' => 'Tipo de clipping atualizado com sucesso.'];
@@ -165,6 +169,10 @@ class ClippingTipoController
 
             if ($clippingTipo['status'] == 'not_found') {
                 return $clippingTipo;
+            }
+
+            if ($clippingTipo['dados'][0]['clipping_tipo_cliente'] == 1) {
+                return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o tipo de clipping padrão.'];
             }
 
             $this->clippingTipoModel->apagar($clipping_tipo_id);

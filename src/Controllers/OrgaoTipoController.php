@@ -12,7 +12,8 @@ use PDOException;
  * Controla as operações relacionadas a tipos de órgãos, incluindo criação, atualização, listagem,
  * busca e exclusão de registros.
  */
-class OrgaoTipoController {
+class OrgaoTipoController
+{
 
     /**
      * @var OrgaoTipoModel Instância do modelo OrgaoTipoModel para interagir com os dados.
@@ -29,7 +30,8 @@ class OrgaoTipoController {
      *
      * Inicializa as instâncias do modelo OrgaoTipoModel e do Logger para gerenciamento de logs.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->orgaoTipoModel = new OrgaoTipoModel();
         $this->logger = new Logger();
     }
@@ -41,7 +43,8 @@ class OrgaoTipoController {
      *                     orgao_tipo_nome, orgao_tipo_descricao, orgao_tipo_criado_por, orgao_tipo_cliente.
      * @return array Retorna um array com o status da operação e mensagem.
      */
-    public function criarOrgaoTipo($dados) {
+    public function criarOrgaoTipo($dados)
+    {
         $camposObrigatorios = ['orgao_tipo_nome', 'orgao_tipo_descricao', 'orgao_tipo_criado_por', 'orgao_tipo_cliente'];
 
         foreach ($camposObrigatorios as $campo) {
@@ -71,7 +74,8 @@ class OrgaoTipoController {
      * @param array $dados Associativo com os dados atualizados do tipo de órgão.
      * @return array Retorna um array com o status da operação e mensagem.
      */
-    public function atualizarOrgaoTipo($orgao_tipo_id, $dados) {
+    public function atualizarOrgaoTipo($orgao_tipo_id, $dados)
+    {
         $camposObrigatorios = ['orgao_tipo_nome', 'orgao_tipo_descricao'];
 
         foreach ($camposObrigatorios as $campo) {
@@ -84,6 +88,10 @@ class OrgaoTipoController {
 
         if ($orgaoTipo['status'] == 'not_found') {
             return $orgaoTipo;
+        }
+
+        if ($orgaoTipo['dados'][0]['orgao_tipo_cliente'] == 1) {
+            return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o tipo de órgão padrão.'];
         }
 
         try {
@@ -102,7 +110,8 @@ class OrgaoTipoController {
      * @param string $cliente ID do cliente.
      * @return array Retorna um array com o status da operação, mensagem e lista de tipos de órgãos.
      */
-    public function listarOrgaosTipos($cliente) {
+    public function listarOrgaosTipos($cliente)
+    {
         try {
             $orgaosTipos = $this->orgaoTipoModel->listar($cliente);
 
@@ -125,7 +134,8 @@ class OrgaoTipoController {
      * @param mixed $valor Valor correspondente à coluna para busca.
      * @return array Retorna um array com o status da operação, mensagem e dados ou mensagem de registro não encontrado.
      */
-    public function buscarOrgaoTipo($coluna, $valor) {
+    public function buscarOrgaoTipo($coluna, $valor)
+    {
         $colunasPermitidas = ['orgao_tipo_id', 'orgao_tipo_nome'];
 
         if (!in_array($coluna, $colunasPermitidas)) {
@@ -152,12 +162,17 @@ class OrgaoTipoController {
      * @param string $orgao_tipo_id ID do tipo de órgão a ser apagado.
      * @return array Retorna um array com o status da operação e mensagem de sucesso ou erro.
      */
-    public function apagarOrgaoTipo($orgao_tipo_id) {
+    public function apagarOrgaoTipo($orgao_tipo_id)
+    {
         try {
             $orgaoTipo = $this->buscarOrgaoTipo('orgao_tipo_id', $orgao_tipo_id);
 
             if ($orgaoTipo['status'] == 'not_found') {
                 return $orgaoTipo;
+            }
+
+            if ($orgaoTipo['dados'][0]['orgao_tipo_cliente'] == 1) {
+                return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o tipo de órgão padrão.'];
             }
 
             $this->orgaoTipoModel->apagar($orgao_tipo_id);

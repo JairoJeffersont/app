@@ -86,6 +86,10 @@ class PessoaProfissaoController {
             return $profissao;
         }
 
+        if ($profissao['dados'][0]['pessoas_profissoes_cliente '] == 1) {
+            return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para profissão padrão.'];
+        }
+
         try {
             $this->pessoaProfissaoModel->atualizar($pessoas_profissoes_id, $dados);
             return ['status' => 'success', 'message' => 'Profissão atualizada com sucesso.'];
@@ -158,6 +162,10 @@ class PessoaProfissaoController {
 
             if ($profissao['status'] == 'not_found') {
                 return $profissao;
+            }
+
+            if ($profissao['dados'][0]['pessoas_profissoes_cliente'] == 1) {
+                return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para profissão padrão.'];
             }
 
             $this->pessoaProfissaoModel->apagar($pessoas_profissoes_id);

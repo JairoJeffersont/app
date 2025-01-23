@@ -86,6 +86,10 @@ class PessoaTipoController {
             return $pessoaTipo;
         }
 
+        if ($pessoaTipo['dados'][0]['pessoa_tipo_cliente'] == 1) {
+            return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o tipo de pessoa padrão.'];
+        }
+
         try {
             $this->pessoaTipoModel->atualizar($pessoa_tipo_id, $dados);
             return ['status' => 'success', 'message' => 'Tipo de pessoa atualizado com sucesso.'];
@@ -158,6 +162,10 @@ class PessoaTipoController {
 
             if ($pessoaTipo['status'] == 'not_found') {
                 return $pessoaTipo;
+            }
+
+            if ($pessoaTipo['dados'][0]['pessoa_tipo_cliente'] == 1) {
+                return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o tipo de pessoa padrão.'];
             }
 
             $this->pessoaTipoModel->apagar($pessoa_tipo_id);

@@ -14,7 +14,7 @@ $tipoGet = $_GET['id'];
 
 $buscaTipo = $pessoaTipoController->buscarPessoaTipo('pessoa_tipo_id', $tipoGet);
 
-if ($buscaTipo['status'] == 'not_found' || is_integer($tipoGet) || $buscaTipo['status'] == 'error') {
+if ($buscaTipo['status'] == 'not_found' || $buscaTipo['status'] == 'error') {
     header('Location: ?secao=tipos-pessoas');
 }
 

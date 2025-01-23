@@ -14,7 +14,7 @@ $tipoGet = $_GET['id'];
 
 $buscaTipo = $orgaoTipoController->buscarOrgaoTipo('orgao_tipo_id', $tipoGet);
 
-if ($buscaTipo['status'] == 'not_found' || is_integer($tipoGet) || $buscaTipo['status'] == 'error' || $buscaTipo['dados'][0]['orgao_tipo_cliente'] == 1) {
+if ($buscaTipo['status'] == 'not_found' || $buscaTipo['status'] == 'error' ) {
     header('Location: ?secao=tipos-orgaos');
 }
 

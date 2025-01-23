@@ -90,6 +90,10 @@ class PostagemStatusController
             return $postagemStatus;
         }
 
+        if ($postagemStatus['dados'][0]['postagem_status_cliente'] == 1) {
+            return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o status padrão.'];
+        }
+
         try {
             $this->postagemStatusModel->atualizar($postagem_status_id, $dados);
             return ['status' => 'success', 'message' => 'Status de postagem atualizado com sucesso.'];
@@ -165,6 +169,10 @@ class PostagemStatusController
 
             if ($postagemStatus['status'] == 'not_found') {
                 return $postagemStatus;
+            }
+            
+            if ($postagemStatus['dados'][0]['postagem_status_cliente'] == 1) {
+                return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para o status padrão.'];
             }
 
             $this->postagemStatusModel->apagar($postagem_status_id);

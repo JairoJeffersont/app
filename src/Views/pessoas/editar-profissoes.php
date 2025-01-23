@@ -14,7 +14,7 @@ $profissaoGet = $_GET['id'];
 
 $buscaProfissao = $pessoaProfissaoController->buscarProfissao('pessoas_profissoes_id', $profissaoGet);
 
-if ($buscaProfissao['status'] == 'not_found' || is_integer($profissaoGet) || $buscaProfissao['status'] == 'error') {
+if ($buscaProfissao['status'] == 'not_found' || $buscaProfissao['status'] == 'error') {
     header('Location: ?secao=profissoes');
 }
 
