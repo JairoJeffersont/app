@@ -91,3 +91,17 @@ a {
         object-fit: cover;
     }
 }
+
+.profile-card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    overflow: hidden;
+}
+
+.profile-card img {
+    width: 115px;
+    height: 115px;
+    object-fit: cover;
+    
+    margin-bottom: 15px;
+}

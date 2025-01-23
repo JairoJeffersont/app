@@ -112,7 +112,7 @@ $mes = $_GET['mes'] ?? date('m');
                                         <div id="collapse<?= $dia ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $dia ?>" data-bs-parent="#accordionAniversariantes">
                                             <div class="accordion-body p-3">
                                                 <?php foreach ($aniversariantesDoDia as $aniversariante): ?>
-                                                    <a href="?secao=pessoa&id=<?= $aniversariante['id'] ?>" class="shadow-sm list-group-item list-group-item-action d-flex align-items-center">
+                                                    <a href="?secao=ficha-pessoa&id=<?= $aniversariante['id'] ?>" class="shadow-sm list-group-item list-group-item-action d-flex align-items-center">
                                                         <img src="<?= $aniversariante['foto'] ?>" alt="Foto de <?= $aniversariante['nome'] ?>" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
                                                         <div>
                                                             <h5 class="mb-1" style="font-size: 1.2em; font-weight: 600"><?= $aniversariante['nome'] ?></h5>

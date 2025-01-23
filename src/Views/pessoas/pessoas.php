@@ -301,7 +301,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_GET['estado
                                     foreach ($busca['dados'] as $pessoa) {
 
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap;"><a href="?secao=pessoa&id=' . $pessoa['pessoa_id'] . '">' . $pessoa['pessoa_nome'] . '</a></td>';
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=ficha-pessoa&id=' . $pessoa['pessoa_id'] . '">' . $pessoa['pessoa_nome'] . '</a></td>';
                                         echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_email'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_telefone'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $pessoa['pessoa_endereco'] . '</td>';
