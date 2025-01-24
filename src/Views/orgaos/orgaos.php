@@ -4,16 +4,13 @@ require './src/Middleware/VerificaLogado.php';
 
 require_once './vendor/autoload.php';
 
-use GabineteDigital\Controllers\ClienteController;
 use GabineteDigital\Controllers\OrgaoController;
 use GabineteDigital\Controllers\OrgaoTipoController;
 
 $orgaoTipoController = new OrgaoTipoController;
 $orgaoController = new OrgaoController;
-$clienteController = new ClienteController;
 
-$buscaCliente = $clienteController->buscarCliente('cliente_id', $_SESSION['usuario_cliente']);
-$estadoDep = ($buscaCliente['status'] == 'success') ? $buscaCliente['dados'][0]['cliente_deputado_estado'] : '';
+$estadoDep = $estadoDep = $_SESSION['cliente_deputado_estado'];
 
 $itens = isset($_GET['itens']) ? (int) $_GET['itens'] : 10;
 $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
