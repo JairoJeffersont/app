@@ -24,25 +24,21 @@ $rotas = [
     'pessoas' => './src/Views/pessoas/pessoas.php',
     'aniversariantes' => './src/Views/pessoas/aniversariantes.php',
     'ficha-pessoa' => './src/Views/pessoas/ficha-pessoa.php',
+    'imprimir-ficha-pessoa' => './src/Views/pessoas/imprimir-ficha-pessoa.php',
     'estatisticas' => './src/Views/pessoas/estatisticas.php',
     'bairros' => './src/Views/pessoas/bairros.php',
     'pessoa' => './src/Views/pessoas/editar-pessoa.php',
     'oficios' => './src/Views/oficios/oficios.php',
     'oficio' => './src/Views/oficios/editar-oficio.php',
     'status-postagens' => './src/Views/postagens/status-postagens.php',
-    'status-postagem' => './src/Views/postagens/editar-status-postagens.php',    
+    'status-postagem' => './src/Views/postagens/editar-status-postagens.php',
     'postagens' => './src/Views/postagens/postagens.php',
-    'postagem' => './src/Views/postagens/editar-postagem.php',    
-    'tipos-clipping' => './src/Views/clipping/tipos-clipping.php',    
-    'tipo-clipping' => './src/Views/clipping/editar-tipos-clipping.php',        
+    'postagem' => './src/Views/postagens/editar-postagem.php',
+    'tipos-clipping' => './src/Views/clipping/tipos-clipping.php',
+    'tipo-clipping' => './src/Views/clipping/editar-tipos-clipping.php',
     'clippings' => './src/Views/clipping/clippings.php',
     'clipping' => './src/Views/clipping/editar-clipping.php',
-    'estatisticas-clipping' => './src/Views/clipping/estatisticas.php',
-
-
-
-
-
+    'estatisticas-clipping' => './src/Views/clipping/estatisticas.php'
 ];
 
 if (array_key_exists($pagina, $rotas)) {

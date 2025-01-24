@@ -5,16 +5,9 @@ require './src/Middleware/VerificaLogado.php';
 
 require_once './vendor/autoload.php';
 
-use GabineteDigital\Controllers\OrgaoController;
-use GabineteDigital\Controllers\PessoaTipoController;
-use GabineteDigital\Controllers\PessoaProfissaoController;
 use GabineteDigital\Controllers\PessoaController;
 
-
-$orgaoController = new OrgaoController();
 $pessoaController = new PessoaController();
-$pessoaTipoController = new PessoaTipoController();
-$pessoaProfissaoController = new PessoaProfissaoController();
 
 $pessoaGet = $_GET['id'];
 
@@ -147,5 +140,9 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
 <script>
     $('#btn_editar').click(function() {
         window.location.href = "?secao=pessoa&id=<?php echo $pessoaGet; ?>";
+    });
+
+    $('#btn_imprimir').click(function() {
+        window.open("?secao=imprimir-ficha-pessoa&pessoa&id=<?php echo $pessoaGet; ?>", '_blank');
     });
 </script>
