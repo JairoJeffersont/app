@@ -23,8 +23,6 @@ $autor = isset($_GET['autor']) ? htmlspecialchars($_GET['autor']) : $_SESSION['c
 
 $busca = $proposicaoController->listarProposicoes($itens, $pagina, $tipo, $autor, $ordem, $ordenarPor, $ano, $termo, $arquivada);
 
-
-
 ?>
 
 <div class="d-flex" id="wrapper">
@@ -41,8 +39,10 @@ $busca = $proposicaoController->listarProposicoes($itens, $pagina, $tipo, $autor
             <div class="card mb-2 card-description ">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-bill-fill"></i> Proposições do gabinete</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-0">Proposições de autoria do deputado.</p>
+                    <p class="card-text mb-2">Proposições de autoria do deputado</p>
+                    <p class="card-text mb-0">As proposições da Câmara e do Senado são obtidas automaticamente por meio dos sistemas de informações das respectivas casas legislativas. Já as proposições de deputados estaduais e vereadores devem ser registradas manualmente.</p>
                 </div>
+
             </div>
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">

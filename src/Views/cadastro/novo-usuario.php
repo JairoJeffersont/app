@@ -47,7 +47,7 @@ if ($buscaCliente['status'] == 'not_found') {
                         'usuario_ativo' => 1,
                         'usuario_nivel' => 1,
                         'usuario_senha' => htmlspecialchars($_POST['usuario_senha'], ENT_QUOTES, 'UTF-8'),
-                        'usuario_cliente' => $buscaCliente['dados'][0]['cliente_id']
+                        'usuario_cliente' => $token
                     ];
 
                     $result = $usuarioController->criarUsuario($usuario);
