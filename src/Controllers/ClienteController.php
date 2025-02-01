@@ -58,7 +58,7 @@ class ClienteController {
      * @return array Retorna um array com o status da operação e mensagem.
      */
     public function criarCliente($dados) {
-        $camposObrigatorios = ['cliente_nome', 'cliente_email', 'cliente_telefone', 'cliente_ativo', 'cliente_assinaturas', 'cliente_deputado_id', 'cliente_deputado_nome', 'cliente_deputado_estado', 'cliente_cpf'];
+        $camposObrigatorios = ['cliente_nome', 'cliente_email', 'cliente_telefone', 'cliente_ativo', 'cliente_assinaturas',  'cliente_deputado_nome', 'cliente_deputado_estado', 'cliente_cpf', 'cliente_deputado_tipo'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
@@ -98,7 +98,7 @@ class ClienteController {
      * @return array Retorna um array com o status da operação e mensagem.
      */
     public function atualizarCliente($cliente_id, $dados) {
-        $camposObrigatorios = ['cliente_nome', 'cliente_email', 'cliente_telefone', 'cliente_ativo', 'cliente_assinaturas', 'cliente_deputado', 'cliente_deputado_id', 'cliente_deputado_nome'];
+        $camposObrigatorios = ['cliente_nome', 'cliente_email', 'cliente_telefone', 'cliente_ativo', 'cliente_assinaturas', 'cliente_deputado',  'cliente_deputado_nome', 'cliente_deputado_tipo'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {

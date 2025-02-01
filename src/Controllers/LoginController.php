@@ -89,6 +89,7 @@ class LoginController
                 'cliente_deputado_id' => 1,
                 'cliente_deputado_nome' => 'DEPUTADO_SISTEMA',
                 'cliente_deputado_estado' => 'BR',
+                'cliente_deputado_tipo' => 'Deputado Federal',
                 'cliente_assinaturas' => 1,
             ];
 
@@ -138,6 +139,7 @@ class LoginController
                     'cliente_deputado_nome' => $busca[0]['cliente_deputado_nome'],
                     'cliente_deputado_estado' => $busca[0]['cliente_deputado_estado'],
                     'cliente_assinaturas' => $busca[0]['cliente_assinaturas'],
+                    'cliente_deputado_tipo' => $busca[0]['cliente_deputado_tipo']
                 ];
 
                 $userInfo = $this->logger->get_user_info();

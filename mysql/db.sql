@@ -8,16 +8,18 @@ CREATE TABLE cliente (
     cliente_cep varchar(8) DEFAULT NULL,
     cliente_cpf varchar(14) NOT NULL UNIQUE,
     cliente_assinaturas int NOT NULL,
-    cliente_deputado_id int NOT NULL UNIQUE,
+    cliente_deputado_id varchar(36) NOT NULL DEFAULT (UUID()) UNIQUE,
     cliente_deputado_nome varchar(255) NOT NULL,
     cliente_deputado_estado varchar(2) NOT NULL,
+    cliente_deputado_tipo varchar(255) NOT NULL,
     cliente_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     cliente_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (cliente_id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-INSERT INTO cliente (cliente_id, cliente_nome, cliente_email, cliente_telefone, cliente_ativo, cliente_endereco, cliente_cep, cliente_cpf, cliente_assinaturas, cliente_deputado_id, cliente_deputado_nome, cliente_deputado_estado) 
-VALUES ('1', 'CLIENTE SISTEMA', 'email@email.com', '000000', 1, 'Sem endereço', '00000000', '00000000000', 2, 0, 'deputado', 'DF');
+
+INSERT INTO cliente (cliente_id, cliente_nome, cliente_email, cliente_telefone, cliente_ativo, cliente_endereco, cliente_cep, cliente_cpf, cliente_assinaturas, cliente_deputado_id, cliente_deputado_nome, cliente_deputado_estado, cliente_deputado_tipo) 
+VALUES ('1', 'CLIENTE SISTEMA', 'email@email.com', '000000', 1, 'Sem endereço', '00000000', '00000000000', 2, 0, 'deputado', 'DF', 'Deputado Federal');
 
 CREATE TABLE usuario (
     usuario_id varchar(36) NOT NULL DEFAULT (UUID()),
