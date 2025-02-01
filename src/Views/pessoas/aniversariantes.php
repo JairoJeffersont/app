@@ -6,13 +6,16 @@ require './src/Middleware/VerificaLogado.php';
 
 require_once './vendor/autoload.php';
 
-
 use GabineteDigital\Controllers\PessoaController;
-
 
 $pessoaController = new PessoaController();
 
 $mes = $_GET['mes'] ?? date('m');
+
+
+$estadoDep = $_SESSION['cliente_deputado_estado'];
+
+$estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_SESSION['cliente_deputado_estado'] : null;
 
 ?>
 
@@ -70,6 +73,12 @@ $mes = $_GET['mes'] ?? date('m');
                                         ?>
                                     </select>
                                 </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="form-select form-select-sm" name="estado" required>
+                                        <option value="null" <?php echo $estado === null ? 'selected' : ''; ?>>Todos os estados</option>
+                                        <option value="<?php echo $estadoDep ?>" <?php echo $estado === $estadoDep ? 'selected' : ''; ?>>Somente <?php echo $estadoDep ?></option>
+                                    </select>
+                                </div>
 
                                 <div class="col-md-1 col-2">
                                     <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
@@ -84,7 +93,7 @@ $mes = $_GET['mes'] ?? date('m');
                     <div class="list-group">
 
                         <?php
-                        $buscaMes = $pessoaController->buscarAniversarianteMes($mes, $_SESSION['usuario_cliente']);
+                        $buscaMes = $pessoaController->buscarAniversarianteMes($mes, $estado, $_SESSION['usuario_cliente']);
                         if ($buscaMes['status'] == 'success') {
                             $grupos = [];
                             foreach ($buscaMes['dados'] as $aniversariante) {

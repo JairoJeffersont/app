@@ -13,8 +13,7 @@ use PDO;
  *
  * @package GabineteDigital\Models
  */
-class PessoaModel
-{
+class PessoaModel {
 
     /** @var PDO Conexão com o banco de dados */
     private $conn;
@@ -24,8 +23,7 @@ class PessoaModel
      *
      * Inicializa a conexão com o banco de dados.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $db = new Database();
         $this->conn = $db->getConnection();
     }
@@ -36,8 +34,7 @@ class PessoaModel
      * @param array $dados Dados da pessoa.
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
-    public function criar($dados)
-    {
+    public function criar($dados) {
         $query = "INSERT INTO pessoas (pessoa_nome, pessoa_aniversario, pessoa_email, pessoa_telefone, pessoa_endereco, pessoa_bairro, pessoa_municipio, pessoa_estado, pessoa_cep, pessoa_sexo, pessoa_facebook, pessoa_instagram, pessoa_x, pessoa_informacoes, pessoa_profissao, pessoa_cargo, pessoa_tipo, pessoa_orgao, pessoa_foto, pessoa_criada_por, pessoa_cliente)
                   VALUES (:pessoa_nome, :pessoa_aniversario, :pessoa_email, :pessoa_telefone, :pessoa_endereco, :pessoa_bairro, :pessoa_municipio, :pessoa_estado, :pessoa_cep, :pessoa_sexo, :pessoa_facebook, :pessoa_instagram, :pessoa_x, :pessoa_informacoes, :pessoa_profissao, :pessoa_cargo, :pessoa_tipo, :pessoa_orgao, :pessoa_foto, :pessoa_criada_por, :pessoa_cliente)";
 
@@ -75,8 +72,7 @@ class PessoaModel
      * @param array $dados Novos dados da pessoa.
      * @return bool Retorna `true` se a atualização foi bem-sucedida, `false` caso contrário.
      */
-    public function atualizar($pessoa_id, $dados)
-    {
+    public function atualizar($pessoa_id, $dados) {
         $query = "UPDATE pessoas SET pessoa_nome = :pessoa_nome, pessoa_aniversario = :pessoa_aniversario, pessoa_email = :pessoa_email, pessoa_telefone = :pessoa_telefone, pessoa_endereco = :pessoa_endereco, pessoa_bairro = :pessoa_bairro, pessoa_municipio = :pessoa_municipio, pessoa_estado = :pessoa_estado, pessoa_cep = :pessoa_cep, pessoa_sexo = :pessoa_sexo, pessoa_facebook = :pessoa_facebook, pessoa_instagram = :pessoa_instagram, pessoa_x = :pessoa_x, pessoa_informacoes = :pessoa_informacoes, pessoa_profissao = :pessoa_profissao, pessoa_cargo = :pessoa_cargo, pessoa_tipo = :pessoa_tipo, pessoa_orgao = :pessoa_orgao, pessoa_foto = :pessoa_foto
                   WHERE pessoa_id = :pessoa_id";
 
@@ -118,8 +114,7 @@ class PessoaModel
      * @param int $cliente ID do cliente associado à pessoa.
      * @return array Retorna um array contendo os resultados da consulta e o total de itens encontrados.
      */
-    public function listar($itens, $pagina, $ordem, $ordenarPor, $termo, $estado, $cliente)
-    {
+    public function listar($itens, $pagina, $ordem, $ordenarPor, $termo, $estado, $cliente) {
         $pagina = (int)$pagina;
         $itens = (int)$itens;
         $offset = ($pagina - 1) * $itens;
@@ -177,8 +172,7 @@ class PessoaModel
      * @param mixed $valor Valor correspondente à coluna.
      * @return array Retorna um array associativo com os dados encontrados.
      */
-    public function buscar($coluna, $valor)
-    {
+    public function buscar($coluna, $valor) {
         $query = "SELECT * FROM view_pessoas WHERE $coluna = :valor ORDER BY pessoa_nome ASC";
 
         $stmt = $this->conn->prepare($query);
@@ -194,8 +188,7 @@ class PessoaModel
      * @param string $pessoa_id ID da pessoa a ser deletada.
      * @return bool Retorna `true` se a exclusão foi bem-sucedida, `false` caso contrário.
      */
-    public function apagar($pessoa_id)
-    {
+    public function apagar($pessoa_id) {
         $query = "DELETE FROM pessoas WHERE pessoa_id = :pessoa_id";
 
         $stmt = $this->conn->prepare($query);
@@ -211,8 +204,7 @@ class PessoaModel
      * @param int $cliente ID do cliente associado à pessoa.
      * @return array Retorna um array contendo o sexo das pessoas e a contagem de cada sexo.
      */
-    public function buscarSexo($estado, $cliente)
-    {
+    public function buscarSexo($estado, $cliente) {
         if ($estado != null) {
             $query = "SELECT pessoa_sexo, COUNT(*) as contagem, (SELECT COUNT(*) FROM pessoas WHERE pessoa_cliente = :cliente AND pessoa_estado = :estado) AS total
             FROM view_pessoas
@@ -244,8 +236,7 @@ class PessoaModel
      * @param int $cliente ID do cliente associado à pessoa.
      * @return array Retorna um array contendo a profissão das pessoas e a contagem de cada profissão.
      */
-    public function buscarProfissao($estado, $cliente)
-    {
+    public function buscarProfissao($estado, $cliente) {
         if ($estado != null) {
             $query = "SELECT pessoa_profissao, pessoas_profissoes_nome, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_pessoas WHERE pessoa_cliente = :cliente AND pessoa_estado = :estado) AS total
             FROM view_pessoas
@@ -277,8 +268,7 @@ class PessoaModel
      * @param int $cliente ID do cliente associado à pessoa.
      * @return array Retorna um array contendo o município das pessoas e a contagem de cada município.
      */
-    public function buscarMunicipio($estado, $cliente)
-    {
+    public function buscarMunicipio($estado, $cliente) {
         if ($estado != null) {
             $query = "SELECT pessoa_municipio, pessoa_estado, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_pessoas WHERE pessoa_cliente = :cliente AND pessoa_estado = :estado) AS total
             FROM view_pessoas
@@ -310,8 +300,7 @@ class PessoaModel
      * @param int $cliente ID do cliente associado à pessoa.
      * @return array Retorna um array contendo o bairro das pessoas e a contagem de cada bairro.
      */
-    public function buscarBairro($municipio, $cliente)
-    {
+    public function buscarBairro($municipio, $cliente) {
         $query = "SELECT pessoa_bairro, COUNT(*) as contagem, (SELECT COUNT(*) FROM view_pessoas WHERE pessoa_cliente = :cliente AND pessoa_municipio = :municipio) AS total
         FROM view_pessoas
         WHERE pessoa_cliente = :cliente 
@@ -328,14 +317,24 @@ class PessoaModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarAniversarianteMes($mes, $cliente)
-    {
+    public function buscarAniversarianteMes($mes, $estado, $cliente) {
 
-        $query = "SELECT * FROM view_pessoas WHERE MONTH( STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' ) ) = :mes AND pessoa_cliente = :cliente  ORDER BY DAY(STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' )) ASC;";
+
+        if (empty($estado)) {
+            $query = "SELECT * FROM view_pessoas WHERE MONTH( STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' ) ) = :mes AND pessoa_cliente = :cliente  ORDER BY DAY(STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' )) ASC;";
+        } else {
+            $query = "SELECT * FROM view_pessoas WHERE MONTH( STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' ) ) = :mes AND pessoa_cliente = :cliente AND pessoa_estado = :estado ORDER BY DAY(STR_TO_DATE( CONCAT(pessoa_aniversario, '/2024'), '%d/%m/%Y' )) ASC;";
+        }
+
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
         $stmt->bindParam(':mes', $mes, PDO::PARAM_INT);
+
+        if (!empty($estado)) {
+            $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
+        }
+        
 
         $stmt->execute();
 

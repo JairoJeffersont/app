@@ -67,7 +67,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_SESSION['cl
                 <div class="card-header bg-primary text-white px-2 py-1">Gênero</div>
                 <div class="card-body p-2">
                     <div class="table-responsive mb-0">
-                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                        <table class="table table-hover table-bordered table-striped mb-0">
                             <thead>
                                 <tr>
                                     <th scope="col">Gênero</th>
@@ -107,7 +107,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_SESSION['cl
                 <div class="card-header bg-secondary text-white px-2 py-1">Profissões</div>
                 <div class="card-body p-2">
                     <div class="table-responsive mb-0">
-                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                        <table class="table table-hover table-bordered table-striped mb-0">
                             <thead>
                                 <tr>
                                     <th scope="col">Profissão</th>
@@ -148,7 +148,7 @@ $estado = (isset($_GET['estado']) && $_GET['estado'] !== 'null') ? $_SESSION['cl
                 <div class="card-header bg-success text-white px-2 py-1">Municípios</div>
                 <div class="card-body p-2">
                     <div class="table-responsive mb-0">
-                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                        <table class="table table-hover table-bordered table-striped mb-0">
                             <thead>
                                 <tr>
                                     <th scope="col">Muncípio</th>

@@ -320,10 +320,10 @@ class PessoaController
         }
     }
 
-    public function buscarAniversarianteMes($mes, $cliente)
+    public function buscarAniversarianteMes($mes, $estado, $cliente)
     {
         try {
-            $pessoas = $this->pessoaModel->buscarAniversarianteMes($mes, $cliente);
+            $pessoas = $this->pessoaModel->buscarAniversarianteMes($mes, $estado, $cliente);
             if ($pessoas) {
                 return ['status' => 'success', 'dados' => $pessoas];
             } else {
