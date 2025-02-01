@@ -1,3 +1,4 @@
+--tabelqs--
 CREATE TABLE cliente (
     cliente_id varchar(36) NOT NULL DEFAULT (UUID()),    
     cliente_nome varchar(255) NOT NULL,
