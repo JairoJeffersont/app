@@ -1,6 +1,5 @@
 <?php
 
-
 require_once './vendor/autoload.php';
 
 use GabineteDigital\Controllers\ClienteController;
@@ -26,11 +25,6 @@ if ($buscaCliente['status'] == 'not_found') {
         <h6 class="host mb-3">Cadastro de usuário | Todos os campos são obrigatórios</h6>
 
         <?php
-
-        if ($buscaCliente['status'] == 'not_found') {
-            echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert rounded-5" data-timeout="0" role="alert">Cliente não encontrado.</div>';
-        }
-
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_salvar'])) {
             if ($_POST['usuario_senha'] !== $_POST['usuario_senha2']) {
