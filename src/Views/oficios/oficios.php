@@ -31,8 +31,7 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-archive"></i> Arquivar ofício</div>
                 <div class="card-body p-2">
                     <p class="card-text mb-2">Seção para arquivamento de ofícios.
-                    <p class="card-text mb-2">Todos os campos são <b>obrigatórios</b></p>
-                    <p class="card-text mb-0">O arquivo deve ser em <b>PDF</b> e ter até <b>5mb</b></p>
+                    <p class="card-text mb-0">Todos os campos são <b>obrigatórios</b>. O arquivo deve ser em <b>PDF</b> e ter até <b>5mb</b></p>
                 </div>
             </div>
             <div class="card shadow-sm mb-2 ">
