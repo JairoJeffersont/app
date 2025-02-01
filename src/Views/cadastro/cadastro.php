@@ -78,8 +78,6 @@ $clienteController = new ClienteController();
                     <option value="Vereador">Vereador(a)</option>
                 </select>
             </div>
-           
-
             <div class="col-md-6 col-12">
                 <select class="form-select form-select-sm form_dep" name="cliente_deputado_estado" required>
                     <option selected>Escolha o estado</option>
