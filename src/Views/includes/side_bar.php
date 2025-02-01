@@ -17,7 +17,5 @@
         <a class="list-group-item list-group-item-action list-group-item-light px-4" href="?secao=postagens"><i class="bi bi-instagram"></i> Postagens</a>
         <a class="list-group-item list-group-item-action list-group-item-light px-4" href="?secao=clippings"><i class="bi bi-newspaper"></i> Clipping</a>
         <a class="list-group-item list-group-item-action list-group-item-light px-4" href="?secao=estatisticas-clipping"><i class="bi bi-arrow-return-right"></i> Estatísticas</a>
-
-
     </div>
 </div>

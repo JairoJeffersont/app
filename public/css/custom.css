@@ -10,6 +10,7 @@ body {
     background-image: url('../img/main_background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: rgb(119, 119, 232);
 }
 
 

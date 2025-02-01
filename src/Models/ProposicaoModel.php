@@ -33,7 +33,6 @@ class ProposicaoModel {
         $stmt->bindValue(':ano', $ano, PDO::PARAM_INT);
         $stmt->bindValue(':arquivada', $arquivada, PDO::PARAM_INT);
 
-
         if (!empty($termo)) {
             $stmt->bindValue(':termo', "%$termo%", PDO::PARAM_STR);
         }
