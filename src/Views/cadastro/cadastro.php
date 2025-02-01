@@ -67,9 +67,9 @@ $clienteController = new ClienteController();
             <div class="col-md-6 col-6">
                 <input type="text" class="form-control form-control-sm" name="cliente_assinaturas" placeholder="Licenças" data-mask="00">
             </div>
-            <div class="col-md-12 col-12">
+            <div class="col-md-6 col-12">
                 <select class="form-select form-select-sm form_dep" name="cliente_deputado_tipo" required>
-                    <option selected>Escolha o tipo do Gabinete</option>
+                    <option selected>Tipo do Gabinete</option>
                     <option value="Deputado Estadual">Deputado(a) Estadual</option>
                     <option value="Deputado Federal">Deputado(a) Federal</option>
                     <option value="Governador">Governador(a)</option>
@@ -78,11 +78,9 @@ $clienteController = new ClienteController();
                     <option value="Vereador">Vereador(a)</option>
                 </select>
             </div>
-            <div class="col-md-12 col-12">
-                <input type="text" class="form-control form-control-sm" name="cliente_deputado_nome" placeholder="Nome político" required>
-            </div>
+           
 
-            <div class="col-md-12 col-12">
+            <div class="col-md-6 col-12">
                 <select class="form-select form-select-sm form_dep" name="cliente_deputado_estado" required>
                     <option selected>Escolha o estado</option>
                     <option value="AC">Acre</option>
@@ -113,6 +111,9 @@ $clienteController = new ClienteController();
                     <option value="SP">São Paulo</option>
                     <option value="TO">Tocantins</option>
                 </select>
+            </div>
+            <div class="col-md-12 col-12">
+                <input type="text" class="form-control form-control-sm" name="cliente_deputado_nome" placeholder="Nome da urna" required>
             </div>
 
             <div class="d-flex justify-content-between align-items-center">
