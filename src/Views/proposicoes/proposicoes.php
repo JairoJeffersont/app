@@ -106,7 +106,7 @@ $busca = $proposicaoController->listarProposicoes($itens, $pagina, $tipo, $autor
                                     foreach ($buscaProposicoes['dados'] as $proposicao) {
                                         echo '<tr>';
                                         echo '<td style="white-space: nowrap; justify-content: center; align-items: center;"><a href="?secao=nota&proposicao=' . $proposicao['proposicao_id'] . '">' . ($proposicao['proposicao_aprovada'] ? '<i class="bi bi-check-circle-fill"></i> ' . $proposicao['proposicao_titulo'] : $proposicao['proposicao_titulo']) . '</a></td>';
-                                        echo '<td style="justify-content: center; align-items: center;">sdsd</td>';
+                                        echo '<td style="justify-content: center; align-items: center;">' . $proposicao['proposicao_ementa'] . '</td>';
                                         echo '</tr>';
                                     }
                                 } else if ($buscaProposicoes['status'] == 'empty' || $buscaProposicoes['status'] == 'error') {
