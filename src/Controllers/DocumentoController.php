@@ -4,21 +4,21 @@ namespace GabineteDigital\Controllers;
 
 use GabineteDigital\Middleware\FileUploader;
 use GabineteDigital\Middleware\Logger;
-use GabineteDigital\Models\OficioModel;
+use GabineteDigital\Models\DocumentoModel;
 use PDOException;
 
 /**
- * Classe OficioController
+ * Classe documentoController
  *
  * Controla as operações relacionadas a ofícios, incluindo criação, atualização, listagem,
  * busca e exclusão de registros.
  */
-class OficioController
+class DocumentoController
 {
     /**
-     * @var OficioModel Instância do modelo OficioModel para interagir com os dados.
+     * @var documentoModel Instância do modelo documentoModel para interagir com os dados.
      */
-    private $oficioModel;
+    private $documentoModel;
 
     /**
      * @var Logger Instância do Logger para registrar erros.
@@ -36,16 +36,16 @@ class OficioController
     private $pasta_foto;
 
     /**
-     * Construtor do OficioController.
+     * Construtor do documentoController.
      *
      * Inicializa as instâncias necessárias para manipulação de ofícios.
      */
     public function __construct()
     {
-        $this->oficioModel = new OficioModel();
+        $this->documentoModel = new DocumentoModel();
         $this->logger = new Logger();
         $this->fileUploader = new FileUploader();
-        $this->pasta_foto = 'public/arquivos/oficios';
+        $this->pasta_foto = 'public/arquivos/documentos';
     }
 
     /**
@@ -54,9 +54,9 @@ class OficioController
      * @param array $dados Dados do ofício a serem inseridos.
      * @return array Resultado da operação.
      */
-    public function criarOficio($dados)
+    public function criarDocumento($dados)
     {
-        $camposObrigatorios = ['oficio_titulo', 'oficio_resumo', 'arquivo', 'oficio_ano', 'oficio_orgao', 'oficio_criado_por', 'oficio_cliente'];
+        $camposObrigatorios = ['documento_titulo', 'documento_resumo', 'arquivo', 'documento_ano', 'documento_orgao', 'documento_criado_por', 'documento_cliente'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
@@ -65,22 +65,22 @@ class OficioController
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['oficio_cliente'], $dados['arquivo'], ['pdf'], 5);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf'], 5);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
             }
 
-            $dados['oficio_arquivo'] = $uploadResult['file_path'];
+            $dados['documento_arquivo'] = $uploadResult['file_path'];
         }
 
         try {
-            $this->oficioModel->criar($dados);
+            $this->documentoModel->criar($dados);
             return ['status' => 'success', 'message' => 'Ofício criado com sucesso.'];
         } catch (PDOException $e) {
 
             if (!empty($dados['arquivo']['tmp_name'])) {
-                $this->fileUploader->deleteFile($dados['oficio_arquivo'] ?? null);
+                $this->fileUploader->deleteFile($dados['documento_arquivo'] ?? null);
             }
 
             if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
@@ -88,7 +88,7 @@ class OficioController
             }
 
             $erro_id = uniqid();
-            $this->logger->novoLog('oficio_log', $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('documento_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -96,13 +96,13 @@ class OficioController
     /**
      * Atualizar os dados de um ofício existente.
      *
-     * @param string $oficio_id ID do ofício a ser atualizado.
+     * @param string $documento_id ID do ofício a ser atualizado.
      * @param array $dados Dados atualizados do ofício.
      * @return array Resultado da operação.
      */
-    public function atualizarOficio($oficio_id, $dados)
+    public function atualizarDocumento($documento_id, $dados)
     {
-        $camposObrigatorios = ['oficio_titulo', 'oficio_resumo', 'arquivo', 'oficio_ano', 'oficio_orgao'];
+        $camposObrigatorios = ['documento_titulo', 'documento_resumo', 'arquivo', 'documento_ano', 'documento_orgao'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
@@ -110,34 +110,34 @@ class OficioController
             }
         }
 
-        $oficio = $this->buscarOficio('oficio_id', $oficio_id);
+        $documento = $this->buscardocumento('documento_id', $documento_id);
 
-        if ($oficio['status'] == 'not_found') {
-            return $oficio;
+        if ($documento['status'] == 'not_found') {
+            return $documento;
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['oficio_cliente'], $dados['arquivo'], ['pdf'], 5);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf'], 5);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
             }
 
-            if (!empty($oficio['dados'][0]['oficio_arquivo'])) {
-                $this->fileUploader->deleteFile($oficio['dados'][0]['oficio_arquivo']);
+            if (!empty($documento['dados'][0]['documento_arquivo'])) {
+                $this->fileUploader->deleteFile($documento['dados'][0]['documento_arquivo']);
             }
 
-            $dados['oficio_arquivo'] = $uploadResult['file_path'];
+            $dados['documento_arquivo'] = $uploadResult['file_path'];
         } else {
-            $dados['oficio_arquivo'] = $oficio['dados'][0]['oficio_arquivo'] ?? null;
+            $dados['documento_arquivo'] = $documento['dados'][0]['documento_arquivo'] ?? null;
         }
 
         try {
-            $this->oficioModel->atualizar($oficio_id, $dados);
+            $this->documentoModel->atualizar($documento_id, $dados);
             return ['status' => 'success', 'message' => 'Ofício atualizado com sucesso.'];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->novoLog('oficio_log', $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('documento_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -150,19 +150,19 @@ class OficioController
      * @param string $cliente Cliente relacionado aos ofícios.
      * @return array Resultado da operação.
      */
-    public function listarOficios($ano, $busca, $cliente)
+    public function listarDocumentos($ano, $busca, $cliente)
     {
         try {
-            $result = $this->oficioModel->listar($ano, $busca, $cliente);
+            $result = $this->documentoModel->listar($ano, $busca, $cliente);
 
             if (empty($result)) {
-                return ['status' => 'empty', 'message' => 'Nenhum ofício encontrado.'];
+                return ['status' => 'empty', 'message' => 'Nenhum documento encontrado.'];
             }
 
             return ['status' => 'success', 'dados' => $result];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->novoLog('oficio_error', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
+            $this->logger->novoLog('documento_error', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
             return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -174,18 +174,18 @@ class OficioController
      * @param mixed $valor Valor a ser buscado.
      * @return array Resultado da busca.
      */
-    public function buscarOficio($coluna, $valor)
+    public function buscarDocumento($coluna, $valor)
     {
         try {
-            $oficio = $this->oficioModel->buscar($coluna, $valor);
-            if ($oficio) {
-                return ['status' => 'success', 'dados' => $oficio];
+            $documento = $this->documentoModel->buscar($coluna, $valor);
+            if ($documento) {
+                return ['status' => 'success', 'dados' => $documento];
             } else {
-                return ['status' => 'not_found', 'message' => 'Ofício não encontrado.'];
+                return ['status' => 'not_found', 'message' => 'Documento não encontrado.'];
             }
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->novoLog('oficio_log', $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('documento_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
@@ -193,27 +193,27 @@ class OficioController
     /**
      * Apagar um ofício existente.
      *
-     * @param string $oficio_id ID do ofício a ser apagado.
+     * @param string $documento_id ID do ofício a ser apagado.
      * @return array Resultado da operação.
      */
-    public function apagarOficio($oficio_id)
+    public function apagarDocumento($documento_id)
     {
         try {
-            $oficio = $this->buscarOficio('oficio_id', $oficio_id);
+            $documento = $this->buscarDocumento('documento_id', $documento_id);
 
-            if ($oficio['status'] == 'not_found') {
-                return $oficio;
+            if ($documento['status'] == 'not_found') {
+                return $documento;
             }
 
-            if (isset($oficio['dados'][0]['oficio_arquivo'])) {
-                $this->fileUploader->deleteFile($oficio['dados'][0]['oficio_arquivo']);
+            if (isset($documento['dados'][0]['documento_arquivo'])) {
+                $this->fileUploader->deleteFile($documento['dados'][0]['documento_arquivo']);
             }
 
-            $this->oficioModel->apagar($oficio_id);
-            return ['status' => 'success', 'message' => 'Ofício apagado com sucesso.'];
+            $this->documentoModel->apagar($documento_id);
+            return ['status' => 'success', 'message' => 'Documento apagado com sucesso.'];
         } catch (PDOException $e) {
             $erro_id = uniqid();
-            $this->logger->novoLog('oficio_log', $e->getMessage() . ' | ' . $erro_id);
+            $this->logger->novoLog('documento_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }

@@ -218,22 +218,43 @@ CREATE TABLE pessoas (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 
-CREATE TABLE oficios(
-    oficio_id varchar(36) NOT NULL DEFAULT (UUID()),
-    oficio_titulo VARCHAR(255) NOT NULL UNIQUE,
-    oficio_resumo text,
-    oficio_arquivo text,
-    oficio_ano int,
-    oficio_orgao varchar(36) NOT NULL,
-    oficio_criado_por varchar(36) NOT NULL,
-    oficio_cliente varchar(36) NOT NULL,
-    oficio_criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    oficio_atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY(oficio_id),
-    CONSTRAINT fk_oficio_criado_por FOREIGN KEY (oficio_criado_por) REFERENCES usuario(usuario_id),
-    CONSTRAINT fk_oficio_orgao FOREIGN KEY (oficio_orgao) REFERENCES orgaos(orgao_id),
-    CONSTRAINT fk_oficio_cliente FOREIGN KEY (oficio_cliente) REFERENCES cliente(cliente_id)
+CREATE TABLE documentos_tipos (
+    documento_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    documento_tipo_nome varchar(255) NOT NULL UNIQUE,
+    documento_tipo_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+    documento_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    documento_tipo_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    documento_tipo_criado_por varchar(36) NOT NULL,
+    documento_tipo_cliente varchar(36) NOT NULL,
+    PRIMARY KEY (documento_tipo_id),
+    CONSTRAINT fk_documento_tipo_criado_por FOREIGN KEY (documento_tipo_criado_por) REFERENCES usuario (usuario_id),
+    CONSTRAINT fk_documento_tipo_cliente FOREIGN KEY (documento_tipo_cliente) REFERENCES cliente (cliente_id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+
+INSERT INTO documentos_tipos (documento_tipo_id, documento_tipo_nome, documento_tipo_descricao, documento_tipo_criado_por, documento_tipo_cliente) VALUES (1, 'Sem tipo definido', 'Sem tipo definido', 1, 1);
+
+
+
+CREATE TABLE documentos(
+    documento_id varchar(36) NOT NULL DEFAULT (UUID()),
+    documento_titulo VARCHAR(255) NOT NULL UNIQUE,
+    documento_resumo text,
+    documento_arquivo text,
+    documento_ano int,
+    documento_tipo varchar(36) NOT NULL,
+    documento_orgao varchar(36) NOT NULL,
+    documento_criado_por varchar(36) NOT NULL,
+    documento_cliente varchar(36) NOT NULL,
+    documento_criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    documento_atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY(documento_id),
+    CONSTRAINT fk_documento_criado_por FOREIGN KEY (documento_criado_por) REFERENCES usuario(usuario_id),
+    CONSTRAINT fk_documento_orgao FOREIGN KEY (documento_orgao) REFERENCES orgaos(orgao_id),
+    CONSTRAINT fk_documento_tipo FOREIGN KEY (documento_tipo) REFERENCES documentos_tipos(documento_tipo_id),
+    CONSTRAINT fk_documento_cliente FOREIGN KEY (documento_cliente) REFERENCES cliente(cliente_id)
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
 
 
 CREATE TABLE postagem_status(
@@ -347,7 +368,8 @@ CREATE VIEW view_pessoas_tipos AS SELECT pessoas_tipos.*, usuario.usuario_nome, 
 CREATE VIEW view_pessoas_profissoes AS SELECT pessoas_profissoes.*, usuario.usuario_nome, cliente.cliente_nome FROM pessoas_profissoes INNER JOIN usuario ON pessoas_profissoes.pessoas_profissoes_criado_por = usuario.usuario_id INNER JOIN cliente ON pessoas_profissoes.pessoas_profissoes_cliente = cliente.cliente_id; 
 CREATE VIEW view_orgaos AS SELECT orgaos.*, orgaos_tipos.orgao_tipo_nome, usuario.usuario_nome, cliente.cliente_nome FROM orgaos INNER JOIN orgaos_tipos ON orgaos.orgao_tipo = orgaos_tipos.orgao_tipo_id INNER JOIN usuario ON orgaos.orgao_criado_por = usuario.usuario_id INNER JOIN cliente ON orgaos.orgao_cliente = cliente_id;
 CREATE VIEW view_pessoas AS SELECT pessoas.*, usuario.usuario_nome, cliente.cliente_nome, pessoas_tipos.pessoa_tipo_nome, pessoas_profissoes.pessoas_profissoes_nome, orgaos.orgao_nome FROM pessoas INNER JOIN usuario ON pessoas.pessoa_criada_por = usuario.usuario_id INNER JOIN cliente ON pessoas.pessoa_cliente = cliente.cliente_id INNER JOIN pessoas_tipos ON pessoas.pessoa_tipo = pessoas_tipos.pessoa_tipo_id INNER JOIN pessoas_profissoes ON pessoas.pessoa_profissao = pessoas_profissoes.pessoas_profissoes_id INNER JOIN orgaos ON pessoas.pessoa_orgao = orgaos.orgao_id;
-CREATE VIEW view_oficios AS SELECT oficios.*, orgaos.orgao_nome, orgaos.orgao_id, usuario.usuario_nome FROM oficios INNER JOIN orgaos ON oficios.oficio_orgao = orgaos.orgao_id INNER JOIN usuario ON oficios.oficio_criado_por = usuario.usuario_id;
+CREATE VIEW view_documentos_tipos AS SELECT documentos_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM documentos_tipos INNER JOIN usuario ON documento_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON documentos_tipos.documento_tipo_cliente = cliente.cliente_id;
+CREATE VIEW view_documentos AS SELECT documentos.*, documentos_tipos.*, orgaos.orgao_nome, orgaos.orgao_id, usuario.usuario_nome FROM documentos INNER JOIN documentos_tipos ON documentos.documento_tipo = documentos_tipos.documento_tipo_id INNER JOIN orgaos ON documentos.documento_orgao = orgaos.orgao_id INNER JOIN usuario ON documentos.documento_criado_por = usuario.usuario_id;
 CREATE VIEW view_postagens_status AS SELECT postagem_status.*, usuario.usuario_nome, cliente.cliente_nome FROM postagem_status INNER JOIN usuario ON postagem_status.postagem_status_criado_por = usuario.usuario_id INNER JOIN cliente ON postagem_status.postagem_status_cliente = cliente.cliente_id ORDER BY postagem_status.postagem_status_nome ASC;
 CREATE VIEW view_postagens AS SELECT postagens.*, usuario.usuario_nome, postagem_status.postagem_status_id, postagem_status.postagem_status_nome, postagem_status.postagem_status_descricao, cliente.cliente_nome FROM postagens INNER JOIN usuario ON postagens.postagem_criada_por = usuario.usuario_id INNER JOIN postagem_status ON postagens.postagem_status = postagem_status.postagem_status_id INNER JOIN cliente ON postagens.postagem_cliente = cliente.cliente_id; 
 CREATE VIEW view_tipo_clipping AS SELECT clipping_tipos.*, usuario.usuario_nome FROM clipping_tipos INNER JOIN usuario ON clipping_tipos.clipping_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping_tipos.clipping_tipo_cliente = cliente.cliente_id;

@@ -28,8 +28,11 @@ $rotas = [
     'estatisticas' => './src/Views/pessoas/estatisticas.php',
     'bairros' => './src/Views/pessoas/bairros.php',
     'pessoa' => './src/Views/pessoas/editar-pessoa.php',
-    'oficios' => './src/Views/oficios/oficios.php',
-    'oficio' => './src/Views/oficios/editar-oficio.php',
+    'documentos' => './src/Views/documentos/documentos.php',
+    'documento' => './src/Views/documentos/editar-documento.php',
+    'tipos-documentos' => './src/Views/documentos/tipos-documentos.php',
+    'tipo-documento' => './src/Views/documentos/editar-tipo-documento.php',
+
     'status-postagens' => './src/Views/postagens/status-postagens.php',
     'status-postagem' => './src/Views/postagens/editar-status-postagens.php',
     'postagens' => './src/Views/postagens/postagens.php',

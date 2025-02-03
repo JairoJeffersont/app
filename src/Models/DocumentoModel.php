@@ -13,7 +13,7 @@ use PDO;
  *
  * @package GabineteDigital\Models
  */
-class OficioModel
+class DocumentoModel
 {
     /** @var PDO Conexão com o banco de dados */
     private $conn;
@@ -37,18 +37,19 @@ class OficioModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO oficios (oficio_titulo, oficio_resumo, oficio_arquivo, oficio_ano, oficio_orgao, oficio_criado_por, oficio_cliente)
-                  VALUES (:oficio_titulo, :oficio_resumo, :oficio_arquivo, :oficio_ano, :oficio_orgao, :oficio_criado_por, :oficio_cliente)";
+        $query = "INSERT INTO documentos (documento_titulo, documento_resumo, documento_arquivo, documento_ano, documento_tipo, documento_orgao, documento_criado_por, documento_cliente)
+                  VALUES (:documento_titulo, :documento_resumo, :documento_arquivo, :documento_ano, :documento_tipo, :documento_orgao, :documento_criado_por, :documento_cliente)";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':oficio_titulo', $dados['oficio_titulo'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_resumo', $dados['oficio_resumo'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_arquivo', $dados['oficio_arquivo'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_ano', $dados['oficio_ano'], PDO::PARAM_INT);
-        $stmt->bindParam(':oficio_orgao', $dados['oficio_orgao'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_criado_por', $dados['oficio_criado_por'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_cliente', $dados['oficio_cliente'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_titulo', $dados['documento_titulo'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_resumo', $dados['documento_resumo'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_arquivo', $dados['documento_arquivo'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_ano', $dados['documento_ano'], PDO::PARAM_INT);
+        $stmt->bindParam(':documento_tipo', $dados['documento_tipo'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_orgao', $dados['documento_orgao'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_criado_por', $dados['documento_criado_por'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_cliente', $dados['documento_cliente'], PDO::PARAM_STR);
 
         return $stmt->execute();
     }
@@ -56,28 +57,31 @@ class OficioModel
     /**
      * Método para atualizar as informações de um ofício.
      *
-     * @param string $oficio_id ID do ofício a ser atualizado.
+     * @param string $documento_id ID do ofício a ser atualizado.
      * @param array $dados Novos dados do ofício.
      * @return bool Retorna `true` se a atualização foi bem-sucedida, `false` caso contrário.
      */
-    public function atualizar($oficio_id, $dados)
+    public function atualizar($documento_id, $dados)
     {
-        $query = "UPDATE oficios 
-                  SET oficio_titulo = :oficio_titulo, 
-                      oficio_resumo = :oficio_resumo, 
-                      oficio_arquivo = :oficio_arquivo, 
-                      oficio_ano = :oficio_ano, 
-                      oficio_orgao = :oficio_orgao 
-                  WHERE oficio_id = :oficio_id";
+        $query = "UPDATE documentos 
+                  SET documento_titulo = :documento_titulo, 
+                      documento_resumo = :documento_resumo, 
+                      documento_arquivo = :documento_arquivo, 
+                      documento_ano = :documento_ano, 
+                      documento_tipo = :documento_tipo, 
+                      documento_orgao = :documento_orgao 
+                  WHERE documento_id = :documento_id";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':oficio_titulo', $dados['oficio_titulo'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_resumo', $dados['oficio_resumo'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_arquivo', $dados['oficio_arquivo'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_ano', $dados['oficio_ano'], PDO::PARAM_INT);
-        $stmt->bindParam(':oficio_orgao', $dados['oficio_orgao'], PDO::PARAM_STR);
-        $stmt->bindParam(':oficio_id', $oficio_id, PDO::PARAM_STR);
+        $stmt->bindParam(':documento_titulo', $dados['documento_titulo'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_resumo', $dados['documento_resumo'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_arquivo', $dados['documento_arquivo'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_ano', $dados['documento_ano'], PDO::PARAM_INT);
+        $stmt->bindParam(':documento_tipo', $dados['documento_tipo'], PDO::PARAM_STR);
+
+        $stmt->bindParam(':documento_orgao', $dados['documento_orgao'], PDO::PARAM_STR);
+        $stmt->bindParam(':documento_id', $documento_id, PDO::PARAM_STR);
 
         return $stmt->execute();
     }
@@ -94,13 +98,13 @@ class OficioModel
     {
         if ($busca === '') {
             // Busca apenas por ano
-            $query = 'SELECT * FROM view_oficios WHERE oficio_ano = :ano AND oficio_cliente = :cliente ORDER BY oficio_titulo DESC';
+            $query = 'SELECT * FROM view_documentos WHERE documento_ano = :ano AND documento_cliente = :cliente ORDER BY documento_titulo DESC';
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':ano', $ano, PDO::PARAM_STR);
             $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
         } else {
             // Busca por título ou resumo, ignorando o ano
-            $query = 'SELECT * FROM view_oficios WHERE oficio_titulo LIKE :busca OR oficio_resumo LIKE :busca AND oficio_cliente = :cliente ORDER BY oficio_titulo DESC';
+            $query = 'SELECT * FROM view_documentos WHERE documento_titulo LIKE :busca OR documento_resumo LIKE :busca AND documento_cliente = :cliente ORDER BY documento_titulo DESC';
             $stmt = $this->conn->prepare($query);
             $busca = '%' . $busca . '%';
             $stmt->bindValue(':busca', $busca, PDO::PARAM_STR);
@@ -123,7 +127,7 @@ class OficioModel
      */
     public function buscar($coluna, $valor)
     {
-        $query = "SELECT * FROM oficios WHERE $coluna = :valor";
+        $query = "SELECT * FROM view_documentos WHERE $coluna = :valor";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);
@@ -135,15 +139,15 @@ class OficioModel
     /**
      * Método para apagar um ofício pelo seu ID.
      *
-     * @param string $oficio_id ID do ofício a ser deletado.
+     * @param string $documento_id ID do ofício a ser deletado.
      * @return bool Retorna `true` se a exclusão foi bem-sucedida, `false` caso contrário.
      */
-    public function apagar($oficio_id)
+    public function apagar($documento_id)
     {
-        $query = "DELETE FROM oficios WHERE oficio_id = :oficio_id";
+        $query = "DELETE FROM documentos WHERE documento_id = :documento_id";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':oficio_id', $oficio_id, PDO::PARAM_STR);
+        $stmt->bindParam(':documento_id', $documento_id, PDO::PARAM_STR);
 
         return $stmt->execute();
     }

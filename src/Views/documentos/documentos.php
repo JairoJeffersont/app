@@ -4,16 +4,18 @@ require './src/Middleware/VerificaLogado.php';
 
 require_once './vendor/autoload.php';
 
-use GabineteDigital\Controllers\OficioController;
+use GabineteDigital\Controllers\documentoController;
+use GabineteDigital\Controllers\DocumentoTipoController;
 use GabineteDigital\Controllers\OrgaoController;
 
 $orgaoController = new OrgaoController();
-$oficioController = new OficioController();
+$documentoController = new DocumentoController();
+$tipoDocumento = new DocumentoTipoController();
 
 $ano_busca = (isset($_GET['busca_ano'])) ? $_GET['busca_ano'] : date('Y');
 $termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
 
-$busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario_cliente']);
+$busca = $documentoController->listarDocumentos($ano_busca, $termo, $_SESSION['usuario_cliente']);
 
 ?>
 
@@ -28,9 +30,9 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                 </div>
             </div>
             <div class="card mb-2 card-description">
-                <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-archive"></i> Arquivar ofício</div>
+                <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-archive"></i> Arquivar documento</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-2">Seção para arquivamento de ofícios.
+                    <p class="card-text mb-2">Seção para arquivamento de documentos.
                     <p class="card-text mb-0">Todos os campos são <b>obrigatórios</b>. O arquivo deve ser em <b>PDF</b> e ter até <b>5mb</b></p>
                 </div>
             </div>
@@ -43,6 +45,8 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                                     <li class="nav-item">
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
+                                            <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_tipo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo tipo</button>
+
                                         </a>
                                     </li>
                                 </ul>
@@ -56,16 +60,17 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                     <?php
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_salvar'])) {
                         $dados = [
-                            'oficio_titulo' => htmlspecialchars($_POST['oficio_titulo'], ENT_QUOTES, 'UTF-8') . '/' . htmlspecialchars($_POST['oficio_ano'], ENT_QUOTES, 'UTF-8'),
-                            'oficio_resumo' => htmlspecialchars($_POST['oficio_resumo'], ENT_QUOTES, 'UTF-8'),
+                            'documento_titulo' => htmlspecialchars($_POST['documento_titulo'], ENT_QUOTES, 'UTF-8'),
+                            'documento_resumo' => htmlspecialchars($_POST['documento_resumo'], ENT_QUOTES, 'UTF-8'),
                             'arquivo' =>  $_FILES['arquivo'],
-                            'oficio_ano' => htmlspecialchars($_POST['oficio_ano'], ENT_QUOTES, 'UTF-8'),
-                            'oficio_orgao' => htmlspecialchars($_POST['oficio_orgao'], ENT_QUOTES, 'UTF-8'),
-                            'oficio_criado_por' => $_SESSION['usuario_id'],
-                            'oficio_cliente' => $_SESSION['usuario_cliente']
+                            'documento_ano' => htmlspecialchars($_POST['documento_ano'], ENT_QUOTES, 'UTF-8'),
+                            'documento_tipo' => htmlspecialchars($_POST['documento_tipo'], ENT_QUOTES, 'UTF-8'),
+                            'documento_orgao' => htmlspecialchars($_POST['documento_orgao'], ENT_QUOTES, 'UTF-8'),
+                            'documento_criado_por' => $_SESSION['usuario_id'],
+                            'documento_cliente' => $_SESSION['usuario_cliente']
                         ];
 
-                        $result = $oficioController->criarOficio($dados);
+                        $result = $documentoController->criarDocumento($dados);
 
                         if ($result['status'] == 'success') {
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
@@ -78,15 +83,15 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                     ?>
 
                     <form class="row g-2 form_custom" id="form_novo" method="POST" enctype="multipart/form-data">
-                        <div class="col-md-4 col-12">
-                            <input type="text" class="form-control form-control-sm" name="oficio_titulo" placeholder="Titulo (Ex. OF 0000)" data-mask="OF 000" required>
+                        <div class="col-md-2 col-12">
+                            <input type="text" class="form-control form-control-sm" name="documento_titulo" placeholder="Titulo" required>
                         </div>
                         <div class="col-md-1 col-12">
-                            <input type="number" class="form-control form-control-sm" name="oficio_ano" data-mask=0000 value="<?php echo $ano_busca ?>">
+                            <input type="number" class="form-control form-control-sm" name="documento_ano" data-mask=0000 value="<?php echo $ano_busca ?>">
 
                         </div>
                         <div class="col-md-2 col-12">
-                            <select class="form-select form-select-sm" name="oficio_orgao" id="orgao" required>
+                            <select class="form-select form-select-sm" name="documento_orgao" id="orgao" required>
                                 <option value="1">Órgão não informado</option>
                                 <?php
                                 $orgaos = $orgaoController->listarOrgaos(1000, 1, 'asc', 'orgao_nome', null, null, $_SESSION['usuario_cliente']);
@@ -99,11 +104,28 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                                 <option value="+">Novo órgão + </option>
                             </select>
                         </div>
-                        <div class="col-md-5 col-12">
+                        <div class="col-md-2 col-12">
+                            <select class="form-select form-select-sm" name="documento_tipo" id="tipo" required>
+                                <?php
+                                $tipos = $tipoDocumento->listarDocumentosTipos($_SESSION['usuario_cliente']);
+                                if ($tipos['status'] == 'success') {
+                                    foreach ($tipos['dados'] as $tipo) {
+                                        if ($tipo['documento_tipo_id'] == 1) {
+                                            echo '<option value="' . $tipo['documento_tipo_id'] . '" selected>' . $tipo['documento_tipo_nome'] . '</option>';
+                                        } else {
+                                            echo '<option value="' . $tipo['documento_tipo_id'] . '">' . $tipo['documento_tipo_nome'] . '</option>';
+                                        }
+                                    }
+                                }
+                                ?>
+                                <option value="+">Novo tipo + </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-12">
                             <input type="file" class="form-control form-control-sm" name="arquivo" required>
                         </div>
                         <div class="col-md-12 col-12">
-                            <textarea class="form-control form-control-sm" name="oficio_resumo" rows="5" placeholder="Resumo do ofício"></textarea>
+                            <textarea class="form-control form-control-sm" name="documento_resumo" rows="5" placeholder="Resumo do documento"></textarea>
                         </div>
                         <div class="col-md-3 col-12">
                             <button type="submit" class="btn btn-success btn-sm" name="btn_salvar"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>
@@ -141,26 +163,28 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
                                     <th scope="col">Nome</th>
                                     <th scope="col">Resumo</th>
                                     <th scope="col">Órgão</th>
+                                    <th scope="col">Tipo</th>
                                     <th scope="col">Criado por - em</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario_cliente']);
+                                $busca = $documentoController->listarDocumentos($ano_busca, $termo, $_SESSION['usuario_cliente']);
 
                                 if ($busca['status'] == 'success') {
                                     foreach ($busca['dados'] as $oficio) {
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap;"><a href="?secao=oficio&id=' . $oficio['oficio_id'] . '">' . $oficio['oficio_titulo'] . '</a></td>';
-                                        echo '<td style="white-space: nowrap;">' . $oficio['oficio_resumo'] . '</td>';
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=documento&id=' . $oficio['documento_id'] . '">' . $oficio['documento_titulo'] . '</a></td>';
+                                        echo '<td style="white-space: nowrap;">' . $oficio['documento_resumo'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $oficio['orgao_nome'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $oficio['usuario_nome'] . ' - ' . date('d/m', strtotime($oficio['oficio_criado_em'])) . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $oficio['documento_tipo_nome'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $oficio['usuario_nome'] . ' - ' . date('d/m', strtotime($oficio['documento_criado_em'])) . '</td>';
                                         echo '</tr>';
                                     }
                                 } else if ($busca['status'] == 'empty') {
-                                    echo '<tr><td colspan="4">' . $busca['message'] . '</td></tr>';
+                                    echo '<tr><td colspan="5">' . $busca['message'] . '</td></tr>';
                                 } else if ($busca['status'] == 'error') {
-                                    echo '<tr><td colspan="4">Erro ao carregar os dados. ' . (isset($busca['error_id']) ? ' | Código do erro: ' . $busca['error_id'] : '') . '</td></tr>';
+                                    echo '<tr><td colspan="5">Erro ao carregar os dados. ' . (isset($busca['error_id']) ? ' | Código do erro: ' . $busca['error_id'] : '') . '</td></tr>';
                                 }
                                 ?>
                             </tbody>
@@ -185,6 +209,25 @@ $busca = $oficioController->listarOficios($ano_busca, $termo, $_SESSION['usuario
     $('#btn_novo_orgao').click(function() {
         if (window.confirm("Você realmente deseja inserir um novo órgão?")) {
             window.location.href = "?secao=orgaos";
+        } else {
+            return false;
+        }
+    });
+
+
+    $('#tipo').change(function() {
+        if ($('#tipo').val() == '+') {
+            if (window.confirm("Você realmente deseja inserir um novo tipo?")) {
+                window.location.href = "?secao=tipos-documentos";
+            } else {
+                $('#orgao').val(1000).change();
+            }
+        }
+    });
+
+    $('#btn_novo_tipo').click(function() {
+        if (window.confirm("Você realmente deseja inserir um novo tipo?")) {
+            window.location.href = "?secao=tipos-documentos";
         } else {
             return false;
         }
