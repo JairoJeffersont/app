@@ -16,5 +16,6 @@
     "minimum-stability": "stable",
     "require": {
         "phpmailer/phpmailer": "^6.9"
-    }
+    },
+    "description": "Projeto privado com uso de software livre sob a licença MIT."
 }
