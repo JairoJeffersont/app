@@ -65,7 +65,7 @@ class DocumentoController
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf'], 5);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf', 'docx', 'doc', 'xls', 'xlsx'], 15);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -117,7 +117,7 @@ class DocumentoController
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf'], 5);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf', 'docx', 'doc', 'xls', 'xlsx'], 15);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;

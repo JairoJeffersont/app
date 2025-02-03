@@ -33,7 +33,7 @@ $busca = $documentoController->listarDocumentos($ano_busca, $termo, $_SESSION['u
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-archive"></i> Arquivar documento</div>
                 <div class="card-body p-2">
                     <p class="card-text mb-2">Seção para arquivamento de documentos.
-                    <p class="card-text mb-0">Todos os campos são <b>obrigatórios</b>. O arquivo deve ser em <b>PDF</b> e ter até <b>5mb</b></p>
+                    <p class="card-text mb-0">Todos os campos são <b>obrigatórios</b>. O arquivo deve ser em <b>PDF, Word ou Excel</b> e ter até <b>15mb</b></p>
                 </div>
             </div>
             <div class="card shadow-sm mb-2 ">

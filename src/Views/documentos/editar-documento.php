@@ -19,7 +19,7 @@ $documentoGet = $_GET['id'];
 $buscaDocumento = $documentoController->buscarDocumento('documento_id', $documentoGet);
 
 if ($buscaDocumento['status'] == 'not_found' || is_integer($documentoGet) || $buscaDocumento['status'] == 'error') {
-    header('Location: ?secao=docuemntos');
+    header('Location: ?secao=documentos');
 }
 
 ?>
@@ -37,9 +37,9 @@ if ($buscaDocumento['status'] == 'not_found' || is_integer($documentoGet) || $bu
                 </div>
             </div>
             <div class="card mb-2 card-description">
-                <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-file-earmark-text"></i> documentos</div>
+                <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-file-earmark-text"></i> Editar documento</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-2">Nesta seção, é possível adicionar e arquivar documentos do sistema.</p>
+                    <p class="card-text mb-2">Nesta seção, é possível editar um documentos do sistema. O arquivo deve ser em <b>PDF, Word ou Excel</b> e ter até <b>15mb</b></p>
                     <p class="card-text mb-0">Todos os campos são obrigatórios</p>
                 </div>
             </div>
