@@ -39,7 +39,7 @@ $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
                                 <div class="col-md-1 col-3">
                                     <input type="hidden" name="secao" value="estatisticas-clipping" />
                                     <input type="text" class="form-control form-control-sm" name="ano" data-mask="0000" value="<?php echo $ano ?>">
-                                </div>                               
+                                </div>
                                 <div class="col-md-1 col-2">
                                     <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
                                 </div>
@@ -52,7 +52,7 @@ $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
                 <div class="card-header bg-primary text-white px-2 py-1">Ano</div>
                 <div class="card-body p-2">
                     <div class="table-responsive mb-0">
-                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                        <table class="table table-hover table-bordered table-striped mb-0">
                             <thead>
                                 <tr>
                                     <th scope="col">Ano</th>
@@ -94,7 +94,7 @@ $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
                 <div class="card-body p-2">
 
                     <div class="table-responsive mb-0">
-                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                        <table class="table table-hover table-bordered table-striped mb-0">
                             <thead>
                                 <tr>
                                     <th scope="col">Tipo</th>
@@ -136,7 +136,7 @@ $ano = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
                 <div class="card-body p-2">
 
                     <div class="table-responsive mb-0">
-                        <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                        <table class="table table-hover table-bordered table-striped mb-0">
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>

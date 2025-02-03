@@ -74,7 +74,7 @@ class ClienteController {
             $this->clienteModel->criar($dados);
             $buscaUltimo = $this->listarClientes();
             $clienteid = $buscaUltimo['dados'][0]['cliente_id'];
-            $this->emailSender->sendEmail($dados['cliente_email'], 'Gabinete Digital - Instruções para acesso', $this->configs['app']['base_url'].'?secao=novo-usuario&token='.$clienteid); 
+            $this->emailSender->sendEmail($dados['cliente_email'], 'Gabinete Digital - Instruções para acesso', $this->configs['app']['base_url'].'?secao=novo-usuario&token='.$clienteid, 'Instruções de acesso'); 
             return ['status' => 'success', 'message' => 'Cliente inserido com sucesso. Em breve você receberá um email com as instruções para acesso.'];
         } catch (PDOException $e) {
             if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
