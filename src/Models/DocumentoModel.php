@@ -13,8 +13,7 @@ use PDO;
  *
  * @package GabineteDigital\Models
  */
-class DocumentoModel
-{
+class DocumentoModel {
     /** @var PDO Conexão com o banco de dados */
     private $conn;
 
@@ -23,8 +22,7 @@ class DocumentoModel
      *
      * Inicializa a conexão com o banco de dados.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $db = new Database();
         $this->conn = $db->getConnection();
     }
@@ -35,8 +33,7 @@ class DocumentoModel
      * @param array $dados Dados do ofício.
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
-    public function criar($dados)
-    {
+    public function criar($dados) {
         $query = "INSERT INTO documentos (documento_titulo, documento_resumo, documento_arquivo, documento_ano, documento_tipo, documento_orgao, documento_criado_por, documento_cliente)
                   VALUES (:documento_titulo, :documento_resumo, :documento_arquivo, :documento_ano, :documento_tipo, :documento_orgao, :documento_criado_por, :documento_cliente)";
 
@@ -61,8 +58,7 @@ class DocumentoModel
      * @param array $dados Novos dados do ofício.
      * @return bool Retorna `true` se a atualização foi bem-sucedida, `false` caso contrário.
      */
-    public function atualizar($documento_id, $dados)
-    {
+    public function atualizar($documento_id, $dados) {
         $query = "UPDATE documentos 
                   SET documento_titulo = :documento_titulo, 
                       documento_resumo = :documento_resumo, 
@@ -94,22 +90,27 @@ class DocumentoModel
      * @return array Retorna um array contendo os resultados da consulta.
      */
 
-    public function listar($ano, $busca, $cliente)
-    {
-        if ($busca === '') {
-            // Busca apenas por ano
+    public function listar($ano, $tipo, $busca, $cliente) {
+
+
+        if (empty($busca) && empty($tipo)) {
             $query = 'SELECT * FROM view_documentos WHERE documento_ano = :ano AND documento_cliente = :cliente ORDER BY documento_titulo DESC';
             $stmt = $this->conn->prepare($query);
             $stmt->bindValue(':ano', $ano, PDO::PARAM_STR);
+
             $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
-        } else {
-            // Busca por título ou resumo, ignorando o ano
+        } else if (empty($busca) && !empty($tipo)) {
+            $query = 'SELECT * FROM view_documentos WHERE documento_ano = :ano AND documento_tipo = :tipo AND documento_cliente = :cliente ORDER BY documento_titulo DESC';
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':ano', $ano, PDO::PARAM_STR);
+            $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
+            $stmt->bindValue(':tipo', $tipo, PDO::PARAM_STR);
+        } else if (!empty($busca)) {
             $query = 'SELECT * FROM view_documentos WHERE documento_titulo LIKE :busca OR documento_resumo LIKE :busca AND documento_cliente = :cliente ORDER BY documento_titulo DESC';
             $stmt = $this->conn->prepare($query);
             $busca = '%' . $busca . '%';
             $stmt->bindValue(':busca', $busca, PDO::PARAM_STR);
             $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
-
         }
 
         $stmt->execute();
@@ -125,8 +126,7 @@ class DocumentoModel
      * @param mixed $valor Valor correspondente à coluna.
      * @return array Retorna um array associativo com os dados encontrados.
      */
-    public function buscar($coluna, $valor)
-    {
+    public function buscar($coluna, $valor) {
         $query = "SELECT * FROM view_documentos WHERE $coluna = :valor";
 
         $stmt = $this->conn->prepare($query);
@@ -142,8 +142,7 @@ class DocumentoModel
      * @param string $documento_id ID do ofício a ser deletado.
      * @return bool Retorna `true` se a exclusão foi bem-sucedida, `false` caso contrário.
      */
-    public function apagar($documento_id)
-    {
+    public function apagar($documento_id) {
         $query = "DELETE FROM documentos WHERE documento_id = :documento_id";
 
         $stmt = $this->conn->prepare($query);

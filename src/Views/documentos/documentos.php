@@ -14,8 +14,9 @@ $tipoDocumento = new DocumentoTipoController();
 
 $ano_busca = (isset($_GET['busca_ano'])) ? $_GET['busca_ano'] : date('Y');
 $termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
+$tipo_busca = (isset($_GET['tipo_busca'])) ? $_GET['tipo_busca'] : '';
 
-$busca = $documentoController->listarDocumentos($ano_busca, $termo, $_SESSION['usuario_cliente']);
+$busca = $documentoController->listarDocumentos($ano_busca, $tipo_busca, $termo, $_SESSION['usuario_cliente']);
 
 ?>
 
@@ -139,9 +140,26 @@ $busca = $documentoController->listarDocumentos($ano_busca, $termo, $_SESSION['u
                         <div class="card-body p-2">
                             <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
                                 <div class="col-md-1 col-3">
-                                    <input type="hidden" name="secao" value="oficios" />
+                                    <input type="hidden" name="secao" value="documentos" />
                                     <input type="number" class="form-control form-control-sm" name="busca_ano" data-mask=0000 value="<?php echo $ano_busca ?>">
-
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    <select class="form-select form-select-sm" name="tipo_busca" id="tipo">
+                                        <option value="">Todos os documentos</option>
+                                        <?php
+                                        $tipos = $tipoDocumento->listarDocumentosTipos($_SESSION['usuario_cliente']);
+                                        if ($tipos['status'] == 'success') {
+                                            foreach ($tipos['dados'] as $tipo) {
+                                                if ($tipo['documento_tipo_id'] == $tipo_busca) {
+                                                    echo '<option value="' . $tipo['documento_tipo_id'] . '" selected>' . $tipo['documento_tipo_nome'] . '</option>';
+                                                } else {
+                                                    echo '<option value="' . $tipo['documento_tipo_id'] . '">' . $tipo['documento_tipo_nome'] . '</option>';
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                        <option value="+">Novo tipo + </option>
+                                    </select>
                                 </div>
                                 <div class="col-md-3 col-7">
                                     <input type="text" class="form-control form-control-sm" name="termo" value="<?php echo $termo ?>" placeholder="Buscar...">
@@ -169,16 +187,16 @@ $busca = $documentoController->listarDocumentos($ano_busca, $termo, $_SESSION['u
                             </thead>
                             <tbody>
                                 <?php
-                                $busca = $documentoController->listarDocumentos($ano_busca, $termo, $_SESSION['usuario_cliente']);
+                                $busca = $documentoController->listarDocumentos($ano_busca, $tipo_busca, $termo, $_SESSION['usuario_cliente']);
 
                                 if ($busca['status'] == 'success') {
-                                    foreach ($busca['dados'] as $oficio) {
+                                    foreach ($busca['dados'] as $documento) {
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap;"><a href="?secao=documento&id=' . $oficio['documento_id'] . '">' . $oficio['documento_titulo'] . '</a></td>';
-                                        echo '<td style="white-space: nowrap;">' . $oficio['documento_resumo'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $oficio['orgao_nome'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $oficio['documento_tipo_nome'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $oficio['usuario_nome'] . ' - ' . date('d/m', strtotime($oficio['documento_criado_em'])) . '</td>';
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=documento&id=' . $documento['documento_id'] . '">' . $documento['documento_titulo'] . '</a></td>';
+                                        echo '<td style="white-space: nowrap;">' . $documento['documento_resumo'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $documento['orgao_nome'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $documento['documento_tipo_nome'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $documento['usuario_nome'] . ' - ' . date('d/m', strtotime($documento['documento_criado_em'])) . '</td>';
                                         echo '</tr>';
                                     }
                                 } else if ($busca['status'] == 'empty') {

@@ -13,8 +13,7 @@ use PDOException;
  * Controla as operações relacionadas a ofícios, incluindo criação, atualização, listagem,
  * busca e exclusão de registros.
  */
-class DocumentoController
-{
+class DocumentoController {
     /**
      * @var documentoModel Instância do modelo documentoModel para interagir com os dados.
      */
@@ -40,8 +39,7 @@ class DocumentoController
      *
      * Inicializa as instâncias necessárias para manipulação de ofícios.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->documentoModel = new DocumentoModel();
         $this->logger = new Logger();
         $this->fileUploader = new FileUploader();
@@ -54,8 +52,7 @@ class DocumentoController
      * @param array $dados Dados do ofício a serem inseridos.
      * @return array Resultado da operação.
      */
-    public function criarDocumento($dados)
-    {
+    public function criarDocumento($dados) {
         $camposObrigatorios = ['documento_titulo', 'documento_resumo', 'arquivo', 'documento_ano', 'documento_orgao', 'documento_criado_por', 'documento_cliente'];
 
         foreach ($camposObrigatorios as $campo) {
@@ -65,7 +62,7 @@ class DocumentoController
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf', 'docx', 'doc', 'xls', 'xlsx'], 15);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto . '/' . $dados['documento_cliente'], $dados['arquivo'], ['pdf', 'docx', 'doc', 'xls', 'xlsx'], 15);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -100,8 +97,7 @@ class DocumentoController
      * @param array $dados Dados atualizados do ofício.
      * @return array Resultado da operação.
      */
-    public function atualizarDocumento($documento_id, $dados)
-    {
+    public function atualizarDocumento($documento_id, $dados) {
         $camposObrigatorios = ['documento_titulo', 'documento_resumo', 'arquivo', 'documento_ano', 'documento_orgao'];
 
         foreach ($camposObrigatorios as $campo) {
@@ -117,7 +113,7 @@ class DocumentoController
         }
 
         if (!empty($dados['arquivo']['tmp_name'])) {
-            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto.'/'.$dados['documento_cliente'], $dados['arquivo'], ['pdf', 'docx', 'doc', 'xls', 'xlsx'], 15);
+            $uploadResult = $this->fileUploader->uploadFile($this->pasta_foto . '/' . $dados['documento_cliente'], $dados['arquivo'], ['pdf', 'docx', 'doc', 'xls', 'xlsx'], 15);
 
             if ($uploadResult['status'] !== 'success') {
                 return $uploadResult;
@@ -150,10 +146,9 @@ class DocumentoController
      * @param string $cliente Cliente relacionado aos ofícios.
      * @return array Resultado da operação.
      */
-    public function listarDocumentos($ano, $busca, $cliente)
-    {
+    public function listarDocumentos($ano, $tipo, $busca, $cliente) {
         try {
-            $result = $this->documentoModel->listar($ano, $busca, $cliente);
+            $result = $this->documentoModel->listar($ano, $tipo, $busca, $cliente);
 
             if (empty($result)) {
                 return ['status' => 'empty', 'message' => 'Nenhum documento encontrado.'];
@@ -174,8 +169,7 @@ class DocumentoController
      * @param mixed $valor Valor a ser buscado.
      * @return array Resultado da busca.
      */
-    public function buscarDocumento($coluna, $valor)
-    {
+    public function buscarDocumento($coluna, $valor) {
         try {
             $documento = $this->documentoModel->buscar($coluna, $valor);
             if ($documento) {
@@ -196,8 +190,7 @@ class DocumentoController
      * @param string $documento_id ID do ofício a ser apagado.
      * @return array Resultado da operação.
      */
-    public function apagarDocumento($documento_id)
-    {
+    public function apagarDocumento($documento_id) {
         try {
             $documento = $this->buscarDocumento('documento_id', $documento_id);
 
