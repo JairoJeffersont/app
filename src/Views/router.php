@@ -43,6 +43,7 @@ $rotas = [
     'clipping' => './src/Views/clipping/editar-clipping.php',
     'estatisticas-clipping' => './src/Views/clipping/estatisticas.php',
     //'proposicoes' => './src/Views/proposicoes/proposicoes.php',
+    'status-emendas' => './src/Views/emendas/status-emendas.php',
 ];
 
 if (array_key_exists($pagina, $rotas)) {

@@ -351,6 +351,21 @@ CREATE TABLE clipping (
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 
+CREATE TABLE emendas_status (
+    emendas_status_id varchar(36) NOT NULL DEFAULT (UUID()),
+    emendas_status_nome varchar(255) NOT NULL UNIQUE,
+    emendas_status_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+    emendas_status_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    emendas_status_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    emendas_status_criado_por varchar(36) NOT NULL,
+    emendas_status_cliente varchar(36) NOT NULL,
+    PRIMARY KEY (emendas_status_id),
+    CONSTRAINT fk_emendas_status_criado_por FOREIGN KEY (emendas_status_criado_por) REFERENCES usuario (usuario_id),
+    CONSTRAINT fk_emendas_status_cliente FOREIGN KEY (emendas_status_cliente) REFERENCES cliente (cliente_id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+
+
 CREATE TABLE proposicoes (
     proposicao_id INT NOT NULL,
     proposicao_numero INT NOT NULL,
@@ -394,3 +409,4 @@ CREATE VIEW view_postagens AS SELECT postagens.*, usuario.usuario_nome, postagem
 CREATE VIEW view_tipo_clipping AS SELECT clipping_tipos.*, usuario.usuario_nome FROM clipping_tipos INNER JOIN usuario ON clipping_tipos.clipping_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping_tipos.clipping_tipo_cliente = cliente.cliente_id;
 CREATE VIEW view_clipping AS SELECT clipping.*, usuario.usuario_nome, orgaos.orgao_nome, cliente.cliente_nome, clipping_tipos.clipping_tipo_nome FROM clipping INNER JOIN clipping_tipos ON clipping.clipping_tipo = clipping_tipos.clipping_tipo_id INNER JOIN orgaos ON clipping.clipping_orgao = orgaos.orgao_id INNER JOIN usuario ON clipping.clipping_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping.clipping_cliente = cliente.cliente_id;
 CREATE VIEW view_proposicoes AS SELECT proposicoes.*, proposicoes_autores.proposicao_autor_nome, proposicoes_autores.proposicao_autor_partido, proposicoes_autores.proposicao_autor_estado, proposicoes_autores.proposicao_autor_proponente, proposicoes_autores.proposicao_autor_assinatura FROM proposicoes INNER JOIN proposicoes_autores ON proposicoes.proposicao_id = proposicoes_autores.proposicao_id;
+CREATE VIEW view_emendas_status AS SELECT emendas_status.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_status INNER JOIN usuario ON emendas_status.emendas_status_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_status.emendas_status_cliente = cliente.cliente_id ORDER BY emendas_status.emendas_status_nome ASC;
