@@ -354,7 +354,7 @@ CREATE TABLE clipping (
 CREATE TABLE emendas_status (
     emendas_status_id varchar(36) NOT NULL DEFAULT (UUID()),
     emendas_status_nome varchar(255) NOT NULL UNIQUE,
-    emendas_status_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+    emendas_status_descricao TEXT NOT NULL,
     emendas_status_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     emendas_status_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     emendas_status_criado_por varchar(36) NOT NULL,
@@ -364,7 +364,18 @@ CREATE TABLE emendas_status (
     CONSTRAINT fk_emendas_status_cliente FOREIGN KEY (emendas_status_cliente) REFERENCES cliente (cliente_id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-
+INSERT INTO emendas_status (emendas_status_id, emendas_status_nome, emendas_status_descricao, emendas_status_criado_por, emendas_status_cliente)
+VALUES
+    (UUID(), 'Em Análise', 'A emenda foi recebida e está sendo analisada pelos responsáveis.', '1', '1'),
+    (UUID(), 'Aprovada', 'A emenda foi aprovada e aguarda os próximos trâmites.', '1', '1'),
+    (UUID(), 'Rejeitada', 'A emenda foi rejeitada por não atender aos critérios estabelecidos.', '1', '1'),
+    (UUID(), 'Em Execução', 'A emenda foi aprovada e está em fase de execução.', '1', '1'),
+    (UUID(), 'Concluída', 'A emenda foi totalmente executada e finalizada.', '1', '1'),
+    (UUID(), 'Pendente de Documentação', 'A emenda aguarda a entrega de documentos para seguir para análise.', '1', '1'),
+    (UUID(), 'Cancelada', 'A emenda foi cancelada por solicitação do proponente.', '1', '1'),
+    (UUID(), 'Aguardando Liberação', 'A emenda foi aprovada e está aguardando a liberação de recursos.', '1', '1'),
+    (UUID(), 'Revisão Necessária', 'A emenda precisa de ajustes antes de seguir para aprovação.', '1', '1'),
+    (UUID(), 'Suspensa', 'A execução da emenda foi temporariamente suspensa.', '1', '1');
 
 CREATE TABLE proposicoes (
     proposicao_id INT NOT NULL,

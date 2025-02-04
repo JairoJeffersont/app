@@ -17,6 +17,9 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?secao=status-postagens">Status das postagens</a>
                         <a class="dropdown-item" href="?secao=tipos-clipping">Tipos de clipping</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="?secao=status-emendas">Status de emenda</a>
+
                     </div>
                 </li>
                 <li class="nav-item dropdown">
