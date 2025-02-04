@@ -91,7 +91,7 @@ class EmendasStatusModel {
      * @return array Retorna um array associativo com os dados encontrados.
      */
     public function buscar($coluna, $valor) {
-        $query = "SELECT * FROM view_emendas_status WHERE $coluna = :valor OR emendas_status_cliente = 1";
+        $query = "SELECT * FROM emendas_status WHERE $coluna = :valor";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);

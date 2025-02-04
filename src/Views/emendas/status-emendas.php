@@ -79,7 +79,7 @@ $busca = $emendasStatusController->listarEmendasStatus($_SESSION['usuario_client
                                 if ($busca['status'] == 'success') {
                                     foreach ($busca['dados'] as $emendasStatus) {
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap;"><a href="?secao=status-emenda&id=' . $emendasStatus['emendas_status_id'] . '">' . $emendasStatus['emendas_status_nome'] . '</a></td>';
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=editar-status-emenda&id=' . $emendasStatus['emendas_status_id'] . '">' . $emendasStatus['emendas_status_nome'] . '</a></td>';
                                         echo '<td style="white-space: nowrap;">' . $emendasStatus['emendas_status_descricao'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $emendasStatus['usuario_nome'] . ' - ' . date('d/m', strtotime($emendasStatus['emendas_status_criado_em'])) . '</td>';
                                         echo '</tr>';

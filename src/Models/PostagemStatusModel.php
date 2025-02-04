@@ -99,7 +99,7 @@ class PostagemStatusModel
      */
     public function buscar($coluna, $valor)
     {
-        $query = "SELECT * FROM view_postagens_status  WHERE $coluna = :valor OR postagem_status_cliente = 1";
+        $query = "SELECT * FROM view_postagens_status  WHERE $coluna = :valor";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);
