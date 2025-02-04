@@ -5,7 +5,7 @@ require './src/Middleware/VerificaLogado.php';
 
 require_once './vendor/autoload.php';
 
-use GabineteDigital\Controllers\documentoController;
+use GabineteDigital\Controllers\DocumentoController;
 use GabineteDigital\Controllers\DocumentoTipoController;
 use GabineteDigital\Controllers\OrgaoController;
 
