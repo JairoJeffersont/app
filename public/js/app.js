@@ -5,6 +5,8 @@ $(document).ready(function () {
             $(this).delay(timeout).fadeOut();
         }
     });
+
+    $('#emenda_valor').mask('###.###.###,##', { reverse: true });
 });
 
 $('#file-button').on('click', function () {

@@ -395,7 +395,21 @@ CREATE TABLE emendas_objetivos (
 INSERT INTO emendas_objetivos (emendas_objetivos_id, emendas_objetivos_nome, emendas_objetivos_descricao, emendas_objetivos_criado_por, emendas_objetivos_cliente)
 VALUES
     (1, 'Sem objetivo definido', 'Sem objetivo definido.', '1', '1'),
-    (2, 'Transferência especial', 'Emenda PIX.', '1', '1')
+    (2, 'Transferência especial', 'Emenda PIX.', '1', '1'),
+    (3, 'Saúde', 'Destinação de recursos para hospitais, unidades de saúde e aquisição de equipamentos médicos.', '1', '1'),
+    (4, 'Educação', 'Investimentos em escolas, creches, universidades e formação de professores.', '1', '1'),
+    (5, 'Infraestrutura', 'Obras de pavimentação, saneamento básico e construção de equipamentos públicos.', '1', '1'),
+    (6, 'Segurança Pública', 'Apoio a projetos para melhoria das forças de segurança, aquisição de viaturas e equipamentos.', '1', '1'),
+    (7, 'Cultura', 'Fomento a atividades culturais, reforma de teatros, bibliotecas e museus.', '1', '1'),
+    (8, 'Esporte', 'Incentivo ao esporte e lazer, construção de quadras e centros esportivos.', '1', '1'),
+    (9, 'Assistência Social', 'Apoio a programas sociais voltados para populações vulneráveis.', '1', '1'),
+    (10, 'Agricultura', 'Fomento à agricultura familiar, assistência técnica e compra de equipamentos.', '1', '1'),
+    (11, 'Meio Ambiente', 'Projetos de sustentabilidade, preservação ambiental e energias renováveis.', '1', '1'),
+    (12, 'Turismo', 'Apoio a iniciativas de turismo sustentável e infraestrutura turística.', '1', '1'),
+    (13, 'Ciência e Tecnologia', 'Fomento à inovação, pesquisa e desenvolvimento tecnológico.', '1', '1'),
+    (14, 'Transporte', 'Melhoria da mobilidade urbana e transporte público.', '1', '1'),
+    (15, 'Habitação', 'Investimentos em programas habitacionais e urbanização de áreas carentes.', '1', '1');
+
 
 CREATE TABLE emendas (
     emenda_id varchar(36) NOT NULL DEFAULT (UUID()),
@@ -403,16 +417,22 @@ CREATE TABLE emendas (
     emenda_valor DECIMAL(10,2),
     emenda_descricao TEXT NOT NULL,
     emenda_status VARCHAR(36) NOT NULL,
-    ementa_orgao VARCHAR(36) NOT NULL,
+    emenda_orgao VARCHAR(36) NOT NULL,
+    emenda_municipio VARCHAR(50) NOT NULL,
+    emenda_estado VARCHAR(3) NOT NULL,
     emenda_objetivo VARCHAR(36) NOT NULL,
     emenda_informacoes TEXT NULL,
+    emenda_tipo VARCHAR(12) NOT NULL,
     emenda_cliente VARCHAR(36) NOT NULL,
     emenda_criado_por VARCHAR(36) NOT NULL,
+    emenda_criada_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    emenda_atualizada_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (emenda_id),
     CONSTRAINT fk_emenda_status FOREIGN KEY (emenda_status) REFERENCES emendas_status (emendas_status_id),
     CONSTRAINT fk_emendas_objetivos FOREIGN KEY (emenda_objetivo) REFERENCES emendas_objetivos (emendas_objetivos_id),
     CONSTRAINT fk_emenda_criado_por FOREIGN KEY (emenda_criado_por) REFERENCES usuario (usuario_id),
-    CONSTRAINT fk_emenda_cliente FOREIGN KEY (emenda_cliente) REFERENCES cliente (cliente_id)
+    CONSTRAINT fk_emenda_cliente FOREIGN KEY (emenda_cliente) REFERENCES cliente (cliente_id),
+    CONSTRAINT fk_emenda_orgao FOREIGN KEY (emenda_orgao) REFERENCES orgaos (orgao_id)
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 
@@ -464,3 +484,4 @@ CREATE VIEW view_clipping AS SELECT clipping.*, usuario.usuario_nome, orgaos.org
 CREATE VIEW view_proposicoes AS SELECT proposicoes.*, proposicoes_autores.proposicao_autor_nome, proposicoes_autores.proposicao_autor_partido, proposicoes_autores.proposicao_autor_estado, proposicoes_autores.proposicao_autor_proponente, proposicoes_autores.proposicao_autor_assinatura FROM proposicoes INNER JOIN proposicoes_autores ON proposicoes.proposicao_id = proposicoes_autores.proposicao_id;
 CREATE VIEW view_emendas_status AS SELECT emendas_status.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_status INNER JOIN usuario ON emendas_status.emendas_status_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_status.emendas_status_cliente = cliente.cliente_id ORDER BY emendas_status.emendas_status_nome ASC;
 CREATE VIEW view_emendas_objetivos AS SELECT emendas_objetivos.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_objetivos INNER JOIN usuario ON emendas_objetivos.emendas_objetivos_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_objetivos.emendas_objetivos_cliente = cliente.cliente_id ORDER BY emendas_objetivos.emendas_objetivos_nome ASC;
+CREATE VIEW view_emendas AS SELECT emendas.*, emendas_status.emendas_status_nome, emendas_objetivos.emendas_objetivos_nome, orgaos.orgao_nome, usuario.usuario_nome FROM emendas INNER JOIN emendas_status ON emendas.emenda_status = emendas_status.emendas_status_id INNER JOIN emendas_objetivos ON emendas.emenda_objetivo = emendas_objetivos.emendas_objetivos_id INNER JOIN orgaos ON emendas.emenda_orgao = orgaos.orgao_id INNER JOIN usuario ON emendas.emenda_criado_por = usuario.usuario_id;
