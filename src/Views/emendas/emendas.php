@@ -41,7 +41,8 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
             <div class="card mb-2 card-description">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-cash-stack"></i> Adicionar Emenda</div>
                 <div class="card-body p-2">
-                    <p class="card-text mb-2">Nesta página, você pode cadastrar novas emendas, informando dados como número, valor, descrição, status, órgão responsável, município e objetivo.</p> <p class="card-text mb-0">Além disso, é possível filtrar e visualizar emendas já cadastradas, organizadas por diferentes critérios como número, valor, status e município.
+                    <p class="card-text mb-2">Nesta página, você pode cadastrar novas emendas, informando dados como número, valor, descrição, status, órgão responsável, município e objetivo.</p>
+                    <p class="card-text mb-0">Além disso, é possível filtrar e visualizar emendas já cadastradas, organizadas por diferentes critérios como número, valor, status e município.
 
                     </p>
                 </div>
@@ -345,6 +346,7 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
                     ?>
                 </div>
             </div>
+
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <h6 class="card-title mb-0"><i class="bi bi-cash-stack"></i> | R$ <?php echo number_format($soma, 2, ',', '.') ?></h6>
