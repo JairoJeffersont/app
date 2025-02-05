@@ -366,16 +366,58 @@ CREATE TABLE emendas_status (
 
 INSERT INTO emendas_status (emendas_status_id, emendas_status_nome, emendas_status_descricao, emendas_status_criado_por, emendas_status_cliente)
 VALUES
-    (UUID(), 'Em Análise', 'A emenda foi recebida e está sendo analisada pelos responsáveis.', '1', '1'),
-    (UUID(), 'Aprovada', 'A emenda foi aprovada e aguarda os próximos trâmites.', '1', '1'),
-    (UUID(), 'Rejeitada', 'A emenda foi rejeitada por não atender aos critérios estabelecidos.', '1', '1'),
-    (UUID(), 'Em Execução', 'A emenda foi aprovada e está em fase de execução.', '1', '1'),
-    (UUID(), 'Concluída', 'A emenda foi totalmente executada e finalizada.', '1', '1'),
-    (UUID(), 'Pendente de Documentação', 'A emenda aguarda a entrega de documentos para seguir para análise.', '1', '1'),
-    (UUID(), 'Cancelada', 'A emenda foi cancelada por solicitação do proponente.', '1', '1'),
-    (UUID(), 'Aguardando Liberação', 'A emenda foi aprovada e está aguardando a liberação de recursos.', '1', '1'),
-    (UUID(), 'Revisão Necessária', 'A emenda precisa de ajustes antes de seguir para aprovação.', '1', '1'),
-    (UUID(), 'Suspensa', 'A execução da emenda foi temporariamente suspensa.', '1', '1');
+    (1, 'Criada', 'A emenda foi criada no sistema.', '1', '1'),
+    (2, 'Em Análise', 'A emenda foi recebida e está sendo analisada pelos responsáveis.', '1', '1'),
+    (3, 'Aprovada', 'A emenda foi aprovada e aguarda os próximos trâmites.', '1', '1'),
+    (4, 'Rejeitada', 'A emenda foi rejeitada por não atender aos critérios estabelecidos.', '1', '1'),
+    (5, 'Em Execução', 'A emenda foi aprovada e está em fase de execução.', '1', '1'),
+    (6, 'Concluída', 'A emenda foi totalmente executada e finalizada.', '1', '1'),
+    (7, 'Pendente de Documentação', 'A emenda aguarda a entrega de documentos para seguir para análise.', '1', '1'),
+    (8, 'Cancelada', 'A emenda foi cancelada por solicitação do proponente.', '1', '1'),
+    (9, 'Aguardando Liberação', 'A emenda foi aprovada e está aguardando a liberação de recursos.', '1', '1'),
+    (10, 'Revisão Necessária', 'A emenda precisa de ajustes antes de seguir para aprovação.', '1', '1'),
+    (11, 'Suspensa', 'A execução da emenda foi temporariamente suspensa.', '1', '1');
+
+
+CREATE TABLE emendas_objetivos (
+    emendas_objetivos_id varchar(36) NOT NULL DEFAULT (UUID()),
+    emendas_objetivos_nome varchar(255) NOT NULL UNIQUE,
+    emendas_objetivos_descricao TEXT NOT NULL,
+    emendas_objetivos_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    emendas_objetivos_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    emendas_objetivos_criado_por varchar(36) NOT NULL,
+    emendas_objetivos_cliente varchar(36) NOT NULL,
+    PRIMARY KEY (emendas_objetivos_id),
+    CONSTRAINT fk_emendas_objetivos_criado_por FOREIGN KEY (emendas_objetivos_criado_por) REFERENCES usuario (usuario_id),
+    CONSTRAINT fk_emendas_objetivos_status_cliente FOREIGN KEY (emendas_objetivos_cliente) REFERENCES cliente (cliente_id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+INSERT INTO emendas_objetivos (emendas_objetivos_id, emendas_objetivos_nome, emendas_objetivos_descricao, emendas_objetivos_criado_por, emendas_objetivos_cliente)
+VALUES
+    (1, 'Sem objetivo definido', 'Sem objetivo definido.', '1', '1'),
+    (2, 'Transferência especial', 'Emenda PIX.', '1', '1')
+
+CREATE TABLE emendas (
+    emenda_id varchar(36) NOT NULL DEFAULT (UUID()),
+    emenda_numero INT NOT NULL,
+    emenda_valor DECIMAL(10,2),
+    emenda_descricao TEXT NOT NULL,
+    emenda_status VARCHAR(36) NOT NULL,
+    ementa_orgao VARCHAR(36) NOT NULL,
+    emenda_objetivo VARCHAR(36) NOT NULL,
+    emenda_informacoes TEXT NULL,
+    emenda_cliente VARCHAR(36) NOT NULL,
+    emenda_criado_por VARCHAR(36) NOT NULL,
+    PRIMARY KEY (emenda_id),
+    CONSTRAINT fk_emenda_status FOREIGN KEY (emenda_status) REFERENCES emendas_status (emendas_status_id),
+    CONSTRAINT fk_emendas_objetivos FOREIGN KEY (emenda_objetivo) REFERENCES emendas_objetivos (emendas_objetivos_id),
+    CONSTRAINT fk_emenda_criado_por FOREIGN KEY (emenda_criado_por) REFERENCES usuario (usuario_id),
+    CONSTRAINT fk_emenda_cliente FOREIGN KEY (emenda_cliente) REFERENCES cliente (cliente_id)
+)ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+
+
+
 
 CREATE TABLE proposicoes (
     proposicao_id INT NOT NULL,
@@ -421,3 +463,4 @@ CREATE VIEW view_tipo_clipping AS SELECT clipping_tipos.*, usuario.usuario_nome 
 CREATE VIEW view_clipping AS SELECT clipping.*, usuario.usuario_nome, orgaos.orgao_nome, cliente.cliente_nome, clipping_tipos.clipping_tipo_nome FROM clipping INNER JOIN clipping_tipos ON clipping.clipping_tipo = clipping_tipos.clipping_tipo_id INNER JOIN orgaos ON clipping.clipping_orgao = orgaos.orgao_id INNER JOIN usuario ON clipping.clipping_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping.clipping_cliente = cliente.cliente_id;
 CREATE VIEW view_proposicoes AS SELECT proposicoes.*, proposicoes_autores.proposicao_autor_nome, proposicoes_autores.proposicao_autor_partido, proposicoes_autores.proposicao_autor_estado, proposicoes_autores.proposicao_autor_proponente, proposicoes_autores.proposicao_autor_assinatura FROM proposicoes INNER JOIN proposicoes_autores ON proposicoes.proposicao_id = proposicoes_autores.proposicao_id;
 CREATE VIEW view_emendas_status AS SELECT emendas_status.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_status INNER JOIN usuario ON emendas_status.emendas_status_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_status.emendas_status_cliente = cliente.cliente_id ORDER BY emendas_status.emendas_status_nome ASC;
+CREATE VIEW view_emendas_objetivos AS SELECT emendas_objetivos.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_objetivos INNER JOIN usuario ON emendas_objetivos.emendas_objetivos_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_objetivos.emendas_objetivos_cliente = cliente.cliente_id ORDER BY emendas_objetivos.emendas_objetivos_nome ASC;

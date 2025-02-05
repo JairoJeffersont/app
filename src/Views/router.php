@@ -45,6 +45,10 @@ $rotas = [
     //'proposicoes' => './src/Views/proposicoes/proposicoes.php',
     'status-emendas' => './src/Views/emendas/status-emendas.php',
     'editar-status-emenda' => './src/Views/emendas/editar-status-emenda.php',
+    'objetivos-emendas' => './src/Views/emendas/objetivos-emendas.php',
+    'editar-objetivo-emenda' => './src/Views/emendas/editar-objetivo-emenda.php',
+
+    
 ];
 
 if (array_key_exists($pagina, $rotas)) {
