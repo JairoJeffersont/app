@@ -118,15 +118,19 @@ class EmendaController {
      * @param string $cliente ID do cliente.
      * @return array Retorna um array com o status da operação, mensagem e lista de emendas.
      */
-    public function listarEmendas($cliente) {
+    public function listarEmendas($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $cliente) {
         try {
-            $emendas = $this->emendaModel->listar($cliente);
+            $emendas = $this->emendaModel->listar($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $cliente);
+
+
+            $total = (isset($emendas[0]['total'])) ? $emendas[0]['total'] : 0;
+            $totalPaginas = ceil($total / $itens);
 
             if (empty($emendas)) {
                 return ['status' => 'empty', 'message' => 'Nenhuma emenda registrada'];
             }
 
-            return ['status' => 'success', 'message' => count($emendas) . ' emenda(s) encontrada(s)', 'dados' => $emendas];
+            return ['status' => 'success', 'message' => count($emendas) . ' emenda(s) encontrada(s)', 'dados' => $emendas, 'total_paginas' => $totalPaginas];
         } catch (PDOException $e) {
             $erro_id = uniqid();
             $this->logger->novoLog('emenda_log', $e->getMessage() . ' | ' . $erro_id);

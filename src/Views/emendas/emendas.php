@@ -9,11 +9,21 @@ use GabineteDigital\Controllers\EmendasStatusController;
 use GabineteDigital\Controllers\OrgaoController;
 
 $emendaController = new EmendaController();
-
-$emendas = $emendaController->listarEmendas($_SESSION['usuario_cliente']);
 $emendasStatusController = new EmendasStatusController();
 $emendasObjetivosController = new EmendasObjetivosController();
 $orgaosController = new OrgaoController();
+
+$ordenarPor = isset($_GET['ordenarPor']) && in_array(htmlspecialchars($_GET['ordenarPor']), ['emenda_numero', 'emenda_valor', 'emenda_municipio', 'emendas_status_nome']) ? htmlspecialchars($_GET['ordenarPor']) : 'emenda_numero';
+$ordem = isset($_GET['ordem']) ? strtolower(htmlspecialchars($_GET['ordem'])) : 'asc';
+$itens = isset($_GET['itens']) ? (int) $_GET['itens'] : 10;
+$pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+$anoGet = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
+$statusGet = isset($_GET['status']) ? htmlspecialchars($_GET['status']) : 0;
+$objetivoGet = isset($_GET['objetivo']) ? htmlspecialchars($_GET['objetivo']) : 0;
+$tipoGet = isset($_GET['tipo']) ? (int) $_GET['tipo'] : 1;
+
+$emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, $_SESSION['usuario_cliente']);
+
 ?>
 
 <div class="d-flex" id="wrapper">
@@ -22,20 +32,19 @@ $orgaosController = new OrgaoController();
         <?php include './src/Views/includes/top_menu.php'; ?>
         <div class="container-fluid p-2">
 
-            <!-- Botão de Navegação -->
             <div class="card mb-2">
                 <div class="card-body p-1">
                     <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
                 </div>
             </div>
 
-            <!-- Adicionar Emenda -->
             <div class="card mb-2 card-description">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-cash-stack"></i> Adicionar Emenda</div>
                 <div class="card-body p-2">
                     <p class="card-text mb-0">Todos os campos são obrigatórios.</p>
                 </div>
             </div>
+
             <div class="card shadow-sm mb-2 ">
                 <div class="card-body p-0">
                     <nav class="navbar navbar-expand bg-body-tertiary p-0 ">
@@ -62,6 +71,7 @@ $orgaosController = new OrgaoController();
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_salvar'])) {
                         $dadosEmenda = [
                             'emenda_numero' => htmlspecialchars($_POST['emenda_numero'], ENT_QUOTES, 'UTF-8'),
+                            'emenda_ano' => date('Y'),
                             'emenda_valor' => (float) str_replace(',', '.', str_replace('.', '', htmlspecialchars($_POST['emenda_valor'], ENT_QUOTES, 'UTF-8'))),
                             'emenda_descricao' => htmlspecialchars($_POST['emenda_descricao'], ENT_QUOTES, 'UTF-8'),
                             'emenda_status' => htmlspecialchars($_POST['emenda_status'], ENT_QUOTES, 'UTF-8'),
@@ -79,7 +89,7 @@ $orgaosController = new OrgaoController();
                         $result = $emendaController->criarEmenda($dadosEmenda);
 
                         if ($result['status'] == 'success') {
-                            $emendas = $emendaController->listarEmendas($_SESSION['usuario_cliente']);
+                            $emendas = $emendaController->listarEmendas(10, 1, 'asc', 'emenda_numero', 1, 1, 1, 1, null, null, 2025, $_SESSION['usuario_cliente']);
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                         } else {
                             echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
@@ -123,11 +133,11 @@ $orgaosController = new OrgaoController();
 
                                 $orgaos = $orgaosController->listarOrgaos(1000, 1, 'ASC', 'orgao_nome', null, null, $_SESSION['usuario_cliente']);
                                 if ($orgaos['status'] == 'success') {
-                                    foreach ($orgaos['dados'] as $status) {
+                                    foreach ($orgaos['dados'] as $orgao) {
                                         if ($orgaos['orgao_id'] == 1) {
-                                            echo '<option value="' . $orgaos['orgao_id'] . '" selected>' . $orgaos['orgao_nome'] . '</option>';
+                                            echo '<option value="' . $orgao['orgao_id'] . '" selected>' . $orgao['orgao_nome'] . '</option>';
                                         } else {
-                                            echo '<option value="' . $orgaos['orgao_id'] . '">' . $orgaos['orgao_nome'] . '</option>';
+                                            echo '<option value="' . $orgao['orgao_id'] . '">' . $orgao['orgao_nome'] . '</option>';
                                         }
                                     }
                                 }
@@ -186,7 +196,89 @@ $orgaosController = new OrgaoController();
                 </div>
             </div>
 
-            <!-- Listagem das Emendas -->
+            <div class="card shadow-sm mb-2">
+                <div class="card-body p-2">
+                    <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
+                        <div class="col-md-1 col-6">
+                            <input type="hidden" name="secao" value="emendas" />
+                            <input type="number" class="form-control form-control-sm" name="ano" value="<?php echo $anoGet ?>">
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <select class="form-select form-select-sm" name="ordenarPor" required>
+                                <option value="emenda_numero" <?php echo $ordenarPor == 'emenda_numero' ? 'selected' : ''; ?>>Ordenar por | Número</option>
+                                <option value="emenda_valor" <?php echo $ordenarPor == 'emenda_valor' ? 'selected' : ''; ?>>Ordenar por | Valor</option>
+                                <option value="emenda_municipio" <?php echo $ordenarPor == 'emenda_municipio' ? 'selected' : ''; ?>>Ordenar por | Município</option>
+                                <option value="emendas_status_nome" <?php echo $ordenarPor == 'emendas_status_nome' ? 'selected' : ''; ?>>Ordenar por | Status</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 col-6">
+                            <select class="form-select form-select-sm" name="ordem" required>
+                                <option value="asc" <?php echo $ordem == 'asc' ? 'selected' : ''; ?>>Ordem Crescente</option>
+                                <option value="desc" <?php echo $ordem == 'desc' ? 'selected' : ''; ?>>Ordem Decrescente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 col-6">
+                            <select class="form-select form-select-sm" name="itens" required>
+                                <option value="5" <?php echo $itens == 5 ? 'selected' : ''; ?>>5 itens</option>
+                                <option value="10" <?php echo $itens == 10 ? 'selected' : ''; ?>>10 itens</option>
+                                <option value="25" <?php echo $itens == 25 ? 'selected' : ''; ?>>25 itens</option>
+                                <option value="50" <?php echo $itens == 50 ? 'selected' : ''; ?>>50 itens</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 col-6">
+                            <select class="form-select form-select-sm" name="status" required>
+                                <option value="0">Tudo</option>
+
+                                <?php
+
+                                $emendasStatus = $emendasStatusController->listarEmendasStatus($_SESSION['usuario_cliente']);
+                                if ($emendasStatus['status'] == 'success') {
+                                    foreach ($emendasStatus['dados'] as $status) {
+                                        if ($status['emendas_status_id'] == $statusGet) {
+                                            echo '<option value="' . $status['emendas_status_id'] . '" selected>' . $status['emendas_status_nome'] . '</option>';
+                                        } else {
+                                            echo '<option value="' . $status['emendas_status_id'] . '">' . $status['emendas_status_nome'] . '</option>';
+                                        }
+                                    }
+                                }
+
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <select class="form-select form-select-sm" name="objetivo" required>
+                                <option value="0">Tudo</option>
+                                <?php
+
+                                $emendasObjetivos = $emendasObjetivosController->listarEmendasObjetivos($_SESSION['usuario_cliente']);
+
+                                if ($emendasObjetivos['status'] == 'success') {
+                                    foreach ($emendasObjetivos['dados'] as $objetivo) {
+                                        if ($objetivo['emendas_objetivos_id'] == $objetivoGet) {
+                                            echo '<option value="' . $objetivo['emendas_objetivos_id'] . '" selected>' . $objetivo['emendas_objetivos_nome'] . '</option>';
+                                        } else {
+                                            echo '<option value="' . $objetivo['emendas_objetivos_id'] . '">' . $objetivo['emendas_objetivos_nome'] . '</option>';
+                                        }
+                                    }
+                                }
+
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 col-6">
+                            <select class="form-select form-select-sm" name="tipo" required>
+                                <option value="1" <?php echo $tipoGet == 1 ? 'selected' : ''; ?>>Emenda individual</option>
+                                <option value="2" <?php echo $tipoGet == 2 ? 'selected' : ''; ?>>Emenda de bancada</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 col-2">
+                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <div class="table-responsive">
@@ -196,6 +288,7 @@ $orgaosController = new OrgaoController();
                                     <th scope="col">Número</th>
                                     <th scope="col">Valor</th>
                                     <th scope="col">Descrição</th>
+                                    <th scope="col">Objetivo</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Órgão</th>
                                     <th scope="col">Município</th>
@@ -204,12 +297,15 @@ $orgaosController = new OrgaoController();
                             </thead>
                             <tbody>
                                 <?php
+                                $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, $_SESSION['usuario_cliente']);
+
                                 if ($emendas['status'] == 'success') {
                                     foreach ($emendas['dados'] as $emenda) {
                                         echo '<tr>';
                                         echo '<td style="white-space: nowrap;"><a href="?secao=editar-emenda&id=' . $emenda['emenda_id'] . '">' . $emenda['emenda_numero'] . '</a></td>';
                                         echo '<td style="white-space: nowrap;">R$ ' . number_format($emenda['emenda_valor'], 2, ',', '.') . '</td>';
                                         echo '<td>' . $emenda['emenda_descricao'] . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . $emenda['emendas_objetivos_nome'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $emenda['emendas_status_nome'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $emenda['orgao_nome'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . $emenda['emenda_municipio'] . ' | ' . $emenda['emenda_estado'] . '</td>';
@@ -223,6 +319,26 @@ $orgaosController = new OrgaoController();
                             </tbody>
                         </table>
                     </div>
+                    <?php
+                    if (isset($emendas['total_paginas'])) {
+                        $totalPagina = $emendas['total_paginas'];
+                    } else {
+                        $totalPagina = 0;
+                    }
+
+                    if ($totalPagina > 0 && $totalPagina != 1) {
+                        echo '<ul class="pagination custom-pagination mt-2 mb-0">';
+                        echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=1&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '">Primeira</a></li>';
+
+                        for ($i = 1; $i < $totalPagina - 1; $i++) {
+                            $pageNumber = $i + 1;
+                            echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=' . $pageNumber . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '">' . $pageNumber . '</a></li>';
+                        }
+
+                        echo '<li class="page-item ' . ($pagina == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=' . $totalPagina . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '">Última</a></li>';
+                        echo '</ul>';
+                    }
+                    ?>
                 </div>
             </div>
 
