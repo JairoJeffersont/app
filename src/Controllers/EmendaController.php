@@ -146,7 +146,7 @@ class EmendaController {
      * @return array Retorna um array com o status da operação, mensagem e dados da emenda ou mensagem de emenda não encontrada.
      */
     public function buscarEmenda($coluna, $valor) {
-        $colunasPermitidas = ['emenda_id', 'emenda_numero'];
+        $colunasPermitidas = ['emenda_id', 'emenda_numero', 'emenda_status'];
 
         if (!in_array($coluna, $colunasPermitidas)) {
             return ['status' => 'bad_request', 'message' => 'Coluna inválida. Apenas emenda_id e emenda_numero são permitidos.'];
