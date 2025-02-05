@@ -110,9 +110,16 @@ class EmendasObjetivosController {
         try {
             $emendasObjetivo = $this->buscarEmendasObjetivo('emendas_objetivos_id', $emendas_objetivos_id);
 
+           
+
             if ($emendasObjetivo['status'] == 'not_found') {
                 return $emendasObjetivo;
             }
+
+            if ($emendasObjetivo['dados'][0]['emendas_objetivos_cliente'] == 1) {
+                return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para os objetivos padrão.'];
+            }
+
 
             $this->emendasObjetivosModel->apagar($emendas_objetivos_id);
             return ['status' => 'success', 'message' => 'Objetivo de emenda apagado com sucesso.'];

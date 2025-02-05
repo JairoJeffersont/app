@@ -114,6 +114,10 @@ class EmendasStatusController {
                 return $emendasStatus;
             }
 
+            if ($emendasStatus['dados'][0]['emendas_status_cliente'] == 1) {
+                return ['status' => 'bad_request', 'message' => 'Essa operação não é permitida para os status padrão.'];
+            }
+
             $this->emendasStatusModel->apagar($emendas_status_id);
             return ['status' => 'success', 'message' => 'Status de emenda apagado com sucesso.'];
         } catch (PDOException $e) {
