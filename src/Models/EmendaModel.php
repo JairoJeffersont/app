@@ -70,59 +70,59 @@ class EmendaModel {
         $pagina = (int)$pagina;
         $itens = (int)$itens;
         $offset = ($pagina - 1) * $itens;
-    
+
         // Inicializa a parte WHERE da query
         $where = "WHERE emenda_tipo = :tipo 
                   AND emenda_ano = :ano 
                   AND emenda_cliente = :cliente";
-    
+
         // Condicional para aplicar o filtro de 'status' ou 'objetivo'
         if ($status != 0) {
             $where .= " AND emenda_status = :status";
         }
-    
+
         if ($objetivo != 0) {
             $where .= " AND emenda_objetivo = :objetivo";
         }
-    
+
         // Construção da query com total
         $query = "SELECT view_emendas.*, 
                          (SELECT COUNT(*) FROM view_emendas 
-                          $where) as total 
+                          $where) as total, (SELECT SUM(emenda_valor) FROM view_emendas  $where ) as total_valor
                   FROM view_emendas 
                   $where 
                   ORDER BY $ordenarPor $ordem
                   LIMIT :offset, :itens";
-    
+
         // Preparação da query
         $stmt = $this->conn->prepare($query);
-    
+
         // Bind dos parâmetros obrigatórios
         $stmt->bindValue(':tipo', $tipo, PDO::PARAM_STR);
         $stmt->bindValue(':ano', $ano, PDO::PARAM_INT);
         $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
-        
+
         // Bind para 'status' se for diferente de zero
         if ($status != 0) {
             $stmt->bindParam(':status', $status, PDO::PARAM_STR);
         }
-    
+
         // Bind para 'objetivo' se for diferente de zero
         if ($objetivo != 0) {
             $stmt->bindParam(':objetivo', $objetivo, PDO::PARAM_STR);
         }
-    
+
         // Bind para offset e itens
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindValue(':itens', $itens, PDO::PARAM_INT);
-    
+
         // Executa a consulta
         $stmt->execute();
-    
+
         // Retorna os resultados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
 
 
 

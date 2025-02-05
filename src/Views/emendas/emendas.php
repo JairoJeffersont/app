@@ -301,7 +301,6 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
                             <tbody>
                                 <?php
                                 $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, $_SESSION['usuario_cliente']);
-                                $soma = 0;
                                 if ($emendas['status'] == 'success') {
                                     foreach ($emendas['dados'] as $emenda) {
                                         echo '<tr>';
@@ -314,8 +313,6 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
                                         echo '<td style="white-space: nowrap;">' . $emenda['emenda_municipio'] . ' | ' . $emenda['emenda_estado'] . '</td>';
                                         echo '<td style="white-space: nowrap;">' . date('d/m/Y', strtotime($emenda['emenda_criada_em'])) . ' | ' . $emenda['usuario_nome'] . '</td>';
                                         echo '</tr>';
-
-                                        $soma = $soma + $emenda['emenda_valor'];
                                     }
                                 } else {
                                     echo '<tr><td colspan="7">' . $emendas['message'] . '</td></tr>';
@@ -349,7 +346,7 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
 
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
-                    <h6 class="card-title mb-0"><i class="bi bi-cash-stack"></i> | R$ <?php echo number_format($soma, 2, ',', '.') ?></h6>
+                    <h6 class="card-title mb-0"><i class="bi bi-cash-stack"></i> | R$ <?php echo number_format($emendas['dados'][0]['total_valor'], 2, ',', '.') ?></h6>
                 </div>
             </div>
 
