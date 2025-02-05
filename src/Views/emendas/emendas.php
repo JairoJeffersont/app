@@ -346,7 +346,21 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
 
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
-                    <h6 class="card-title mb-0"><i class="bi bi-cash-stack"></i> | R$ <?php echo number_format($emendas['dados'][0]['total_valor'], 2, ',', '.') ?></h6>
+                    <h6 class="card-title mb-0"><i class="bi bi-cash-stack"></i> | R$
+                        <?php
+
+                        if(isset($emendas['dados'][0]['total_valor'])){
+                            echo number_format($emendas['dados'][0]['total_valor'], 2, ',', '.');
+
+                        }else{
+                            echo '0,00';
+                        }
+
+
+                        ?>
+
+
+                    </h6>
                 </div>
             </div>
 
