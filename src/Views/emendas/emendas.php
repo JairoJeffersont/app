@@ -54,7 +54,7 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
                                     <li class="nav-item">
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_objetivo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo objetivo</button>
-                                            <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_nova_status" type="button"><i class="bi bi-plus-circle-fill"></i> Nova status</button>
+                                            <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_nova_status" type="button"><i class="bi bi-plus-circle-fill"></i> Novo status</button>
                                             <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_novo_orgao" type="button"><i class="bi bi-plus-circle-fill"></i> Novo órgão</button>
                                         </a>
                                     </li>
