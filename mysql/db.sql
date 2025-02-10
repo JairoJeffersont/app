@@ -415,7 +415,7 @@ CREATE TABLE emendas (
     emenda_id varchar(36) NOT NULL DEFAULT (UUID()),
     emenda_numero INT NOT NULL,
     emenda_ano INT NOT NULL,
-    emenda_valor DECIMAL(10,2),
+    emenda_valor DECIMAL(12,2),
     emenda_descricao TEXT NOT NULL,
     emenda_status VARCHAR(36) NOT NULL,
     emenda_orgao VARCHAR(36) NOT NULL,
