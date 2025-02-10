@@ -42,3 +42,24 @@
         <p class="mt-3 copyright"><?php echo date('Y') ?> | JS Digital System</p>
     </div>
 </div>
+
+<div class="modal fade" id="aguardeModal" tabindex="-1" aria-labelledby="aguardeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <h5 class="mb-3">Aguarde...</h5>
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#form_login').submit(function(event) {
+            $('#aguardeModal').modal('show'); // Exibe a modal
+        });
+    });
+</script>
