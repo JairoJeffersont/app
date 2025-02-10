@@ -138,11 +138,11 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
             <div class="card shadow-sm mb-2 no-print">
                 <div class="card-body p-2">
                     <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
-                        <div class="col-md-1 col-6">
+                        <div class="col-md-1 col-12">
                             <input type="hidden" name="secao" value="agendas" />
                             <input type="date" class="form-control form-control-sm" name="data" value="<?php echo $dataGet ?>">
                         </div>
-                        <div class="col-md-2 col-12">
+                        <div class="col-md-2 col-5">
                             <select class="form-select form-select-sm" name="tipo" required>
                                 <option value="null">Tudo</option>
                                 <?php
@@ -161,7 +161,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                             </select>
                         </div>
 
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-2 col-5">
                             <select class="form-select form-select-sm" name="situacao" required>
                                 <option value="null">Tudo</option>
 
@@ -204,7 +204,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                                             </button>
                                             </h2>
                                             <div id="panelsStayOpen-collapse' . $agenda['agenda_id'] . '" class="accordion-collapse collapse">
-                                                <div class="accordion-body">
+                                                <div class="accordion-body" style="font-size: 0.9em">
                                                     <p class="card-text mb-1"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_tipo_nome'] . '</p>
                                                     <p class="card-text mb-3"><i class="bi bi-arrow-right-short"></i> <b>' . $agenda['agenda_situacao_nome'] . '</b></p>
                                                     <p class="card-text mb-3"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_local'] . ' - ' . $agenda['agenda_estado'] . '</p>
