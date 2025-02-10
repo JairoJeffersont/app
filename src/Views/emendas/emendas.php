@@ -33,13 +33,13 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
         <?php include './src/Views/includes/top_menu.php'; ?>
         <div class="container-fluid p-2">
 
-            <div class="card mb-2">
+            <div class="card mb-2 no-print">
                 <div class="card-body p-1">
                     <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
                 </div>
             </div>
 
-            <div class="card mb-2 card-description">
+            <div class="card mb-2 card-description no-print">
                 <div class="card-header bg-primary text-white px-2 py-1 card-background"><i class="bi bi-cash-stack"></i> Adicionar Emenda</div>
                 <div class="card-body p-2">
                     <p class="card-text mb-2">Nesta página, você pode cadastrar novas emendas, informando dados como número, valor, descrição, status, órgão responsável, município e objetivo.</p>
@@ -49,7 +49,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                 </div>
             </div>
 
-            <div class="card shadow-sm mb-2 ">
+            <div class="card shadow-sm mb-2 no-print">
                 <div class="card-body p-0">
                     <nav class="navbar navbar-expand bg-body-tertiary p-0 ">
                         <div class="container-fluid p-0">
@@ -69,7 +69,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                 </div>
             </div>
 
-            <div class="card shadow-sm mb-2">
+            <div class="card shadow-sm mb-2 no-print">
                 <div class="card-body p-2">
                     <?php
                     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_salvar'])) {
@@ -101,7 +101,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                     }
                     ?>
 
-                    <form class="row g-2 form_custom" id="form_novo" method="POST" enctype="multipart/form-data">
+                    <form class="row g-2 form_custom no-print" id="form_novo" method="POST" enctype="multipart/form-data">
                         <div class="col-md-2 col-12">
                             <input type="text" class="form-control form-control-sm" name="emenda_numero" placeholder="Número da Emenda" required>
                         </div>
@@ -200,7 +200,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                 </div>
             </div>
 
-            <div class="card shadow-sm mb-2">
+            <div class="card shadow-sm mb-2 no-print">
                 <div class="card-body p-2">
                     <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
                         <div class="col-md-1 col-6">
@@ -227,6 +227,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                                 <option value="10" <?php echo $itens == 10 ? 'selected' : ''; ?>>10 itens</option>
                                 <option value="25" <?php echo $itens == 25 ? 'selected' : ''; ?>>25 itens</option>
                                 <option value="50" <?php echo $itens == 50 ? 'selected' : ''; ?>>50 itens</option>
+                                <option value="100" <?php echo $itens == 100 ? 'selected' : ''; ?>>100 itens</option>
                             </select>
                         </div>
                         <div class="col-md-1 col-6">
@@ -305,7 +306,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                                     <th scope="col">Status</th>
                                     <th scope="col">Órgão</th>
                                     <th scope="col">Município</th>
-                                    <th scope="col">Criado</th>
+                                    <th scope="col" class="no-print">Criado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -317,11 +318,11 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                                         echo '<td style="white-space: nowrap;"><a href="?secao=editar-emenda&id=' . $emenda['emenda_id'] . '">' . $emenda['emenda_numero'] . '</a></td>';
                                         echo '<td style="white-space: nowrap;">R$ ' . number_format($emenda['emenda_valor'], 2, ',', '.') . '</td>';
                                         echo '<td>' . $emenda['emenda_descricao'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $emenda['emendas_objetivos_nome'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $emenda['emendas_status_nome'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $emenda['orgao_nome'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . $emenda['emenda_municipio'] . ' | ' . $emenda['emenda_estado'] . '</td>';
-                                        echo '<td style="white-space: nowrap;">' . date('d/m/Y', strtotime($emenda['emenda_criada_em'])) . ' | ' . $emenda['usuario_nome'] . '</td>';
+                                        echo '<td >' . $emenda['emendas_objetivos_nome'] . '</td>';
+                                        echo '<td >' . $emenda['emendas_status_nome'] . '</td>';
+                                        echo '<td >' . $emenda['orgao_nome'] . '</td>';
+                                        echo '<td >' . $emenda['emenda_municipio'] . ' | ' . $emenda['emenda_estado'] . '</td>';
+                                        echo '<td  class="no-print">' . date('d/m/Y', strtotime($emenda['emenda_criada_em'])) . ' | ' . $emenda['usuario_nome'] . '</td>';
                                         echo '</tr>';
                                     }
                                 } else {
@@ -339,7 +340,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                     }
 
                     if ($totalPagina > 0 && $totalPagina != 1) {
-                        echo '<ul class="pagination custom-pagination mt-2 mb-0">';
+                        echo '<ul class="pagination custom-pagination mt-2 mb-0 no-print">';
                         echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=1&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '&estado=' . $estadoGet . '&municipio=' . $municipioGet . '">Primeira</a></li>';
 
                         for ($i = 1; $i < $totalPagina - 1; $i++) {
@@ -356,7 +357,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
 
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
-                    <h6 class="card-title mb-0"><i class="bi bi-cash-stack"></i> | R$
+                    <h6 class="card-title mb-0"><i class="bi bi-cash-stack no-print"></i> | R$
                         <?php
 
                         if (isset($emendas['dados'][0]['total_valor'])) {
