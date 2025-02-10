@@ -106,10 +106,10 @@ class AgendaController
      * @param string $cliente ID do cliente.
      * @return array Retorna um array com o status da operação, mensagem e lista de agendas.
      */
-    public function listarAgendas($cliente, $data)
+    public function listarAgendas($data, $tipo, $situacao,  $cliente)
     {
         try {
-            $agendas = $this->agendaModel->listar($cliente, $data);
+            $agendas = $this->agendaModel->listar($data, $tipo, $situacao,  $cliente);
 
             if (empty($agendas)) {
                 return ['status' => 'empty', 'message' => 'Nenhuma agenda registrada.'];

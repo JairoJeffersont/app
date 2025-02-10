@@ -87,19 +87,46 @@ class AgendaModel
      * @param string $cliente ID do cliente associado.
      * @return array Retorna um array associativo com os dados de todas as agendas.
      */
-    public function listar($cliente, $data)
+    public function listar($data, $tipo, $situacao, $cliente)
     {
-        // Ajusta a consulta para buscar pela data específica
-        $query = "SELECT * FROM view_agenda WHERE agenda_cliente = :cliente AND DATE(agenda_data) = :data ORDER BY agenda_data ASC";
+        // Inicia a consulta básica com filtro pela data e cliente
+        $query = "SELECT * FROM view_agenda WHERE agenda_cliente = :cliente AND DATE(agenda_data) = :data";
 
+        // Adiciona a condição para tipo, se fornecido
+        if (!empty($tipo)) {
+            $query .= " AND agenda_tipo = :tipo";
+        }
+
+        // Adiciona a condição para situacao, se fornecido
+        if (!empty($situacao)) {
+            $query .= " AND agenda_situacao = :situacao";
+        }
+
+        // Ordena os resultados
+        $query .= " ORDER BY agenda_data ASC";
+
+        // Prepara a consulta
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
-        $stmt->bindParam(':data', $data, PDO::PARAM_STR);  // Aqui bind a data que você vai passar
 
+        // Vincula os parâmetros obrigatórios
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':data', $data, PDO::PARAM_STR);
+
+        // Vincula os parâmetros opcionais (tipo e situacao) se forem fornecidos
+        if (!empty($tipo)) {
+            $stmt->bindParam(':tipo', $tipo, PDO::PARAM_STR);
+        }
+        if (!empty($situacao)) {
+            $stmt->bindParam(':situacao', $situacao, PDO::PARAM_STR);
+        }
+
+        // Executa a consulta
         $stmt->execute();
 
+        // Retorna o resultado
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
 
     /**

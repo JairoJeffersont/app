@@ -12,7 +12,11 @@ $agendaController = new AgendaController();
 $agendaTipoController = new AgendaTipoController();
 $agendaSituacaoControllr = new AgendaSituacaoController();
 
-$data = date('Y-m-d');
+$dataGet = isset($_GET['data']) ? $_GET['data'] : date('Y-m-d');
+$tipoGet = (isset($_GET['tipo']) && $_GET['tipo'] !== 'null') ? $_GET['tipo'] : null;
+$situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GET['situacao'] : null;
+
+
 
 ?>
 <div class="d-flex" id="wrapper">
@@ -53,7 +57,7 @@ $data = date('Y-m-d');
 
                         if ($result['status'] == 'success') {
                             echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
-                            $busca = $agendaController->listarAgendas($data, $_SESSION['usuario_cliente']);
+                            $buscaAgendas = $agendaController->listarAgendas($dataGet, $tipoGet, $situacaoGet, $_SESSION['usuario_cliente']);
                         } else if ($result['status'] == 'duplicated' || $result['status'] == 'bad_request') {
                             echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                         } else if ($result['status'] == 'error') {
@@ -131,10 +135,63 @@ $data = date('Y-m-d');
                 </div>
             </div>
 
+            <div class="card shadow-sm mb-2 no-print">
+                <div class="card-body p-2">
+                    <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
+                        <div class="col-md-1 col-6">
+                            <input type="hidden" name="secao" value="agendas" />
+                            <input type="date" class="form-control form-control-sm" name="data" value="<?php echo $dataGet ?>">
+                        </div>
+                        <div class="col-md-2 col-12">
+                            <select class="form-select form-select-sm" name="tipo" required>
+                                <option value="null">Tudo</option>
+                                <?php
+                                $buscaTipos = $agendaTipoController->listarAgendaTipos($_SESSION['usuario_cliente']);
+                                if ($buscaTipos['status'] == 'success') {
+                                    foreach ($buscaTipos['dados'] as $tipo) {
+                                        if ($tipo['agenda_tipo_id'] == $tipoGet) {
+                                            echo '<option value="' . $tipo['agenda_tipo_id'] . '" selected>' . $tipo['agenda_tipo_nome'] . '</option>';
+                                        } else {
+                                            echo '<option value="' . $tipo['agenda_tipo_id'] . '">' . $tipo['agenda_tipo_nome'] . '</option>';
+                                        }
+                                    }
+                                }
+                                ?>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-12">
+                            <select class="form-select form-select-sm" name="situacao" required>
+                                <option value="null">Tudo</option>
+
+                                <?php
+                                $buscaSituacoes = $agendaSituacaoControllr->listarAgendaSituacoes($_SESSION['usuario_cliente']);
+                                if ($buscaSituacoes['status'] == 'success') {
+                                    foreach ($buscaSituacoes['dados'] as $situacao) {
+                                        if ($situacao['agenda_situacao_id'] == $situacaoGet) {
+                                            echo '<option value="' . $situacao['agenda_situacao_id'] . '" selected>' . $situacao['agenda_situacao_nome'] . '</option>';
+                                        } else {
+                                            echo '<option value="' . $situacao['agenda_situacao_id'] . '">' . $situacao['agenda_situacao_nome'] . '</option>';
+                                        }
+                                    }
+                                }
+                                ?>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-1 col-2">
+                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <?php
-                    $buscaAgendas = $agendaController->listarAgendas($_SESSION['usuario_cliente'], $data);
+                    $buscaAgendas = $agendaController->listarAgendas($dataGet, $tipoGet, $situacaoGet, $_SESSION['usuario_cliente']);
 
                     if ($buscaAgendas['status'] == 'success') {
                         echo ' <div class="accordion" id="accordionPanelsStayOpenExample">';
@@ -142,8 +199,8 @@ $data = date('Y-m-d');
                             echo '
                                     <div class="accordion-item">
                                             <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse' . $agenda['agenda_id'] . '" aria-expanded="true" aria-controls="panelsStayOpen-collapse' . $agenda['agenda_id'] . '">
-                                                ' . date('d/m - H:i', strtotime($agenda['agenda_data'])) . ' | ' . $agenda['agenda_titulo'] . '
+                                            <button class="accordion-button collapsed" style="font-size: 0.5em" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse' . $agenda['agenda_id'] . '" aria-expanded="true" aria-controls="panelsStayOpen-collapse' . $agenda['agenda_id'] . '">
+                                                ' . date('H:i', strtotime($agenda['agenda_data'])) . ' | ' . $agenda['agenda_titulo'] . '
                                             </button>
                                             </h2>
                                             <div id="panelsStayOpen-collapse' . $agenda['agenda_id'] . '" class="accordion-collapse collapse">
@@ -157,7 +214,7 @@ $data = date('Y-m-d');
                                         </div>
                                     ';
                         }
-                        echo '</div>'; // Fecha a div do accordion
+                        echo '</div>';
                     } else {
                         echo '<p class="card-text">' . $buscaAgendas['message'] . '</p>';
                     }
