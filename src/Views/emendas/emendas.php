@@ -21,8 +21,10 @@ $anoGet = isset($_GET['ano']) ? (int) $_GET['ano'] : date('Y');
 $statusGet = isset($_GET['status']) ? htmlspecialchars($_GET['status']) : 0;
 $objetivoGet = isset($_GET['objetivo']) ? htmlspecialchars($_GET['objetivo']) : 0;
 $tipoGet = isset($_GET['tipo']) ? (int) $_GET['tipo'] : 1;
+$estadoGet = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : $_SESSION['cliente_deputado_estado'];
+$municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio']) : null;
 
-$emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, $_SESSION['usuario_cliente']);
+//$emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, 'df', $_SESSION['usuario_cliente']);
 
 ?>
 
@@ -300,7 +302,7 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
                             </thead>
                             <tbody>
                                 <?php
-                                $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, $_SESSION['usuario_cliente']);
+                                $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, $estadoGet, $municipioGet, $_SESSION['usuario_cliente']);
                                 if ($emendas['status'] == 'success') {
                                     foreach ($emendas['dados'] as $emenda) {
                                         echo '<tr>';
@@ -330,14 +332,14 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
 
                     if ($totalPagina > 0 && $totalPagina != 1) {
                         echo '<ul class="pagination custom-pagination mt-2 mb-0">';
-                        echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=1&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '">Primeira</a></li>';
+                        echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=1&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '&estado=' . $estadoGet . '&municipio=' . $municipioGet . '">Primeira</a></li>';
 
                         for ($i = 1; $i < $totalPagina - 1; $i++) {
                             $pageNumber = $i + 1;
-                            echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=' . $pageNumber . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '">' . $pageNumber . '</a></li>';
+                            echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=' . $pageNumber . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '&estado=' . $estadoGet . '&municipio=' . $municipioGet . '">' . $pageNumber . '</a></li>';
                         }
 
-                        echo '<li class="page-item ' . ($pagina == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=' . $totalPagina . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '">Última</a></li>';
+                        echo '<li class="page-item ' . ($pagina == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=emendas&itens=' . $itens . '&pagina=' . $totalPagina . '&ordenarPor=' . $ordenarPor . '&ordem=' . $ordem . '&status=' . $statusGet . '&objetivo=' . $objetivoGet . '&tipo=' . $tipoGet . '&estado=' . $estadoGet . '&municipio=' . $municipioGet . '">Última</a></li>';
                         echo '</ul>';
                     }
                     ?>
@@ -349,10 +351,9 @@ $emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor
                     <h6 class="card-title mb-0"><i class="bi bi-cash-stack"></i> | R$
                         <?php
 
-                        if(isset($emendas['dados'][0]['total_valor'])){
+                        if (isset($emendas['dados'][0]['total_valor'])) {
                             echo number_format($emendas['dados'][0]['total_valor'], 2, ',', '.');
-
-                        }else{
+                        } else {
                             echo '0,00';
                         }
 

@@ -64,7 +64,7 @@ class EmendaModel {
      * @param string $cliente ID do cliente.
      * @return array Retorna um array associativo com os dados das emendas.
      */
-    public function listar($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $cliente) {
+    public function listar($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $estado, $municipio,  $cliente) {
 
         // Converte os parâmetros para inteiros
         $pagina = (int)$pagina;
@@ -74,7 +74,8 @@ class EmendaModel {
         // Inicializa a parte WHERE da query
         $where = "WHERE emenda_tipo = :tipo 
                   AND emenda_ano = :ano 
-                  AND emenda_cliente = :cliente";
+                  AND emenda_cliente = :cliente
+                  AND emenda_estado = :estado";
 
         // Condicional para aplicar o filtro de 'status' ou 'objetivo'
         if ($status != 0) {
@@ -83,6 +84,10 @@ class EmendaModel {
 
         if ($objetivo != 0) {
             $where .= " AND emenda_objetivo = :objetivo";
+        }
+
+        if (!empty($municipio)) {
+            $where .= " AND emenda_municipio = :municipio";
         }
 
         // Construção da query com total
@@ -101,6 +106,8 @@ class EmendaModel {
         $stmt->bindValue(':tipo', $tipo, PDO::PARAM_STR);
         $stmt->bindValue(':ano', $ano, PDO::PARAM_INT);
         $stmt->bindValue(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindValue(':estado', $estado, PDO::PARAM_STR);
+
 
         // Bind para 'status' se for diferente de zero
         if ($status != 0) {
@@ -110,6 +117,10 @@ class EmendaModel {
         // Bind para 'objetivo' se for diferente de zero
         if ($objetivo != 0) {
             $stmt->bindParam(':objetivo', $objetivo, PDO::PARAM_STR);
+        }
+
+        if (!empty($municipio)) {
+            $stmt->bindParam(':municipio', $municipio, PDO::PARAM_STR);
         }
 
         // Bind para offset e itens

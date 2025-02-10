@@ -118,9 +118,9 @@ class EmendaController {
      * @param string $cliente ID do cliente.
      * @return array Retorna um array com o status da operação, mensagem e lista de emendas.
      */
-    public function listarEmendas($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $cliente) {
+    public function listarEmendas($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $estado, $municipio,  $cliente) {
         try {
-            $emendas = $this->emendaModel->listar($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $cliente);
+            $emendas = $this->emendaModel->listar($itens, $pagina, $ordem, $ordenarPor, $status, $tipo, $objetivo, $ano, $estado, $municipio,  $cliente);
 
 
             $total = (isset($emendas[0]['total'])) ? $emendas[0]['total'] : 0;
