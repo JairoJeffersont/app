@@ -252,9 +252,6 @@ INSERT INTO documentos_tipos (documento_tipo_id, documento_tipo_nome, documento_
 VALUES (7, 'Termo de Compromisso', 'Documento que formaliza um compromisso ou acordo entre as partes', 1, 1);
 
 
-
-
-
 CREATE TABLE documentos(
     documento_id varchar(36) NOT NULL DEFAULT (UUID()),
     documento_titulo VARCHAR(255) NOT NULL UNIQUE,
@@ -294,6 +291,7 @@ INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_
 INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_status_descricao,postagem_status_criado_por, postagem_status_cliente) VALUES (3, 'Em aprovação', 'Postagem em fase de aprovação', 1,1);
 INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_status_descricao,postagem_status_criado_por, postagem_status_cliente) VALUES (4, 'Aprovada', 'Postagem aprovada', 1,1);
 INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_status_descricao,postagem_status_criado_por, postagem_status_cliente) VALUES (5, 'Postada', 'Postagem postada', 1,1);
+
 CREATE TABLE postagens(
     postagem_id varchar(36) NOT NULL DEFAULT (UUID()),
     postagem_titulo VARCHAR(255) NOT NULL UNIQUE,
@@ -435,9 +433,6 @@ CREATE TABLE emendas (
     CONSTRAINT fk_emenda_cliente FOREIGN KEY (emenda_cliente) REFERENCES cliente (cliente_id),
     CONSTRAINT fk_emenda_orgao FOREIGN KEY (emenda_orgao) REFERENCES orgaos (orgao_id)
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
-
-
 
 
 CREATE TABLE proposicoes (
