@@ -46,13 +46,20 @@ class AgendaController
     public function criarAgenda($dados)
     {
         $camposObrigatorios = ['agenda_titulo', 'agenda_situacao', 'agenda_tipo', 'agenda_data', 'agenda_local', 'agenda_estado', 'agenda_criada_por', 'agenda_cliente'];
-
+    
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
                 return ['status' => 'bad_request', 'message' => "O campo '$campo' é obrigatório."];
             }
         }
-
+    
+        $dataAtual = date('Y-m-d');
+        $dataAgenda = date('Y-m-d', strtotime($dados['agenda_data']));
+    
+        if ($dataAgenda < $dataAtual) {
+            return ['status' => 'bad_request', 'message' => "A data da agenda não pode ser no passado."];
+        }
+    
         try {
             $this->agendaModel->criar($dados);
             return ['status' => 'success', 'message' => 'Agenda criada com sucesso.'];
@@ -60,12 +67,13 @@ class AgendaController
             if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
                 return ['status' => 'duplicated', 'message' => 'Já existe uma agenda com esse título.'];
             }
-
+    
             $erro_id = uniqid();
             $this->logger->novoLog('agenda_log', $e->getMessage() . ' | ' . $erro_id);
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
+    
 
     /**
      * Método para atualizar os dados de uma agenda existente.
