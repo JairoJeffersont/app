@@ -213,31 +213,34 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                         foreach ($buscaAgendas['dados'] as $agenda) {
                             echo '
                                     <div class="accordion-item">
-                                            <h2 class="accordion-header">
+                                        <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" style="font-size: 0.5em" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse' . $agenda['agenda_id'] . '" aria-expanded="true" aria-controls="panelsStayOpen-collapse' . $agenda['agenda_id'] . '">
                                                 ' . date('H:i', strtotime($agenda['agenda_data'])) . ' | ' . $agenda['agenda_titulo'] . '
                                             </button>
-                                            </h2>
-                                            <div id="panelsStayOpen-collapse' . $agenda['agenda_id'] . '" class="accordion-collapse collapse">
-                                                <div class="accordion-body" style="font-size: 0.9em">
-                                                    <p class="card-text mb-1"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_tipo_nome'] . '</p>
-                                                    <p class="card-text mb-3"><i class="bi bi-arrow-right-short"></i> <b>' . $agenda['agenda_situacao_nome'] . '</b></p>
-                                                    <p class="card-text mb-3"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_local'] . ' - ' . $agenda['agenda_estado'] . '</p>
-                                                    <p class="card-text mb-0"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_informacoes'] . '</p>
+                                        </h2>
+                                        <div id="panelsStayOpen-collapse' . $agenda['agenda_id'] . '" class="accordion-collapse collapse">
+                                            <div class="accordion-body" style="font-size: 0.9em">
+                                                <p class="card-text mb-1"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_tipo_nome'] . '</p>
+                                                <p class="card-text mb-3"><i class="bi bi-arrow-right-short"></i> <b>' . $agenda['agenda_situacao_nome'] . '</b></p>
+                                                <p class="card-text mb-3"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_local'] . ' - ' . $agenda['agenda_estado'] . '</p>
+                                                <p class="card-text mb-0"><i class="bi bi-arrow-right-short"></i> ' . $agenda['agenda_informacoes'] . '</p><hr>
+                                                
+                                                <div class="d-flex gap-1 mt-2">
+                                                    <a href="?secao=agenda&id=' . $agenda['agenda_id'] . '" class="btn btn-sm btn-primary px-2 py-1" style="font-size: 0.9em"><i class="bi bi-pencil"></i> Editar</a>
+                                                    <button class="btn btn-sm btn-success px-2 py-1" style="font-size: 0.9em"><i class="bi bi-whatsapp"></i> Enviar</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    ';
+                                    </div>
+                                ';
                         }
                         echo '</div>';
                     } else {
-                        echo '<p class="card-text">Nenhuma agenda para o dia <b>'.date('d/m', strtotime($dataGet)).'</b></p>';
+                        echo '<p class="card-text">Nenhuma agenda para o dia <b>' . date('d/m', strtotime($dataGet)) . '</b></p>';
                     }
                     ?>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

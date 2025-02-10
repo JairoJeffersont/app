@@ -30,6 +30,8 @@ if ($buscaAgenda['status'] == 'not_found' || $buscaAgenda['status'] == 'error') 
             <div class="card mb-2 ">
                 <div class="card-body p-1">
                     <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
+                    <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=agendas" role="button"><i class="bi bi-arrow-left"></i> Voltar</a>
+
                 </div>
             </div>
             <div class="card mb-2 card-description">
