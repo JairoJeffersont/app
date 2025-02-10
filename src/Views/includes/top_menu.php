@@ -20,6 +20,8 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?secao=status-emendas">Status de emenda</a>
                         <a class="dropdown-item" href="?secao=objetivos-emendas">Objetivos da emenda</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="?secao=tipos-agendas">Tipos de agenda</a>
 
 
                     </div>

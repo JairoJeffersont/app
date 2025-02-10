@@ -463,6 +463,24 @@ CREATE TABLE proposicoes_autores (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+CREATE TABLE agenda_tipo (
+    agenda_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    agenda_tipo_nome varchar(255) NOT NULL UNIQUE,
+    agenda_tipo_descricao TEXT NOT NULL,
+    agenda_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    agenda_tipo_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    agenda_tipo_criado_por varchar(36) NOT NULL,
+    agenda_tipo_cliente varchar(36) NOT NULL,
+    PRIMARY KEY (agenda_tipo_id),
+    CONSTRAINT fk_agenda_tipo_criado_por FOREIGN KEY (agenda_tipo_criado_por) REFERENCES usuario (usuario_id),
+    CONSTRAINT fk_agenda_tipo_status_cliente FOREIGN KEY (agenda_tipo_cliente) REFERENCES cliente (cliente_id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
+INSERT INTO agenda_tipo (agenda_tipo_id, agenda_tipo_nome, agenda_tipo_descricao, agenda_tipo_criado_por, agenda_tipo_cliente)
+VALUES (1, 'Agenda parlamentar', 'Agenda legislativa do deputado.', '1', '1'),(2, 'Agenda partidária', 'Agenda relacionada ao partido.', '1', '1'), (3, 'Agenda pessoa', 'Agenda pessoal do parlamentar.', '1', '1')
+
+
+
 INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao,pessoas_profissoes_criado_por, pessoas_profissoes_cliente) VALUES (1, 'Profissão não informada', 'Profissão não informada', 1, 1);
 
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
@@ -481,3 +499,4 @@ CREATE VIEW view_proposicoes AS SELECT proposicoes.*, proposicoes_autores.propos
 CREATE VIEW view_emendas_status AS SELECT emendas_status.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_status INNER JOIN usuario ON emendas_status.emendas_status_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_status.emendas_status_cliente = cliente.cliente_id ORDER BY emendas_status.emendas_status_nome ASC;
 CREATE VIEW view_emendas_objetivos AS SELECT emendas_objetivos.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_objetivos INNER JOIN usuario ON emendas_objetivos.emendas_objetivos_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_objetivos.emendas_objetivos_cliente = cliente.cliente_id ORDER BY emendas_objetivos.emendas_objetivos_nome ASC;
 CREATE VIEW view_emendas AS SELECT emendas.*, emendas_status.emendas_status_nome, emendas_objetivos.emendas_objetivos_nome, orgaos.orgao_nome, usuario.usuario_nome FROM emendas INNER JOIN emendas_status ON emendas.emenda_status = emendas_status.emendas_status_id INNER JOIN emendas_objetivos ON emendas.emenda_objetivo = emendas_objetivos.emendas_objetivos_id INNER JOIN orgaos ON emendas.emenda_orgao = orgaos.orgao_id INNER JOIN usuario ON emendas.emenda_criado_por = usuario.usuario_id;
+CREATE VIEW view_agenda_tipo AS SELECT agenda_tipo.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_tipo INNER JOIN usuario ON agenda_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_tipo_cliente = cliente.cliente_id ORDER BY agenda_tipo.agenda_tipo_nome ASC;

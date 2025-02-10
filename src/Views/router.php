@@ -49,7 +49,11 @@ $rotas = [
     'editar-objetivo-emenda' => './src/Views/emendas/editar-objetivo-emenda.php',
     'emendas' => './src/Views/emendas/emendas.php',
     'emenda' => './src/Views/emendas/editar-emenda.php',
-    'estatisticas-emendas' => './src/Views/emendas/emendas-estatisticas.php'
+    'estatisticas-emendas' => './src/Views/emendas/emendas-estatisticas.php',
+    'tipos-agendas' => './src/Views/agenda/tipos-agendas.php',
+    'tipo-agenda' => './src/Views/agenda/editar-tipo-agenda.php',
+
+
 
     
 ];
