@@ -52,6 +52,9 @@ $rotas = [
     'estatisticas-emendas' => './src/Views/emendas/emendas-estatisticas.php',
     'tipos-agendas' => './src/Views/agenda/tipos-agendas.php',
     'tipo-agenda' => './src/Views/agenda/editar-tipo-agenda.php',
+    'situacoes-agendas' => './src/Views/agenda/situacoes-agendas.php',
+
+    'situacao-agenda' => './src/Views/agenda/editar-situacao-agenda.php',
 
 
 

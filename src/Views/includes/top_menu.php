@@ -22,6 +22,8 @@
                         <a class="dropdown-item" href="?secao=objetivos-emendas">Objetivos da emenda</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?secao=tipos-agendas">Tipos de agenda</a>
+                        <a class="dropdown-item" href="?secao=situacoes-agendas">Situações da agenda</a>
+
 
 
                     </div>
