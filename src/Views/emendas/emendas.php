@@ -24,7 +24,6 @@ $tipoGet = isset($_GET['tipo']) ? (int) $_GET['tipo'] : 1;
 $estadoGet = isset($_GET['estado']) ? htmlspecialchars($_GET['estado']) : $_SESSION['cliente_deputado_estado'];
 $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio']) : null;
 
-//$emendas = $emendaController->listarEmendas($itens, $pagina, $ordem, $ordenarPor, $statusGet, $tipoGet, $objetivoGet, $anoGet, 'df', $_SESSION['usuario_cliente']);
 
 ?>
 
@@ -396,12 +395,13 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
             selectEstado2.empty();
             selectEstado2.append('<option value="" selected>UF</option>');
             data.forEach(estado => {
-                if(estado.sigla == '<?php echo $_SESSION['cliente_deputado_estado'] ?>'){
-                    selectEstado2.append(`<option value="${estado.sigla}" selected>${estado.sigla}</option>`);''
-                    setTimeout(function(){
-                        carregarMunicipios('<?php echo $_SESSION['cliente_deputado_estado'] ?>');
+                if (estado.sigla == '<?php echo $estadoGet ?>') {
+                    selectEstado2.append(`<option value="${estado.sigla}" selected>${estado.sigla}</option>`);
+                    ''
+                    setTimeout(function() {
+                        carregarMunicipios('<?php echo $estadoGet ?>');
                     }, 500)
-                }else{
+                } else {
                     selectEstado2.append(`<option value="${estado.sigla}">${estado.sigla}</option>`);
                 }
             });
@@ -421,10 +421,10 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
             selectMunicipio2.empty();
             selectMunicipio2.append('<option value="" selected>Município</option>');
             data.forEach(municipio => {
-                if(municipio.nome == '<?php echo $municipioGet ?>'){
+                if (municipio.nome == '<?php echo $municipioGet ?>') {
                     selectMunicipio2.append(`<option value="${municipio.nome}" selected>${municipio.nome}</option>`);
 
-                }else{
+                } else {
                     selectMunicipio2.append(`<option value="${municipio.nome}">${municipio.nome}</option>`);
 
                 }
