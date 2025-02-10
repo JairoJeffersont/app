@@ -53,6 +53,9 @@ $rotas = [
     'tipos-agendas' => './src/Views/agenda/tipos-agendas.php',
     'tipo-agenda' => './src/Views/agenda/editar-tipo-agenda.php',
     'situacoes-agendas' => './src/Views/agenda/situacoes-agendas.php',
+    'agendas' => './src/Views/agenda/agendas.php',
+    'agenda' => './src/Views/agenda/editar-agenda.php',
+
 
     'situacao-agenda' => './src/Views/agenda/editar-situacao-agenda.php',
 

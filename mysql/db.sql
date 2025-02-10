@@ -497,14 +497,37 @@ CREATE TABLE agenda_situacao (
 
 INSERT INTO agenda_situacao (agenda_situacao_id, agenda_situacao_nome, agenda_situacao_descricao, agenda_situacao_criado_por, agenda_situacao_cliente)
 VALUES 
-(1, 'Agendada', 'O compromisso foi marcado, mas ainda não ocorreu.', 1, 1),
-(2, 'Finalizada', 'O compromisso ou tarefa foi completado ou realizado com sucesso.', 1, 1),
-(3, 'Cancelada', 'O compromisso foi desmarcado ou cancelado, por algum motivo, e não será mais realizado.', 1, 1),
-(4, 'Pendente', 'O compromisso ou tarefa foi adiado ou está esperando algum tipo de ação ou decisão antes de ser realizado.', 1, 1),
-(5, 'Em Andamento', 'O compromisso ou tarefa está em execução ou já começou, mas ainda não foi concluído.', 1, 1),
-(6, 'Remarcada', 'O compromisso foi reagendado para outro dia e hora, após uma alteração ou conflito de agenda.', 1, 1),
-(7, 'Atrasada', 'O compromisso não foi cumprido no horário previsto e está atrasado.', 1, 1),
-(8, 'Confirmada', 'O compromisso foi confirmado por todas as partes envolvidas, garantindo que ocorrerá como planejado.', 1, 1);
+(1, 'Situação não informada', 'Situação não informada.', 1, 1),
+(2, 'Agendada', 'O compromisso foi marcado, mas ainda não ocorreu.', 1, 1),
+(3, 'Finalizada', 'O compromisso ou tarefa foi completado ou realizado com sucesso.', 1, 1),
+(4, 'Cancelada', 'O compromisso foi desmarcado ou cancelado, por algum motivo, e não será mais realizado.', 1, 1),
+(5, 'Pendente', 'O compromisso ou tarefa foi adiado ou está esperando algum tipo de ação ou decisão antes de ser realizado.', 1, 1),
+(6, 'Em Andamento', 'O compromisso ou tarefa está em execução ou já começou, mas ainda não foi concluído.', 1, 1),
+(7, 'Remarcada', 'O compromisso foi reagendado para outro dia e hora, após uma alteração ou conflito de agenda.', 1, 1),
+(8, 'Atrasada', 'O compromisso não foi cumprido no horário previsto e está atrasado.', 1, 1),
+(9, 'Confirmada', 'O compromisso foi confirmado por todas as partes envolvidas, garantindo que ocorrerá como planejado.', 1, 1);
+
+
+CREATE TABLE agenda(
+    agenda_id varchar(36) NOT NULL DEFAULT (UUID()),
+    agenda_titulo VARCHAR(255) NOT NULL UNIQUE,
+    agenda_situacao VARCHAR(255) NOT NULL,
+    agenda_tipo VARCHAR(255) NOT NULL,
+    agenda_data TIMESTAMP NOT NULL,
+    agenda_local TEXT NOT NULL,
+    agenda_estado VARCHAR(2) NOT NULL,
+    agenda_informacoes TEXT DEFAULT NULL,
+    agenda_criada_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    agenda_atualizada_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    agenda_criada_por varchar(36) NOT NULL,
+    agenda_cliente varchar(36) NOT NULL,
+    PRIMARY KEY (agenda_id),
+    CONSTRAINT fk_agenda_tipo FOREIGN KEY (agenda_tipo) REFERENCES agenda_tipo(agenda_tipo_id),
+    CONSTRAINT fk_agenda_situacao FOREIGN KEY (agenda_situacao) REFERENCES agenda_situacao(agenda_situacao_id),
+    CONSTRAINT fk_agenda_criada_por FOREIGN KEY (agenda_criada_por) REFERENCES usuario(usuario_id),
+    CONSTRAINT fk_agenda_cliente FOREIGN KEY (agenda_cliente) REFERENCES cliente(cliente_id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+
 
 
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
@@ -525,3 +548,4 @@ CREATE VIEW view_emendas_objetivos AS SELECT emendas_objetivos.*, usuario.usuari
 CREATE VIEW view_emendas AS SELECT emendas.*, emendas_status.emendas_status_nome, emendas_objetivos.emendas_objetivos_nome, orgaos.orgao_nome, usuario.usuario_nome FROM emendas INNER JOIN emendas_status ON emendas.emenda_status = emendas_status.emendas_status_id INNER JOIN emendas_objetivos ON emendas.emenda_objetivo = emendas_objetivos.emendas_objetivos_id INNER JOIN orgaos ON emendas.emenda_orgao = orgaos.orgao_id INNER JOIN usuario ON emendas.emenda_criado_por = usuario.usuario_id;
 CREATE VIEW view_agenda_tipo AS SELECT agenda_tipo.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_tipo INNER JOIN usuario ON agenda_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_tipo_cliente = cliente.cliente_id ORDER BY agenda_tipo.agenda_tipo_nome ASC;
 CREATE VIEW view_agenda_situacao AS SELECT agenda_situacao.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_situacao INNER JOIN usuario ON agenda_situacao_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_situacao_cliente = cliente.cliente_id ORDER BY agenda_situacao.agenda_situacao_nome ASC;
+CREATE VIEW view_agenda AS SELECT agenda.*, usuario.usuario_nome, cliente.cliente_nome, agenda_tipo.agenda_tipo_nome, agenda_situacao.agenda_situacao_nome FROM agenda INNER JOIN agenda_situacao ON agenda.agenda_situacao = agenda_situacao.agenda_situacao_id INNER JOIN agenda_tipo ON agenda.agenda_tipo = agenda_tipo.agenda_tipo_id INNER JOIN usuario ON agenda.agenda_criada_por = usuario.usuario_id INNER JOIN cliente ON agenda.agenda_cliente = cliente.cliente_id;

@@ -33,19 +33,14 @@
 
     <?php include './src/Views/router.php' ?>
 
-
-
-
     <?php
-    if (isset($_SESSION['usuario_id'])) {
+    /*if (isset($_SESSION['usuario_id'])) {
         echo ' <footer class="fixed-bottom text-end py-1 bg-light shadow-sm">
-                <p class="mb-0  me-2">Gabinete: '.$_SESSION['cliente_deputado_nome'].'/'.$_SESSION['cliente_deputado_estado'].'&nbsp;&nbsp; - &nbsp;&nbsp;Gestor: '.$_SESSION['cliente_nome'].'</p>
+                <p class="mb-0  me-4">Gabinete: '.$_SESSION['cliente_deputado_nome'].'/'.$_SESSION['cliente_deputado_estado'].'&nbsp;&nbsp; - &nbsp;&nbsp;Gestor: '.$_SESSION['cliente_nome'].'</p>
             </footer>';
-    }
-
+    }*/
 
     ?>
-
 
     <script src="public/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="public/vendor/startbootstrap-simple-sidebar-master/dist/js/scripts.js"></script>
