@@ -36,6 +36,24 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                     <p class="card-text mb-0">Todos os campos são obrigatórios</p>
                 </div>
             </div>
+            <div class="card shadow-sm mb-2 no-print">
+                <div class="card-body p-0">
+                    <nav class="navbar navbar-expand bg-body-tertiary p-0 ">
+                        <div class="container-fluid p-0">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-0 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active p-1" aria-current="page" href="#">
+                                            <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_tipo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo tipo</button>
+                                            <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_nova_situacao" type="button"><i class="bi bi-plus-circle-fill"></i> Nova situação</button>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
             <div class="card shadow-sm mb-2">
                 <div class="card-body p-2">
                     <?php
@@ -71,7 +89,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                         </div>
 
                         <div class="col-md-4 col-12">
-                            <select class="form-select form-select-sm" name="agenda_situacao" required>
+                            <select class="form-select form-select-sm" name="agenda_situacao" id="situacao" required>
 
                                 <?php
                                 $buscaSituacoes = $agendaSituacaoControllr->listarAgendaSituacoes($_SESSION['usuario_cliente']);
@@ -90,7 +108,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                         </div>
 
                         <div class="col-md-4 col-12">
-                            <select class="form-select form-select-sm" name="agenda_tipo" required>
+                            <select class="form-select form-select-sm" name="agenda_tipo" id="tipo" required>
 
                                 <?php
                                 $buscaTipos = $agendaTipoController->listarAgendaTipos($_SESSION['usuario_cliente']);
@@ -143,7 +161,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                             <input type="date" class="form-control form-control-sm" name="data" value="<?php echo $dataGet ?>">
                         </div>
                         <div class="col-md-2 col-5">
-                            <select class="form-select form-select-sm" name="tipo" required>
+                            <select class="form-select form-select-sm" name="tipo"  required>
                                 <option value="null">Tudo</option>
                                 <?php
                                 $buscaTipos = $agendaTipoController->listarAgendaTipos($_SESSION['usuario_cliente']);
@@ -226,3 +244,40 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
         </div>
     </div>
 </div>
+<script>
+    $('#btn_novo_tipo').click(function() {
+        if (window.confirm("Você realmente deseja inserir um novo tipo?")) {
+            window.location.href = "?secao=tipos-agendas";
+        } else {
+            return false;
+        }
+    });
+
+    $('#btn_nova_situacao').click(function() {
+        if (window.confirm("Você realmente deseja inserir uma nova situação?")) {
+            window.location.href = "?secao=situacoes-agendas";
+        } else {
+            return false;
+        }
+    });
+
+    $('#situacao').change(function() {
+        if ($('#situacao').val() == '+') {
+            if (window.confirm("Você realmente deseja inserir uma nova situação?")) {
+                window.location.href = "?secao=situacoes-agendas";
+            } else {
+                $('#situacao').val(1000).change();
+            }
+        }
+    });
+
+    $('#tipo').change(function() {
+        if ($('#tipo').val() == '+') {
+            if (window.confirm("Você realmente deseja inserir um novo tipo?")) {
+                window.location.href = "?secao=tipos-agendas";
+            } else {
+                $('#tipo').val(1000).change();
+            }
+        }
+    });
+</script>
