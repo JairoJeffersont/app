@@ -50,9 +50,11 @@ class EmailSender {
             $this->mailer->Password = 'Intell@3103';
             $this->mailer->Sender = 'contato@politikaassessoria.com.br';
             $this->mailer->From = 'contato@politikaassessoria.com.br';
-            $this->mailer->FromName = 'Contato';
+            $this->mailer->FromName = 'Gabinete Digital';
             $this->mailer->addAddress($toEmail, 'Nome - Recebe1');
-
+            $this->mailer->CharSet = 'UTF-8';
+            $this->mailer->Encoding = 'base64';
+            
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $assunto;
             $this->mailer->Body = $message;

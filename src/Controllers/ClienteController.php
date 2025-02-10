@@ -14,7 +14,8 @@ use PDOException;
  * Controla as operações relacionadas a clientes, incluindo criação, atualização, listagem,
  * busca e exclusão de clientes.
  */
-class ClienteController {
+class ClienteController
+{
 
     /**
      * @var ClienteModel Instância do modelo ClienteModel para interagir com os dados.
@@ -41,7 +42,8 @@ class ClienteController {
      *
      * Inicializa as instâncias do modelo ClienteModel e do Logger para gerenciamento de logs.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->clienteModel = new ClienteModel();
         $this->logger = new Logger();
         $this->emailSender = new EmailSender();
@@ -57,7 +59,8 @@ class ClienteController {
      *                     cliente_deputado_estado, cliente_cpf.
      * @return array Retorna um array com o status da operação e mensagem.
      */
-    public function criarCliente($dados) {
+    public function criarCliente($dados)
+    {
         $camposObrigatorios = ['cliente_nome', 'cliente_email', 'cliente_telefone', 'cliente_ativo', 'cliente_assinaturas',  'cliente_deputado_nome', 'cliente_deputado_estado', 'cliente_cpf', 'cliente_deputado_tipo'];
 
         foreach ($camposObrigatorios as $campo) {
@@ -74,7 +77,77 @@ class ClienteController {
             $this->clienteModel->criar($dados);
             $buscaUltimo = $this->listarClientes();
             $clienteid = $buscaUltimo['dados'][0]['cliente_id'];
-            $this->emailSender->sendEmail($dados['cliente_email'], 'Gabinete Digital - Instruções para acesso', $this->configs['app']['base_url'].'?secao=novo-usuario&token='.$clienteid, 'Instruções de acesso'); 
+
+
+            $mensagem = '
+           <!DOCTYPE html>
+                    <html lang="pt-BR">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Bem-vindo!</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                            }
+                            .container {
+                                width: 100%;
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background: #ffffff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #333;
+                            }
+                            p {
+                                color: #555;
+                                line-height: 1.5;
+                            }
+                            .button {
+                                display: inline-block;
+                                background: #007bff;
+                                color: #ffffff;
+                                padding: 10px 20px;
+                                text-decoration: none;
+                                border-radius: 5px;
+                                margin-top: 10px;
+                            }
+                            .footer {
+                                margin-top: 20px;
+                                font-size: 12px;
+                                color: #888;
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+
+                        <div class="container">
+                            <h1>Olá, '.$dados['cliente_nome'].'!</h1>
+                            <p>Seja bem-vindo ao <strong>Gabinete Digital</strong>. Encaminhe esse email para os usuários do gabinete que irão acessar o sistema.</p>
+                            <p>
+                                <a href="'.$this->configs['app']['base_url'] . '?secao=novo-usuario&token=' . $clienteid.'" class="button" style="color:white">Acessar minha conta</a>
+                            </p>
+                            <p>Se você não solicitou este acesso, ignore este e-mail.</p>
+                            <div class="footer">
+                                <p>&copy; 2025 Gabinete Digital. Todos os direitos reservados.</p>
+                            </div>
+                        </div>
+
+                    </body>
+                    </html>
+
+            
+            ';
+
+
+            $this->emailSender->sendEmail($dados['cliente_email'], 'Instruções para acesso', $mensagem, 'Instruções de acesso');
             return ['status' => 'success', 'message' => 'Cliente inserido com sucesso. Em breve você receberá um email com as instruções para acesso.'];
         } catch (PDOException $e) {
             if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
@@ -97,7 +170,8 @@ class ClienteController {
      *                     cliente_deputado_nome.
      * @return array Retorna um array com o status da operação e mensagem.
      */
-    public function atualizarCliente($cliente_id, $dados) {
+    public function atualizarCliente($cliente_id, $dados)
+    {
         $camposObrigatorios = ['cliente_nome', 'cliente_email', 'cliente_telefone', 'cliente_ativo', 'cliente_assinaturas', 'cliente_deputado',  'cliente_deputado_nome', 'cliente_deputado_tipo'];
 
         foreach ($camposObrigatorios as $campo) {
@@ -125,7 +199,8 @@ class ClienteController {
      *
      * @return array Retorna um array com o status da operação, mensagem e lista de clientes.
      */
-    public function listarClientes() {
+    public function listarClientes()
+    {
         try {
             $busca = $this->clienteModel->listar();
 
@@ -148,7 +223,8 @@ class ClienteController {
      * @param mixed $valor Valor correspondente à coluna para busca.
      * @return array Retorna um array com o status da operação, mensagem e dados do cliente ou mensagem de cliente não encontrado.
      */
-    public function buscarCliente($coluna, $valor) {
+    public function buscarCliente($coluna, $valor)
+    {
 
         $colunasPermitidas = ['cliente_id', 'cliente_email'];
 
@@ -176,7 +252,8 @@ class ClienteController {
      * @param int $cliente_id ID do cliente a ser apagado.
      * @return array Retorna um array com o status da operação e mensagem de sucesso ou erro.
      */
-    public function apagarCliente($cliente_id) {
+    public function apagarCliente($cliente_id)
+    {
         try {
             $result = $this->buscarCliente('cliente_id', $cliente_id);
 
@@ -205,7 +282,8 @@ class ClienteController {
      * @param int $status Novo status do cliente.
      * @return array Retorna um array com o status da operação, mensagem de sucesso, erro ou status inválido.
      */
-    public function mudarStatusCliente($cliente_id, $status) {
+    public function mudarStatusCliente($cliente_id, $status)
+    {
 
         if ($status === null || $status === '') {
             return ['status' => 'bad_request', 'message' => 'Status não pode ser nulo ou vazio.'];
