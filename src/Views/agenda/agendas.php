@@ -90,7 +90,6 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
 
                         <div class="col-md-4 col-12">
                             <select class="form-select form-select-sm" name="agenda_situacao" id="situacao" required>
-
                                 <?php
                                 $buscaSituacoes = $agendaSituacaoControllr->listarAgendaSituacoes($_SESSION['usuario_cliente']);
                                 if ($buscaSituacoes['status'] == 'success') {
@@ -109,7 +108,6 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
 
                         <div class="col-md-4 col-12">
                             <select class="form-select form-select-sm" name="agenda_tipo" id="tipo" required>
-
                                 <?php
                                 $buscaTipos = $agendaTipoController->listarAgendaTipos($_SESSION['usuario_cliente']);
                                 if ($buscaTipos['status'] == 'success') {
@@ -137,7 +135,6 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                                 <option value="DF">Brasília</option>
                                 <option value="<?php echo $_SESSION['cliente_deputado_estado'] ?>">Estado</option>
                                 <option value="Outro">Outro</option>
-
                             </select>
                         </div>
 
@@ -161,7 +158,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                             <input type="date" class="form-control form-control-sm" name="data" value="<?php echo $dataGet ?>">
                         </div>
                         <div class="col-md-2 col-5">
-                            <select class="form-select form-select-sm" name="tipo"  required>
+                            <select class="form-select form-select-sm" name="tipo" required>
                                 <option value="null">Tudo</option>
                                 <?php
                                 $buscaTipos = $agendaTipoController->listarAgendaTipos($_SESSION['usuario_cliente']);
@@ -234,7 +231,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                         }
                         echo '</div>';
                     } else {
-                        echo '<p class="card-text">' . $buscaAgendas['message'] . '</p>';
+                        echo '<p class="card-text">Nenhuma agenda para o dia <b>'.date('d/m', strtotime($dataGet)).'</b></p>';
                     }
                     ?>
                 </div>

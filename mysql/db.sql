@@ -480,7 +480,7 @@ CREATE TABLE agenda_tipo (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 INSERT INTO agenda_tipo (agenda_tipo_id, agenda_tipo_nome, agenda_tipo_descricao, agenda_tipo_criado_por, agenda_tipo_cliente)
-VALUES (1, 'Agenda parlamentar', 'Agenda legislativa do deputado.', '1', '1'),(2, 'Agenda partidária', 'Agenda relacionada ao partido.', '1', '1'), (3, 'Agenda pessoa', 'Agenda pessoal do parlamentar.', '1', '1');
+VALUES (1, 'Agenda parlamentar', 'Agenda legislativa do deputado.', '1', '1'),(2, 'Agenda partidária', 'Agenda relacionada ao partido.', '1', '1'), (3, 'Agenda pessoal', 'Agenda pessoal do parlamentar.', '1', '1');
 
 CREATE TABLE agenda_situacao (
     agenda_situacao_id varchar(36) NOT NULL DEFAULT (UUID()),
