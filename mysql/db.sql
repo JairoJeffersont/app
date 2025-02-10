@@ -141,6 +141,9 @@ CREATE TABLE pessoas_profissoes (
     CONSTRAINT fk_pessoa_profissao_cliente FOREIGN KEY (pessoas_profissoes_cliente) REFERENCES cliente (cliente_id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
+INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao,pessoas_profissoes_criado_por, pessoas_profissoes_cliente) VALUES (1, 'Profissão não informada', 'Profissão não informada', 1, 1);
+
+
 INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao, pessoas_profissoes_criado_por, pessoas_profissoes_cliente) 
 VALUES 
 (2, 'Médico', 'Profissional responsável por diagnosticar e tratar doenças', 1, 1),
@@ -477,7 +480,7 @@ CREATE TABLE agenda_tipo (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 INSERT INTO agenda_tipo (agenda_tipo_id, agenda_tipo_nome, agenda_tipo_descricao, agenda_tipo_criado_por, agenda_tipo_cliente)
-VALUES (1, 'Agenda parlamentar', 'Agenda legislativa do deputado.', '1', '1'),(2, 'Agenda partidária', 'Agenda relacionada ao partido.', '1', '1'), (3, 'Agenda pessoa', 'Agenda pessoal do parlamentar.', '1', '1')
+VALUES (1, 'Agenda parlamentar', 'Agenda legislativa do deputado.', '1', '1'),(2, 'Agenda partidária', 'Agenda relacionada ao partido.', '1', '1'), (3, 'Agenda pessoa', 'Agenda pessoal do parlamentar.', '1', '1');
 
 CREATE TABLE agenda_situacao (
     agenda_situacao_id varchar(36) NOT NULL DEFAULT (UUID()),
@@ -503,8 +506,6 @@ VALUES
 (7, 'Atrasada', 'O compromisso não foi cumprido no horário previsto e está atrasado.', 1, 1),
 (8, 'Confirmada', 'O compromisso foi confirmado por todas as partes envolvidas, garantindo que ocorrerá como planejado.', 1, 1);
 
-
-INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao,pessoas_profissoes_criado_por, pessoas_profissoes_cliente) VALUES (1, 'Profissão não informada', 'Profissão não informada', 1, 1);
 
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
 CREATE VIEW view_orgaos_tipos AS SELECT orgaos_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM orgaos_tipos INNER JOIN usuario on orgaos_tipos.orgao_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON orgaos_tipos.orgao_tipo_cliente = cliente.cliente_id;
