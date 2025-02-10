@@ -227,7 +227,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                                                 
                                                 <div class="d-flex gap-1 mt-2">
                                                     <a href="?secao=agenda&id=' . $agenda['agenda_id'] . '" class="btn btn-sm btn-primary px-2 py-1" style="font-size: 0.9em"><i class="bi bi-pencil"></i> Editar</a>
-                                                    <button class="btn btn-sm btn-success px-2 py-1" style="font-size: 0.9em"><i class="bi bi-whatsapp"></i> Enviar</button>
+                                                    <!--<button class="btn btn-sm btn-success px-2 py-1" style="font-size: 0.9em"><i class="bi bi-whatsapp"></i> Enviar</button>-->
                                                 </div>
                                             </div>
                                         </div>
