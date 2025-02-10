@@ -139,7 +139,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                         </div>
 
                         <div class="col-md-12 col-12">
-                            <textarea class="form-control form-control-sm" name="agenda_informacoes" rows="10" placeholder="Informações da agenda" required></textarea>
+                            <textarea class="form-control form-control-sm" name="agenda_informacoes" rows="5" placeholder="Informações da agenda" required></textarea>
                         </div>
 
 
