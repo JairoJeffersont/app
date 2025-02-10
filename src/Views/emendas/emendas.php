@@ -270,7 +270,16 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                                 ?>
                             </select>
                         </div>
-
+                        <div class="col-md-2 col-6">
+                            <select class="form-select form-select-sm" id="estado2" name="estado" required>
+                                <option value="" selected>UF</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <select class="form-select form-select-sm" id="municipio2" name="municipio">
+                                <option value="" selected>Município</option>
+                            </select>
+                        </div>
                         <div class="col-md-2 col-6">
                             <select class="form-select form-select-sm" name="tipo" required>
                                 <option value="1" <?php echo $tipoGet == 1 ? 'selected' : ''; ?>>Emenda individual</option>
@@ -382,6 +391,20 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
             data.forEach(estado => {
                 selectEstado.append(`<option value="${estado.sigla}">${estado.sigla}</option>`);
             });
+
+            const selectEstado2 = $('#estado2');
+            selectEstado2.empty();
+            selectEstado2.append('<option value="" selected>UF</option>');
+            data.forEach(estado => {
+                if(estado.sigla == '<?php echo $_SESSION['cliente_deputado_estado'] ?>'){
+                    selectEstado2.append(`<option value="${estado.sigla}" selected>${estado.sigla}</option>`);''
+                    setTimeout(function(){
+                        carregarMunicipios('<?php echo $_SESSION['cliente_deputado_estado'] ?>');
+                    }, 500)
+                }else{
+                    selectEstado2.append(`<option value="${estado.sigla}">${estado.sigla}</option>`);
+                }
+            });
         });
     }
 
@@ -392,6 +415,19 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
             selectMunicipio.append('<option value="" selected>Município</option>');
             data.forEach(municipio => {
                 selectMunicipio.append(`<option value="${municipio.nome}">${municipio.nome}</option>`);
+            });
+
+            const selectMunicipio2 = $('#municipio2');
+            selectMunicipio2.empty();
+            selectMunicipio2.append('<option value="" selected>Município</option>');
+            data.forEach(municipio => {
+                if(municipio.nome == '<?php echo $municipioGet ?>'){
+                    selectMunicipio2.append(`<option value="${municipio.nome}" selected>${municipio.nome}</option>`);
+
+                }else{
+                    selectMunicipio2.append(`<option value="${municipio.nome}">${municipio.nome}</option>`);
+
+                }
             });
         });
     }
@@ -404,6 +440,16 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
             carregarMunicipios(estadoId);
         } else {
             $('#municipio').empty().append('<option value="" selected>Município</option>');
+        }
+    });
+
+    $('#estado2').change(function() {
+        const estadoId = $(this).val();
+        if (estadoId) {
+            $('#municipio2').empty().append('<option value="">Aguarde...</option>');
+            carregarMunicipios(estadoId);
+        } else {
+            $('#municipio2').empty().append('<option value="" selected>Município</option>');
         }
     });
 
