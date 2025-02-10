@@ -315,7 +315,7 @@ $municipioGet = isset($_GET['municipio']) ? htmlspecialchars($_GET['municipio'])
                                 if ($emendas['status'] == 'success') {
                                     foreach ($emendas['dados'] as $emenda) {
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap;"><a href="?secao=editar-emenda&id=' . $emenda['emenda_id'] . '">' . $emenda['emenda_numero'] . '</a></td>';
+                                        echo '<td style="white-space: nowrap;"><a href="?secao=emenda&id=' . $emenda['emenda_id'] . '">' . $emenda['emenda_numero'] . '</a></td>';
                                         echo '<td style="white-space: nowrap;">R$ ' . number_format($emenda['emenda_valor'], 2, ',', '.') . '</td>';
                                         echo '<td>' . $emenda['emenda_descricao'] . '</td>';
                                         echo '<td >' . $emenda['emendas_objetivos_nome'] . '</td>';
