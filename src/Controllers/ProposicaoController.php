@@ -8,7 +8,6 @@ use GabineteDigital\Middleware\GetJson;
 
 class ProposicaoController
 {
-
     private $getJson;
 
     public function __construct()
