@@ -17,7 +17,8 @@ use PDO;
  * 
  * @package GabineteDigital\Models
  */
-class ClienteModel {
+class ClienteModel
+{
 
     /** @var PDO Conexão com o banco de dados */
     private $conn;
@@ -27,7 +28,8 @@ class ClienteModel {
      * 
      * Inicializa a conexão com o banco de dados usando a classe `Database`.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $db = new Database();
         $this->conn = $db->getConnection();
     }
@@ -38,7 +40,8 @@ class ClienteModel {
      * @param array $dados Associativo com os dados do cliente (cliente_nome, cliente_email, cliente_telefone, cliente_endereco, cliente_cep, cliente_cpf_cnpj, cliente_ativo, cliente_assinaturas, cliente_deputado_id, cliente_deputado_nome, cliente_deputado_estado).
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
-    public function criar($dados) {
+    public function criar($dados)
+    {
         $query = "INSERT INTO cliente (cliente_nome, cliente_email, cliente_telefone, cliente_endereco, cliente_cep, cliente_cpf, cliente_ativo, cliente_assinaturas, cliente_deputado_nome, cliente_deputado_estado, cliente_deputado_tipo)
                   VALUES (:cliente_nome, :cliente_email, :cliente_telefone, :cliente_endereco, :cliente_cep, :cliente_cpf, :cliente_ativo, :cliente_assinaturas, :cliente_deputado_nome, :cliente_deputado_estado, :cliente_deputado_tipo)";
 
@@ -68,7 +71,8 @@ class ClienteModel {
      * @param array $dados Associativo com os novos dados do cliente (cliente_nome, cliente_email, cliente_telefone, cliente_endereco, cliente_cep, cliente_cpf, cliente_ativo, cliente_assinaturas, cliente_deputado_id, cliente_deputado_nome, cliente_deputado_estado).
      * @return bool Retorna `true` se a atualização foi bem-sucedida, `false` caso contrário.
      */
-    public function atualizar($cliente_id, $dados) {
+    public function atualizar($cliente_id, $dados)
+    {
         $query = "UPDATE cliente SET cliente_nome = :cliente_nome, cliente_email = :cliente_email, 
                   cliente_telefone = :cliente_telefone, cliente_ativo = :cliente_ativo, cliente_assinaturas = :cliente_assinaturas, cliente_endereco = :cliente_endereco, cliente_cep = :cliente_cep, cliente_cpf = :cliente_cpf, cliente_deputado_nome = :cliente_deputado_nome, cliente_deputado_estado = :cliente_deputado_estado, 
                   cliente_deputado_tipo = :cliente_deputado_tipo WHERE cliente_id = :cliente_id";
@@ -100,7 +104,8 @@ class ClienteModel {
      * @param int $status Novo status do cliente (0 para inativo, 1 para ativo).
      * @return bool Retorna `true` se a alteração foi bem-sucedida, `false` caso contrário.
      */
-    public function mudarStatusCliente($cliente_id, $status) {
+    public function mudarStatusCliente($cliente_id, $status)
+    {
         $query = "UPDATE cliente JOIN usuario ON cliente.cliente_id = usuario.usuario_cliente SET cliente_ativo = :status, usuario_ativo = :status WHERE cliente.cliente_id = :cliente_id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':cliente_id', $cliente_id, PDO::PARAM_STR);
@@ -113,7 +118,8 @@ class ClienteModel {
      * 
      * @return array Retorna um array associativo com os dados de todos os clientes, exceto o cliente com ID 1.
      */
-    public function listar() {
+    public function listar()
+    {
         $query = "SELECT * FROM cliente WHERE cliente_id <> '1' ORDER BY cliente_criado_em DESC";
 
         $stmt = $this->conn->prepare($query);
@@ -129,7 +135,8 @@ class ClienteModel {
      * @param mixed $valor Valor correspondente à coluna.
      * @return array Retorna um array associativo com os dados dos clientes encontrados.
      */
-    public function buscar($coluna, $valor) {
+    public function buscar($coluna, $valor)
+    {
         $query = "SELECT * FROM cliente WHERE $coluna = :valor AND cliente_id <> '1'";
 
         $stmt = $this->conn->prepare($query);
@@ -145,7 +152,8 @@ class ClienteModel {
      * @param int $cliente_id ID do cliente que será deletado.
      * @return bool Retorna `true` se a exclusão foi bem-sucedida, `false` caso contrário.
      */
-    public function apagar($cliente_id) {
+    public function apagar($cliente_id)
+    {
         $query = "DELETE FROM cliente WHERE cliente_id = :cliente_id";
 
         $stmt = $this->conn->prepare($query);
