@@ -46,6 +46,7 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
                                         <a class="nav-link active p-1" aria-current="page" href="#">
                                             <button class="btn btn-success btn-sm" style="font-size: 0.850em;" id="btn_novo_tipo" type="button"><i class="bi bi-plus-circle-fill"></i> Novo tipo</button>
                                             <button class="btn btn-secondary btn-sm" style="font-size: 0.850em;" id="btn_nova_situacao" type="button"><i class="bi bi-plus-circle-fill"></i> Nova situação</button>
+                                            <button class="btn btn-primary btn-sm" style="font-size: 0.850em;" id="btn_imprimir" type="button"><i class="bi bi-printer"></i> Imprimir agenda</button>
                                         </a>
                                     </li>
                                 </ul>
@@ -251,6 +252,10 @@ $situacaoGet = (isset($_GET['situacao']) && $_GET['situacao'] !== 'null') ? $_GE
         } else {
             return false;
         }
+    });
+
+    $('#btn_imprimir').click(function() {
+        window.open("?secao=imprimir-agenda&data=<?php echo $dataGet ?>&tipo=<?php echo $tipoGet ?>&situacao=<?php echo $situacaoGet ?>", '_blank');
     });
 
     $('#btn_nova_situacao').click(function() {
