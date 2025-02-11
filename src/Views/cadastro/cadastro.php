@@ -67,7 +67,7 @@ $clienteController = new ClienteController();
             <div class="col-md-6 col-6">
                 <input type="text" class="form-control form-control-sm" name="cliente_assinaturas" placeholder="Licenças" data-mask="00">
             </div>
-            <div class="col-md-6 col-12">
+            <div class="col-md-6 col-6">
                 <select class="form-select form-select-sm form_dep" name="cliente_deputado_tipo" required>
                     <option selected>Tipo do Gabinete</option>
                     <option value="Deputado Estadual">Deputado(a) Estadual</option>
@@ -78,7 +78,7 @@ $clienteController = new ClienteController();
                     <option value="Vereador">Vereador(a)</option>
                 </select>
             </div>
-            <div class="col-md-6 col-12">
+            <div class="col-md-6 col-6">
                 <select class="form-select form-select-sm form_dep" name="cliente_deputado_estado" required>
                     <option selected>Escolha o estado</option>
                     <option value="AC">Acre</option>
