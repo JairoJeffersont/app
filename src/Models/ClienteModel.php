@@ -114,7 +114,7 @@ class ClienteModel {
      * @return array Retorna um array associativo com os dados de todos os clientes, exceto o cliente com ID 1.
      */
     public function listar() {
-        $query = "SELECT * FROM cliente WHERE cliente_id <> '1' ORDER BY cliente_nome ASC";
+        $query = "SELECT * FROM cliente WHERE cliente_id <> '1' ORDER BY cliente_criado_em DESC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
