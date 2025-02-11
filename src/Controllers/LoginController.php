@@ -144,7 +144,7 @@ class LoginController
 
                 $userInfo = $this->logger->get_user_info();
 
-                $logMessage =  $busca[0]['cliente_deputado_nome'].' | '.$busca[0]['usuario_nome'] . ' | ' .
+                $logMessage =  $busca[0]['cliente_deputado_nome'] . ' | ' . $busca[0]['usuario_nome'] . ' | ' .
                     'IP: ' . $userInfo['ip'] . ' | ' .
                     'Navegador: ' . $userInfo['browser'] . ' | ' .
                     'Sistema: ' . $userInfo['os'] . ' | ' .
@@ -190,9 +190,77 @@ class LoginController
             // Atualiza o token no banco de dados
             $result = $this->usuarioModel->atualizar($busca[0]['usuario_id'], $busca[0]);
 
+            $mensagem = '
+           <!DOCTYPE html>
+                    <html lang="pt-BR">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Bem-vindo!</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f4f4;
+                                margin: 0;
+                                padding: 0;
+                            }
+                            .container {
+                                width: 100%;
+                                max-width: 600px;
+                                margin: 20px auto;
+                                background: #ffffff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #333;
+                            }
+                            p {
+                                color: #555;
+                                line-height: 1.5;
+                            }
+                            .button {
+                                display: inline-block;
+                                background: #007bff;
+                                color: #ffffff;
+                                padding: 10px 20px;
+                                text-decoration: none;
+                                border-radius: 5px;
+                                margin-top: 10px;
+                            }
+                            .footer {
+                                margin-top: 20px;
+                                font-size: 12px;
+                                color: #888;
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+
+                        <div class="container">
+                            <h1>Olá, ' . $busca[0]['usuario_nome'] . '!</h1>
+                            <p>Seja bem-vindo ao <strong>Gabinete Digital</strong>. Clique no botão abaixo para criar uma nova senha.</p>
+                            <p>
+                                <a href="' . $this->config['app']['base_url'] . '?secao=nova-senha&token=' . $uniqid . '" class="button" style="color:white">Recuperar senha</a>
+                            </p>
+                            <p>Se você não solicitou este acesso, ignore este e-mail.</p>
+                            <div class="footer">
+                                <p>&copy; 2025 Gabinete Digital. Todos os direitos reservados.</p>
+                            </div>
+                        </div>
+
+                    </body>
+                    </html>
+
+            
+            ';
+
+
             if ($result) {
                 // Envia o email de recuperação com o token
-                $resp = $this->emailSender->sendEmail($email, 'Gabinete Digital - Recuperação de senha', $this->config['app']['base_url'] . '?secao=nova-senha&token=' . $uniqid); // Criar corpo do email
+                $resp = $this->emailSender->sendEmail($email, 'Recuperação de senha', $mensagem); // Criar corpo do email
                 return ['status' => 'success', 'message' => $resp['message']];
             }
         } catch (PDOException $e) {
