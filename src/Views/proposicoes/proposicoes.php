@@ -11,4 +11,4 @@ use GabineteDigital\Controllers\ProposicaoController;
 
 $proposicaoController = new ProposicaoController();
 
-print_r(json_encode($proposicaoController->atualizar(2022, 204379, 'PL', 10, 1)));
+print_r(json_encode($proposicaoController->atualizar(2023, 204379, 'PL', 10, 1)));

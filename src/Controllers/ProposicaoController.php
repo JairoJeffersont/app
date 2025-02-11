@@ -20,6 +20,8 @@ class ProposicaoController
     {
         $buscaProposicoes = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=' . $tipo . '&ano=' . $ano . '&idDeputadoAutor=' . $autor . '&itens=' . $itens . '&pagina=' . $pagina . '&ordem=ASC&ordenarPor=id');
 
+        $total_paginas = ceil($buscaProposicoes['headers']['x-total-count'] / $itens);
+
         if ($buscaProposicoes['status'] == 'success' && !empty($buscaProposicoes['dados'])) {
             foreach ($buscaProposicoes['dados'] as $proposicao) {
                 $dadosRertorno[] = [
@@ -32,14 +34,12 @@ class ProposicaoController
                     'proposicao_autores' => $this->buscarAutores($proposicao['id'])
                 ];
             }
-            return ["status" => 'success', "dados" => $dadosRertorno];
+            return ["status" => 'success', "dados" => $dadosRertorno, 'total_paginas' => $total_paginas];
         } else if (isset($buscaProposicoes['dados']) && empty($buscaProposicoes['dados'])) {
             return ["status" => "empty", "message" => "Nenhuma proposição encontrada"];
         } else if ($buscaProposicoes['status'] == 'error') {
             return $buscaProposicoes;
         }
-
-        return true;
     }
 
 

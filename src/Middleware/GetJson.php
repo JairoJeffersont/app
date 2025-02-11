@@ -44,7 +44,9 @@ class GetJson
             }
 
             if ($httpCode < 200 || $httpCode >= 300) {
-                return ["status" => "error", "message" => "Erro HTTP: $httpCode"];
+                $erro_id = uniqid();
+                $this->logger->novoLog('get_json_log', 'http_code - '.$httpCode . ' | ' . $erro_id);
+                return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
             }
 
             $data = json_decode($body, true);
