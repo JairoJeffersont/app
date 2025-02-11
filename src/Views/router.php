@@ -32,7 +32,6 @@ $rotas = [
     'documento' => './src/Views/documentos/editar-documento.php',
     'tipos-documentos' => './src/Views/documentos/tipos-documentos.php',
     'tipo-documento' => './src/Views/documentos/editar-tipo-documento.php',
-
     'status-postagens' => './src/Views/postagens/status-postagens.php',
     'status-postagem' => './src/Views/postagens/editar-status-postagens.php',
     'postagens' => './src/Views/postagens/postagens.php',
@@ -42,7 +41,6 @@ $rotas = [
     'clippings' => './src/Views/clipping/clippings.php',
     'clipping' => './src/Views/clipping/editar-clipping.php',
     'estatisticas-clipping' => './src/Views/clipping/estatisticas.php',
-    //'proposicoes' => './src/Views/proposicoes/proposicoes.php',
     'status-emendas' => './src/Views/emendas/status-emendas.php',
     'editar-status-emenda' => './src/Views/emendas/editar-status-emenda.php',
     'objetivos-emendas' => './src/Views/emendas/objetivos-emendas.php',
@@ -57,10 +55,6 @@ $rotas = [
     'agenda' => './src/Views/agenda/editar-agenda.php',
     'imprimir-agenda' => './src/Views/agenda/imprimir-agenda.php',
     'situacao-agenda' => './src/Views/agenda/editar-situacao-agenda.php'
-
-
-
-    
 ];
 
 if (array_key_exists($pagina, $rotas)) {
