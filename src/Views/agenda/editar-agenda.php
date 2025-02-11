@@ -59,7 +59,6 @@ if ($buscaAgenda['status'] == 'not_found' || $buscaAgenda['status'] == 'error') 
                         ];
 
 
-                        print_r($dados);
 
                         $result = $agendaController->atualizarAgenda($agendaGet, $dados);
 
