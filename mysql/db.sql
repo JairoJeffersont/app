@@ -437,31 +437,6 @@ CREATE TABLE emendas (
     CONSTRAINT fk_emenda_orgao FOREIGN KEY (emenda_orgao) REFERENCES orgaos (orgao_id)
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
-CREATE TABLE proposicoes (
-    proposicao_id INT NOT NULL,
-    proposicao_numero INT NOT NULL,
-    proposicao_titulo VARCHAR(255) NOT NULL,
-    proposicao_ano INT NOT NULL,
-    proposicao_tipo VARCHAR(10) NOT NULL,
-    proposicao_ementa TEXT NOT NULL,
-    proposicao_apresentacao DATETIME NULL DEFAULT NULL,
-    proposicao_documento text NOT NULL,
-    PRIMARY KEY (proposicao_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-CREATE TABLE proposicoes_autores (
-    proposicao_id INT NOT NULL,
-    proposicao_autor_id INT NOT NULL,
-    proposicao_autor_nome TEXT NOT NULL,
-    proposicao_autor_partido VARCHAR(255) DEFAULT NULL,
-    proposicao_autor_estado VARCHAR(255) DEFAULT NULL,
-    proposicao_autor_proponente INT NOT NULL,
-    proposicao_autor_assinatura INT NOT NULL,
-    proposicao_autor_ano INT NOT NULL,
-    INDEX (proposicao_id, proposicao_autor_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 
 CREATE TABLE agenda_tipo (
     agenda_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
