@@ -17,10 +17,27 @@ $tipo = isset($_GET['tipo']) ? strtolower(htmlspecialchars($_GET['tipo'])) : 'pl
 $ordenarPor = isset($_GET['ordenarPor']) && in_array(htmlspecialchars($_GET['ordenarPor']), ['id', 'numero', 'ano',]) ? htmlspecialchars($_GET['ordenarPor']) : 'id';
 
 $autorGet = $_SESSION['cliente_deputado_nome'];
-$autorGet = iconv('UTF-8', 'ASCII//TRANSLIT', $autorGet);
+
+$autorGet = strtr($autorGet, [
+    'Á' => 'A', 'À' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A',
+    'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a',
+    'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+    'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+    'Í' => 'I', 'Ì' => 'I', 'Î' => 'I', 'Ï' => 'I',
+    'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+    'Ó' => 'O', 'Ò' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O',
+    'ó' => 'o', 'ò' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o',
+    'Ú' => 'U', 'Ù' => 'U', 'Û' => 'U', 'Ü' => 'U',
+    'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+    'Ç' => 'C', 'ç' => 'c',
+    'Ñ' => 'N', 'ñ' => 'n'
+]);
+
 $autorGet = strtolower($autorGet);
 $autorGet = str_replace(' ', '+', $autorGet);
 $autorGet = preg_replace('/[^a-z0-9\+]/', '', $autorGet);
+
+
 
 
 ?>
