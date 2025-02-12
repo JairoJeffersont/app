@@ -70,8 +70,6 @@ class ProposicaoController
     {
         $buscaId = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/deputados?nome=' . $nome . '&ordem=ASC&ordenarPor=nome');
 
-
-
         if ($buscaId['status'] == 'success') {
             return $buscaId['dados'][0]['id'];
         } else if ($buscaId['status'] == 'error') {
