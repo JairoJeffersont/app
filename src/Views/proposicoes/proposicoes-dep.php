@@ -87,8 +87,6 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                     <?php
                     $buscaProposicao = $proposicaoController->buscarProposicoesGabinete($autorGet, $anoGet, $tipoget, $itensGet, $paginaGet, $ordemGet, $ordenarPorGet, $arquivadoGet);
 
-
-
                     if ($buscaProposicao['status'] == 'success') {
                         foreach ($buscaProposicao['dados'] as $proposicao) {
                             echo '<tr>';
@@ -106,5 +104,26 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                 </tbody>
             </table>
         </div>
+        <?php
+
+        if (isset($buscaProposicao['total_paginas'])) {
+            $totalPagina = $buscaProposicao['total_paginas'];
+        } else {
+            $totalPagina = 0;
+        }
+
+        if ($totalPagina > 0 && $totalPagina != 1) {
+            echo '<ul class="pagination custom-pagination mt-2 mb-0">';
+            echo '<li class="page-item ' . ($paginaGet == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=1&ordenarPor=' . $ordenarPorGet . '&ordem=' . $ordemGet . '&ordenarPor=' . $ordenarPorGet . '&tipo=' . $tipoget . '&arquivado=' . $arquivadoGet . '&ano=' . $anoGet . '">Primeira</a></li>';
+
+            for ($i = 1; $i < $totalPagina - 1; $i++) {
+                $pageNumber = $i + 1;
+                echo '<li class="page-item ' . ($paginaGet == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $pageNumber . '&ordenarPor=' . $ordenarPorGet . '&ordem=' . $ordemGet . '&ordenarPor=' . $ordenarPorGet . '&tipo=' . $tipoget . '&arquivado=' . $arquivadoGet . '&ano=' . $anoGet . '">' . $pageNumber . '</a></li>';
+            }
+
+            echo '<li class="page-item ' . ($paginaGet == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $totalPagina . '&ordenarPor=' . $ordenarPorGet . '&ordem=' . $ordemGet . '&ordenarPor=' . $ordenarPorGet . '&tipo=' . $tipoget . '&arquivado=' . $arquivadoGet . '&ano=' . $anoGet . '">Última</a></li>';
+            echo '</ul>';
+        }
+        ?>
     </div>
 </div>
