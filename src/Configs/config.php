@@ -3,9 +3,9 @@ return [
 
     'database' => [
         'host' => 'localhost',
-        'name' => 'gabinete_dig',
-        'user' => 'gabinete_dig',
-        'password' => 'Intell@3103',
+        'name' => 'gabinete_digital',
+        'user' => 'root',
+        'password' => 'root',
     ],
 
     'master_user' => [
