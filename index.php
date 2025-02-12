@@ -41,7 +41,7 @@
     }*/
 
     ?>
-
+   
     <script src="public/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="public/vendor/startbootstrap-simple-sidebar-master/dist/js/scripts.js"></script>
     <script src="public/vendor/jquery-mask/jquery.mask.min.js"></script>

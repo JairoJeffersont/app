@@ -15,12 +15,11 @@ class ProposicaoController
         $this->getJson = new GetJson();
     }
 
-    public function listarProposicoesDeputadoCD($ano, $autor, $tipo, $itens, $pagina)
+    public function listarProposicoesDeputadoCD($ano, $autor, $tipo, $itens, $pagina, $ordem, $ordenarPor)
     {
-
         $idDep = $this->buscarIdDep($autor);
 
-        $buscaProposicoes = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=' . $tipo . '&ano=' . $ano . '&idDeputadoAutor=' . $idDep . '&itens=' . $itens . '&pagina=' . $pagina . '&ordem=ASC&ordenarPor=id');
+        $buscaProposicoes = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=' . $tipo . '&ano=' . $ano . '&idDeputadoAutor=' . $idDep . '&itens=' . $itens . '&pagina=' . $pagina . '&ordem=' . $ordem . '&ordenarPor=' . $ordenarPor);
 
         $total_paginas = ceil($buscaProposicoes['headers']['x-total-count'] / $itens);
 
