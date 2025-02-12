@@ -502,6 +502,37 @@ CREATE TABLE agenda(
 
 
 
+CREATE TABLE proposicoes (
+    proposicao_id INT NOT NULL,
+    proposicao_numero INT NOT NULL,
+    proposicao_titulo VARCHAR(255) NOT NULL,
+    proposicao_ano INT NOT NULL,
+    proposicao_tipo VARCHAR(10) NOT NULL,
+    proposicao_ementa TEXT NOT NULL,
+    proposicao_apresentacao DATETIME NULL DEFAULT NULL,
+    proposicao_arquivada TINYINT(1) NOT NULL DEFAULT 0,
+    proposicao_aprovada TINYINT(1) NOT NULL DEFAULT 0,
+    proposicao_principal INT,
+    PRIMARY KEY (proposicao_id)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE proposicoes_autores (
+    proposicao_id INT NOT NULL,
+    proposicao_autor_id INT NOT NULL,
+    proposicao_autor_nome TEXT NOT NULL,
+    proposicao_autor_partido VARCHAR(255) DEFAULT NULL,
+    proposicao_autor_estado VARCHAR(255) DEFAULT NULL,
+    proposicao_autor_proponente INT NOT NULL,
+    proposicao_autor_assinatura INT NOT NULL,
+    proposicao_autor_ano INT NOT NULL,
+    INDEX (proposicao_id, proposicao_autor_id)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
 
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
 CREATE VIEW view_orgaos_tipos AS SELECT orgaos_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM orgaos_tipos INNER JOIN usuario on orgaos_tipos.orgao_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON orgaos_tipos.orgao_tipo_cliente = cliente.cliente_id;
@@ -521,3 +552,4 @@ CREATE VIEW view_emendas AS SELECT emendas.*, emendas_status.emendas_status_nome
 CREATE VIEW view_agenda_tipo AS SELECT agenda_tipo.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_tipo INNER JOIN usuario ON agenda_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_tipo_cliente = cliente.cliente_id ORDER BY agenda_tipo.agenda_tipo_nome ASC;
 CREATE VIEW view_agenda_situacao AS SELECT agenda_situacao.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_situacao INNER JOIN usuario ON agenda_situacao_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_situacao_cliente = cliente.cliente_id ORDER BY agenda_situacao.agenda_situacao_nome ASC;
 CREATE VIEW view_agenda AS SELECT agenda.*, usuario.usuario_nome, cliente.cliente_nome, agenda_tipo.agenda_tipo_nome, agenda_situacao.agenda_situacao_nome FROM agenda INNER JOIN agenda_situacao ON agenda.agenda_situacao = agenda_situacao.agenda_situacao_id INNER JOIN agenda_tipo ON agenda.agenda_tipo = agenda_tipo.agenda_tipo_id INNER JOIN usuario ON agenda.agenda_criada_por = usuario.usuario_id INNER JOIN cliente ON agenda.agenda_cliente = cliente.cliente_id;
+CREATE VIEW view_proposicoes AS SELECT proposicoes_autores.proposicao_id AS proposicao_id, proposicoes_autores.proposicao_autor_id AS proposicao_autor_id, proposicoes_autores.proposicao_autor_nome AS proposicao_autor_nome, proposicoes_autores.proposicao_autor_partido AS proposicao_autor_partido, proposicoes_autores.proposicao_autor_estado AS proposicao_autor_estado, proposicoes_autores.proposicao_autor_proponente AS proposicao_autor_proponente, proposicoes_autores.proposicao_autor_assinatura AS proposicao_autor_assinatura, proposicoes.proposicao_numero AS proposicao_numero, proposicoes.proposicao_titulo AS proposicao_titulo, proposicoes.proposicao_tipo AS proposicao_tipo, proposicoes.proposicao_ementa AS proposicao_ementa, proposicoes.proposicao_ano AS proposicao_ano, proposicoes.proposicao_apresentacao AS proposicao_apresentacao, proposicoes.proposicao_arquivada AS proposicao_arquivada, proposicoes.proposicao_aprovada AS proposicao_aprovada FROM proposicoes_autores JOIN proposicoes ON proposicoes_autores.proposicao_id = proposicoes.proposicao_id;
