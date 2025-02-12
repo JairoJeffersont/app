@@ -15,9 +15,12 @@ class ProposicaoController
         $this->getJson = new GetJson();
     }
 
-    public function atualizar($ano, $autor, $tipo, $itens, $pagina)
+    public function listarProposicoesDeputadoCD($ano, $autor, $tipo, $itens, $pagina)
     {
-        $buscaProposicoes = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=' . $tipo . '&ano=' . $ano . '&idDeputadoAutor=' . $autor . '&itens=' . $itens . '&pagina=' . $pagina . '&ordem=ASC&ordenarPor=id');
+
+        $idDep = $this->buscarIdDep($autor);
+
+        $buscaProposicoes = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=' . $tipo . '&ano=' . $ano . '&idDeputadoAutor=' . $idDep . '&itens=' . $itens . '&pagina=' . $pagina . '&ordem=ASC&ordenarPor=id');
 
         $total_paginas = ceil($buscaProposicoes['headers']['x-total-count'] / $itens);
 
@@ -60,6 +63,20 @@ class ProposicaoController
             return $buscaAutores;
         } else if (isset($buscaProposicoes['dados']) && empty($buscaProposicoes['dados'])) {
             return ["status" => "empty", "message" => "Nenhum autor encontrado"];
+        }
+    }
+
+
+    public function buscarIdDep($nome)
+    {
+        $buscaId = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/deputados?nome=' . $nome . '&ordem=ASC&ordenarPor=nome');
+
+
+
+        if ($buscaId['status'] == 'success') {
+            return $buscaId['dados'][0]['id'];
+        } else if ($buscaId['status'] == 'error') {
+            return $buscaId;
         }
     }
 }
