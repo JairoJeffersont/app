@@ -38,8 +38,6 @@ $autorGet = str_replace(' ', '+', $autorGet);
 $autorGet = preg_replace('/[^a-z0-9\+]/', '', $autorGet);
 
 
-
-
 ?>
 
 <div class="card mb-2 card-description">
