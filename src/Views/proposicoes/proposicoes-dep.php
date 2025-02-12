@@ -45,7 +45,7 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
 
                     </select>
                 </div>
-                <div class="col-md-2 col-6">
+                <div class="col-md-2 col-12">
                     <select class="form-select form-select-sm" name="arquivado" required>
                         <option value="1" <?php echo $arquivadoGet === 1 ? 'selected' : ''; ?>>Arquivado</option>
                         <option value="0" <?php echo $arquivadoGet === 0 ? 'selected' : ''; ?>>Tramitando</option>
