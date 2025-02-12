@@ -42,14 +42,14 @@ class EmailSender {
         try {
             $this->mailer = new PHPMailer(true);
             $this->mailer->isSMTP();
-            $this->mailer->Host = 'smtp.kinghost.net';
+            $this->mailer->Host = 'email-ssl.com.br';
             $this->mailer->SMTPAuth = true;
-            $this->mailer->Port = 587;
+            $this->mailer->Port = 465;
             $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $this->mailer->Username = 'contato@politikaassessoria.com.br';
-            $this->mailer->Password = 'Intell@3103';
-            $this->mailer->Sender = 'contato@politikaassessoria.com.br';
-            $this->mailer->From = 'contato@politikaassessoria.com.br';
+            $this->mailer->Username = 'contato@jscloud.com.br';
+            $this->mailer->Password = 'Intell@31031986';
+            $this->mailer->Sender = 'contato@jscloud.com.br';
+            $this->mailer->From = 'contato@jscloud.com.br';
             $this->mailer->FromName = 'Gabinete Digital';
             $this->mailer->addAddress($toEmail, 'Nome - Recebe1');
             $this->mailer->CharSet = 'UTF-8';
