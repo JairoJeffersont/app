@@ -35,8 +35,8 @@ class PessoaProfissaoModel {
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
     public function criar($dados) {
-        $query = "INSERT INTO pessoas_profissoes (pessoas_profissoes_nome, pessoas_profissoes_descricao, pessoas_profissoes_criado_por, pessoas_profissoes_cliente)
-                  VALUES (:pessoas_profissoes_nome, :pessoas_profissoes_descricao, :pessoas_profissoes_criado_por, :pessoas_profissoes_cliente)";
+        $query = "INSERT INTO pessoas_profissoes (pessoas_profissoes_id, pessoas_profissoes_nome, pessoas_profissoes_descricao, pessoas_profissoes_criado_por, pessoas_profissoes_cliente)
+                  VALUES (UUID(), :pessoas_profissoes_nome, :pessoas_profissoes_descricao, :pessoas_profissoes_criado_por, :pessoas_profissoes_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

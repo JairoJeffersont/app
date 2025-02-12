@@ -38,8 +38,8 @@ class PostagemModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO postagens (postagem_titulo, postagem_data, postagem_pasta, postagem_informacoes, postagem_midias, postagem_status, postagem_criada_por, postagem_cliente)
-                  VALUES (:postagem_titulo, :postagem_data, :postagem_pasta, :postagem_informacoes, :postagem_midias, :postagem_status, :postagem_criada_por, :postagem_cliente)";
+        $query = "INSERT INTO postagens (postagem_id, postagem_titulo, postagem_data, postagem_pasta, postagem_informacoes, postagem_midias, postagem_status, postagem_criada_por, postagem_cliente)
+                  VALUES (UUID(), :postagem_titulo, :postagem_data, :postagem_pasta, :postagem_informacoes, :postagem_midias, :postagem_status, :postagem_criada_por, :postagem_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

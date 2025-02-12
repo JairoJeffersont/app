@@ -35,8 +35,8 @@ class OrgaoTipoModel {
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
     public function criar($dados) {
-        $query = "INSERT INTO orgaos_tipos (orgao_tipo_nome, orgao_tipo_descricao, orgao_tipo_criado_por, orgao_tipo_cliente)
-                  VALUES (:orgao_tipo_nome, :orgao_tipo_descricao, :orgao_tipo_criado_por, :orgao_tipo_cliente)";
+        $query = "INSERT INTO orgaos_tipos (orgao_tipo_id, orgao_tipo_nome, orgao_tipo_descricao, orgao_tipo_criado_por, orgao_tipo_cliente)
+                  VALUES (UUID(), :orgao_tipo_nome, :orgao_tipo_descricao, :orgao_tipo_criado_por, :orgao_tipo_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

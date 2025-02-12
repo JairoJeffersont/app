@@ -35,8 +35,8 @@ class PessoaTipoModel {
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
     public function criar($dados) {
-        $query = "INSERT INTO pessoas_tipos (pessoa_tipo_nome, pessoa_tipo_descricao, pessoa_tipo_criado_por, pessoa_tipo_cliente)
-                  VALUES (:pessoa_tipo_nome, :pessoa_tipo_descricao, :pessoa_tipo_criado_por, :pessoa_tipo_cliente)";
+        $query = "INSERT INTO pessoas_tipos (pessoa_tipo_id, pessoa_tipo_nome, pessoa_tipo_descricao, pessoa_tipo_criado_por, pessoa_tipo_cliente)
+                  VALUES (UUID(), :pessoa_tipo_nome, :pessoa_tipo_descricao, :pessoa_tipo_criado_por, :pessoa_tipo_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

@@ -37,8 +37,8 @@ class AgendaModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO agenda (agenda_titulo, agenda_situacao, agenda_tipo, agenda_data, agenda_local, agenda_estado, agenda_informacoes, agenda_criada_por, agenda_cliente)
-                  VALUES (:agenda_titulo, :agenda_situacao, :agenda_tipo, :agenda_data, :agenda_local, :agenda_estado, :agenda_informacoes, :agenda_criada_por, :agenda_cliente)";
+        $query = "INSERT INTO agenda (agenda_id, agenda_titulo, agenda_situacao, agenda_tipo, agenda_data, agenda_local, agenda_estado, agenda_informacoes, agenda_criada_por, agenda_cliente)
+                  VALUES (UUID(), :agenda_titulo, :agenda_situacao, :agenda_tipo, :agenda_data, :agenda_local, :agenda_estado, :agenda_informacoes, :agenda_criada_por, :agenda_cliente)";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':agenda_titulo', $dados['agenda_titulo'], PDO::PARAM_STR);

@@ -1,6 +1,6 @@
 
 CREATE TABLE cliente (
-    cliente_id varchar(36) NOT NULL DEFAULT (UUID()),    
+    cliente_id varchar(36) NOT NULL,    
     cliente_nome varchar(255) NOT NULL,
     cliente_email varchar(255) NOT NULL UNIQUE,
     cliente_telefone varchar(14) NOT NULL,        
@@ -9,7 +9,7 @@ CREATE TABLE cliente (
     cliente_cep varchar(8) DEFAULT NULL,
     cliente_cpf varchar(14) NOT NULL UNIQUE,
     cliente_assinaturas int NOT NULL,
-    cliente_deputado_id varchar(36) NOT NULL DEFAULT (UUID()),
+    cliente_deputado_id varchar(36) NOT NULL,
     cliente_deputado_nome varchar(255) NOT NULL UNIQUE,
     cliente_deputado_estado varchar(2) NOT NULL,
     cliente_deputado_tipo varchar(255) NOT NULL,
@@ -23,7 +23,7 @@ INSERT INTO cliente (cliente_id, cliente_nome, cliente_email, cliente_telefone, 
 VALUES ('1', 'CLIENTE SISTEMA', 'email@email.com', '000000', 1, 'Sem endereço', '00000000', '00000000000', 2, 0, 'deputado', 'DF', 'Deputado Federal');
 
 CREATE TABLE usuario (
-    usuario_id varchar(36) NOT NULL DEFAULT (UUID()),
+    usuario_id varchar(36) NOT NULL,
     usuario_nome varchar(255) NOT NULL,
     usuario_email varchar(255) NOT NULL UNIQUE,
     usuario_telefone varchar(20) NOT NULL,
@@ -45,7 +45,7 @@ INSERT INTO usuario (usuario_id, usuario_nome, usuario_email, usuario_telefone, 
 VALUES ('1', 'USUÁRIO SISTEMA', 'email@email.com', '000000', 'sd9fasdfasd9fasd89fsad9f8', 1, 1, '01/01', '1');
 
 CREATE TABLE orgaos_tipos (
-    orgao_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    orgao_tipo_id varchar(36) NOT NULL,
     orgao_tipo_nome varchar(255) NOT NULL UNIQUE,
     orgao_tipo_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     orgao_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -80,7 +80,7 @@ INSERT INTO orgaos_tipos (orgao_tipo_id, orgao_tipo_nome, orgao_tipo_descricao, 
 
 
 CREATE TABLE orgaos (
-    orgao_id varchar(36) NOT NULL DEFAULT (UUID()),
+    orgao_id varchar(36) NOT NULL,
     orgao_nome text NOT NULL,
     orgao_email varchar(255) NOT NULL UNIQUE,
     orgao_telefone varchar(255) DEFAULT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE orgaos (
 INSERT INTO orgaos (orgao_id, orgao_nome, orgao_email, orgao_municipio, orgao_estado, orgao_tipo, orgao_criado_por, orgao_cliente) VALUES (1, 'Órgão não informado', 'email@email', 'municipio', 'estado', 1, 1, 1);
 
 CREATE TABLE pessoas_tipos (
-    pessoa_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    pessoa_tipo_id varchar(36) NOT NULL,
     pessoa_tipo_nome varchar(255) NOT NULL UNIQUE,
     pessoa_tipo_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     pessoa_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -129,7 +129,7 @@ INSERT INTO pessoas_tipos (pessoa_tipo_id, pessoa_tipo_nome, pessoa_tipo_descric
 INSERT INTO pessoas_tipos (pessoa_tipo_id, pessoa_tipo_nome, pessoa_tipo_descricao, pessoa_tipo_criado_por, pessoa_tipo_cliente) VALUES (8, 'Autoridades', 'Autoridades públicas', 1, 1);
 
 CREATE TABLE pessoas_profissoes (
-    pessoas_profissoes_id varchar(36) NOT NULL DEFAULT (UUID()),
+    pessoas_profissoes_id varchar(36) NOT NULL,
     pessoas_profissoes_nome varchar(255) NOT NULL UNIQUE,
     pessoas_profissoes_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     pessoas_profissoes_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -188,7 +188,7 @@ VALUES
 (41, 'Corretor de Imóveis', 'Profissional que facilita a compra, venda e aluguel de propriedades', 1, 1);
 
 CREATE TABLE pessoas (
-    pessoa_id varchar(36) NOT NULL DEFAULT (UUID()),
+    pessoa_id varchar(36) NOT NULL,
     pessoa_nome varchar(255) NOT NULL,
     pessoa_aniversario varchar(255) NOT NULL,
     pessoa_email varchar(255) NOT NULL UNIQUE,
@@ -222,7 +222,7 @@ CREATE TABLE pessoas (
 
 
 CREATE TABLE documentos_tipos (
-    documento_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    documento_tipo_id varchar(36) NOT NULL,
     documento_tipo_nome varchar(255) NOT NULL UNIQUE,
     documento_tipo_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     documento_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -256,7 +256,7 @@ VALUES (7, 'Termo de Compromisso', 'Documento que formaliza um compromisso ou ac
 
 
 CREATE TABLE documentos(
-    documento_id varchar(36) NOT NULL DEFAULT (UUID()),
+    documento_id varchar(36) NOT NULL,
     documento_titulo VARCHAR(255) NOT NULL UNIQUE,
     documento_resumo text,
     documento_arquivo text,
@@ -277,7 +277,7 @@ CREATE TABLE documentos(
 
 
 CREATE TABLE postagem_status(
-    postagem_status_id varchar(36) NOT NULL DEFAULT (UUID()),
+    postagem_status_id varchar(36) NOT NULL,
     postagem_status_nome VARCHAR(255) NOT NULL UNIQUE,
     postagem_status_descricao TEXT NULL,
     postagem_status_criado_por varchar(36) NOT NULL,
@@ -296,7 +296,7 @@ INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_
 INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_status_descricao,postagem_status_criado_por, postagem_status_cliente) VALUES (5, 'Postada', 'Postagem postada', 1,1);
 
 CREATE TABLE postagens(
-    postagem_id varchar(36) NOT NULL DEFAULT (UUID()),
+    postagem_id varchar(36) NOT NULL,
     postagem_titulo VARCHAR(255) NOT NULL UNIQUE,
     postagem_data VARCHAR(255),
     postagem_pasta TEXT, 
@@ -315,7 +315,7 @@ CREATE TABLE postagens(
 )ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 CREATE TABLE clipping_tipos (
-    clipping_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    clipping_tipo_id varchar(36) NOT NULL,
     clipping_tipo_nome varchar(255) NOT NULL UNIQUE,
     clipping_tipo_descricao text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     clipping_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -331,7 +331,7 @@ INSERT INTO clipping_tipos (clipping_tipo_id, clipping_tipo_nome, clipping_tipo_
 INSERT INTO clipping_tipos (clipping_tipo_id, clipping_tipo_nome, clipping_tipo_descricao, clipping_tipo_criado_por, clipping_tipo_cliente) VALUES (3, 'Post de rede social', 'Post de instagram, facebook....', 1, 1);
 
 CREATE TABLE clipping (
-    clipping_id varchar(36) NOT NULL DEFAULT (UUID()),
+    clipping_id varchar(36) NOT NULL,
     clipping_resumo TEXT NOT NULL,
     clipping_titulo TEXT NOT NULL,
     clipping_link VARCHAR(255) NOT NULL UNIQUE,
@@ -353,7 +353,7 @@ CREATE TABLE clipping (
 
 
 CREATE TABLE emendas_status (
-    emendas_status_id varchar(36) NOT NULL DEFAULT (UUID()),
+    emendas_status_id varchar(36) NOT NULL,
     emendas_status_nome varchar(255) NOT NULL UNIQUE,
     emendas_status_descricao TEXT NOT NULL,
     emendas_status_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -381,7 +381,7 @@ VALUES
 
 
 CREATE TABLE emendas_objetivos (
-    emendas_objetivos_id varchar(36) NOT NULL DEFAULT (UUID()),
+    emendas_objetivos_id varchar(36) NOT NULL,
     emendas_objetivos_nome varchar(255) NOT NULL UNIQUE,
     emendas_objetivos_descricao TEXT NOT NULL,
     emendas_objetivos_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -413,7 +413,7 @@ VALUES
 
 
 CREATE TABLE emendas (
-    emenda_id varchar(36) NOT NULL DEFAULT (UUID()),
+    emenda_id varchar(36) NOT NULL,
     emenda_numero INT NOT NULL,
     emenda_ano INT NOT NULL,
     emenda_valor DECIMAL(12,2),
@@ -439,7 +439,7 @@ CREATE TABLE emendas (
 
 
 CREATE TABLE agenda_tipo (
-    agenda_tipo_id varchar(36) NOT NULL DEFAULT (UUID()),
+    agenda_tipo_id varchar(36) NOT NULL,
     agenda_tipo_nome varchar(255) NOT NULL UNIQUE,
     agenda_tipo_descricao TEXT NOT NULL,
     agenda_tipo_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -455,7 +455,7 @@ INSERT INTO agenda_tipo (agenda_tipo_id, agenda_tipo_nome, agenda_tipo_descricao
 VALUES (1, 'Agenda parlamentar', 'Agenda legislativa do deputado.', '1', '1'),(2, 'Agenda partidária', 'Agenda relacionada ao partido.', '1', '1'), (3, 'Agenda pessoal', 'Agenda pessoal do parlamentar.', '1', '1');
 
 CREATE TABLE agenda_situacao (
-    agenda_situacao_id varchar(36) NOT NULL DEFAULT (UUID()),
+    agenda_situacao_id varchar(36) NOT NULL,
     agenda_situacao_nome varchar(255) NOT NULL UNIQUE,
     agenda_situacao_descricao TEXT NOT NULL,
     agenda_situacao_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -481,7 +481,7 @@ VALUES
 
 
 CREATE TABLE agenda(
-    agenda_id varchar(36) NOT NULL DEFAULT (UUID()),
+    agenda_id varchar(36) NOT NULL,
     agenda_titulo VARCHAR(255) NOT NULL UNIQUE,
     agenda_situacao VARCHAR(255) NOT NULL,
     agenda_tipo VARCHAR(255) NOT NULL,
@@ -515,7 +515,6 @@ CREATE VIEW view_postagens_status AS SELECT postagem_status.*, usuario.usuario_n
 CREATE VIEW view_postagens AS SELECT postagens.*, usuario.usuario_nome, postagem_status.postagem_status_id, postagem_status.postagem_status_nome, postagem_status.postagem_status_descricao, cliente.cliente_nome FROM postagens INNER JOIN usuario ON postagens.postagem_criada_por = usuario.usuario_id INNER JOIN postagem_status ON postagens.postagem_status = postagem_status.postagem_status_id INNER JOIN cliente ON postagens.postagem_cliente = cliente.cliente_id; 
 CREATE VIEW view_tipo_clipping AS SELECT clipping_tipos.*, usuario.usuario_nome FROM clipping_tipos INNER JOIN usuario ON clipping_tipos.clipping_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping_tipos.clipping_tipo_cliente = cliente.cliente_id;
 CREATE VIEW view_clipping AS SELECT clipping.*, usuario.usuario_nome, orgaos.orgao_nome, cliente.cliente_nome, clipping_tipos.clipping_tipo_nome FROM clipping INNER JOIN clipping_tipos ON clipping.clipping_tipo = clipping_tipos.clipping_tipo_id INNER JOIN orgaos ON clipping.clipping_orgao = orgaos.orgao_id INNER JOIN usuario ON clipping.clipping_criado_por = usuario.usuario_id INNER JOIN cliente ON clipping.clipping_cliente = cliente.cliente_id;
-CREATE VIEW view_proposicoes AS SELECT proposicoes.*, proposicoes_autores.proposicao_autor_nome, proposicoes_autores.proposicao_autor_partido, proposicoes_autores.proposicao_autor_estado, proposicoes_autores.proposicao_autor_proponente, proposicoes_autores.proposicao_autor_assinatura FROM proposicoes INNER JOIN proposicoes_autores ON proposicoes.proposicao_id = proposicoes_autores.proposicao_id;
 CREATE VIEW view_emendas_status AS SELECT emendas_status.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_status INNER JOIN usuario ON emendas_status.emendas_status_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_status.emendas_status_cliente = cliente.cliente_id ORDER BY emendas_status.emendas_status_nome ASC;
 CREATE VIEW view_emendas_objetivos AS SELECT emendas_objetivos.*, usuario.usuario_nome, cliente.cliente_nome FROM emendas_objetivos INNER JOIN usuario ON emendas_objetivos.emendas_objetivos_criado_por = usuario.usuario_id INNER JOIN cliente ON emendas_objetivos.emendas_objetivos_cliente = cliente.cliente_id ORDER BY emendas_objetivos.emendas_objetivos_nome ASC;
 CREATE VIEW view_emendas AS SELECT emendas.*, emendas_status.emendas_status_nome, emendas_objetivos.emendas_objetivos_nome, orgaos.orgao_nome, usuario.usuario_nome FROM emendas INNER JOIN emendas_status ON emendas.emenda_status = emendas_status.emendas_status_id INNER JOIN emendas_objetivos ON emendas.emenda_objetivo = emendas_objetivos.emendas_objetivos_id INNER JOIN orgaos ON emendas.emenda_orgao = orgaos.orgao_id INNER JOIN usuario ON emendas.emenda_criado_por = usuario.usuario_id;

@@ -38,8 +38,8 @@ class OrgaoModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO orgaos (orgao_nome, orgao_email, orgao_telefone, orgao_endereco, orgao_bairro, orgao_municipio, orgao_estado, orgao_cep, orgao_tipo, orgao_informacoes, orgao_site, orgao_criado_por, orgao_cliente)
-                  VALUES (:orgao_nome, :orgao_email, :orgao_telefone, :orgao_endereco, :orgao_bairro, :orgao_municipio, :orgao_estado, :orgao_cep, :orgao_tipo, :orgao_informacoes, :orgao_site, :orgao_criado_por, :orgao_cliente)";
+        $query = "INSERT INTO orgaos (orgao_id, orgao_nome, orgao_email, orgao_telefone, orgao_endereco, orgao_bairro, orgao_municipio, orgao_estado, orgao_cep, orgao_tipo, orgao_informacoes, orgao_site, orgao_criado_por, orgao_cliente)
+                  VALUES (UUID(), :orgao_nome, :orgao_email, :orgao_telefone, :orgao_endereco, :orgao_bairro, :orgao_municipio, :orgao_estado, :orgao_cep, :orgao_tipo, :orgao_informacoes, :orgao_site, :orgao_criado_por, :orgao_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

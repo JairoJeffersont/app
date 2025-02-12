@@ -34,8 +34,8 @@ class EmendasObjetivosModel {
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
     public function criar($dados) {
-        $query = "INSERT INTO emendas_objetivos (emendas_objetivos_nome, emendas_objetivos_descricao, emendas_objetivos_criado_por, emendas_objetivos_cliente)
-                  VALUES (:emendas_objetivos_nome, :emendas_objetivos_descricao, :emendas_objetivos_criado_por, :emendas_objetivos_cliente)";
+        $query = "INSERT INTO emendas_objetivos (emendas_objetivos_id, emendas_objetivos_nome, emendas_objetivos_descricao, emendas_objetivos_criado_por, emendas_objetivos_cliente)
+                  VALUES (UUID(), :emendas_objetivos_nome, :emendas_objetivos_descricao, :emendas_objetivos_criado_por, :emendas_objetivos_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

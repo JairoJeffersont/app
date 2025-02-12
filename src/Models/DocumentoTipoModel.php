@@ -35,8 +35,8 @@ class DocumentoTipoModel {
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
     public function criar($dados) {
-        $query = "INSERT INTO documentos_tipos (documento_tipo_nome, documento_tipo_descricao, documento_tipo_criado_por, documento_tipo_cliente)
-                  VALUES (:documento_tipo_nome, :documento_tipo_descricao, :documento_tipo_criado_por, :documento_tipo_cliente)";
+        $query = "INSERT INTO documentos_tipos (documento_tipo_id, documento_tipo_nome, documento_tipo_descricao, documento_tipo_criado_por, documento_tipo_cliente)
+                  VALUES (UUID(), :documento_tipo_nome, :documento_tipo_descricao, :documento_tipo_criado_por, :documento_tipo_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

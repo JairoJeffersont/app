@@ -37,8 +37,8 @@ class ClippingModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO clipping (clipping_resumo, clipping_titulo, clipping_data, clipping_link, clipping_orgao, clipping_arquivo, clipping_tipo, clipping_criado_por, clipping_cliente)
-                  VALUES (:clipping_resumo, :clipping_titulo, :clipping_data, :clipping_link, :clipping_orgao, :clipping_arquivo, :clipping_tipo, :clipping_criado_por, :clipping_cliente)";
+        $query = "INSERT INTO clipping (clipping_id, clipping_resumo, clipping_titulo, clipping_data, clipping_link, clipping_orgao, clipping_arquivo, clipping_tipo, clipping_criado_por, clipping_cliente)
+                  VALUES (UUID(), :clipping_resumo, :clipping_titulo, :clipping_data, :clipping_link, :clipping_orgao, :clipping_arquivo, :clipping_tipo, :clipping_criado_por, :clipping_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

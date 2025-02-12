@@ -34,8 +34,8 @@ class EmendasStatusModel {
      * @return bool Retorna `true` se a inserção foi bem-sucedida, `false` caso contrário.
      */
     public function criar($dados) {
-        $query = "INSERT INTO emendas_status (emendas_status_nome, emendas_status_descricao, emendas_status_criado_por, emendas_status_cliente)
-                  VALUES (:emendas_status_nome, :emendas_status_descricao, :emendas_status_criado_por, :emendas_status_cliente)";
+        $query = "INSERT INTO emendas_status (emendas_status_id, emendas_status_nome, emendas_status_descricao, emendas_status_criado_por, emendas_status_cliente)
+                  VALUES (UUID(), :emendas_status_nome, :emendas_status_descricao, :emendas_status_criado_por, :emendas_status_cliente)";
 
         $stmt = $this->conn->prepare($query);
 

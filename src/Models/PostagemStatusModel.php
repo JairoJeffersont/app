@@ -38,8 +38,8 @@ class PostagemStatusModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO postagem_status (postagem_status_nome, postagem_status_descricao, postagem_status_criado_por, postagem_status_cliente)
-                  VALUES (:postagem_status_nome, :postagem_status_descricao, :postagem_status_criado_por, :postagem_status_cliente)";
+        $query = "INSERT INTO postagem_status (postagem_status_id, postagem_status_nome, postagem_status_descricao, postagem_status_criado_por, postagem_status_cliente)
+                  VALUES (UUID(), :postagem_status_nome, :postagem_status_descricao, :postagem_status_criado_por, :postagem_status_cliente)";
 
         $stmt = $this->conn->prepare($query);
 
