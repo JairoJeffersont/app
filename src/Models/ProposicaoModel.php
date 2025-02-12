@@ -17,27 +17,17 @@ class ProposicaoModel
     }
 
 
-    public function buscarProposicoesGabinete($autor, $ano, $tipo, $itens, $pagina, $ordem, $ordenarPor, $autoria, $arquivado)
+    public function buscarProposicoesGabinete($autor, $ano, $tipo, $itens, $pagina, $ordem, $ordenarPor, $arquivado)
     {
         $pagina = (int)$pagina;
         $itens = (int)$itens;
         $offset = ($pagina - 1) * $itens;
 
         if ($arquivado) {
-            if ($autoria) {
-                $query = "SELECT view_proposicoes.*, (SELECT COUNT(*) FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1 AND proposicao_arquivada = 1) as total FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1  AND proposicao_arquivada = 1 ORDER BY $ordenarPor $ordem LIMIT :offset, :itens";
-            } else {
-                $query = "SELECT view_proposicoes.*, (SELECT COUNT(*) FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_arquivada = 1) as total FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo  AND proposicao_arquivada = 1 ORDER BY $ordenarPor $ordem LIMIT :offset, :itens";
-            }
+            $query = "SELECT view_proposicoes.*, (SELECT COUNT(*) FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1 AND proposicao_arquivada = 1) AS total FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1 AND proposicao_arquivada = 1 ORDER BY $ordenarPor $ordem LIMIT :offset, :itens";
         } else {
-            if ($autoria) {
-                $query = "SELECT view_proposicoes.*, (SELECT COUNT(*) FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1 AND proposicao_arquivada <> 1) as total FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1 AND proposicao_arquivada <> 1 ORDER BY $ordenarPor $ordem LIMIT :offset, :itens";
-            } else {
-                $query = "SELECT view_proposicoes.*, (SELECT COUNT(*) FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo) as total FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo  AND proposicao_arquivada <> 1 ORDER BY $ordenarPor $ordem LIMIT :offset, :itens";
-            }
+            $query = "SELECT view_proposicoes.*, (SELECT COUNT(*) FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1 AND proposicao_arquivada = 0) AS total FROM view_proposicoes WHERE proposicao_autor_nome = :autor AND proposicao_ano = :ano AND proposicao_tipo = :tipo AND proposicao_autor_proponente = 1 AND proposicao_autor_assinatura = 1 AND proposicao_arquivada = 0 ORDER BY $ordenarPor $ordem LIMIT :offset, :itens";
         }
-
-
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);

@@ -17,7 +17,6 @@ $ordemGet = isset($_GET['ordem']) ? $_GET['ordem'] : 'desc';
 $itensGet = isset($_GET['itens']) ? (int)$_GET['itens'] : 10;
 $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
-$autoriaGet = isset($_GET['autoria']) ? (int)$_GET['autoria'] : 1;
 
 ?>
 
@@ -42,12 +41,8 @@ $autoriaGet = isset($_GET['autoria']) ? (int)$_GET['autoria'] : 1;
                     <select class="form-select form-select-sm" name="tipo" required>
                         <option value="pl" <?php echo $tipoget == 'pl' ? 'selected' : ''; ?>>Projeto de lei</option>
                         <option value="req" <?php echo $tipoget == 'req' ? 'selected' : ''; ?>>Requerimento</option>
-                    </select>
-                </div>
-                <div class="col-md-1 col-6">
-                    <select class="form-select form-select-sm" name="autoria" required>
-                        <option value="1" <?php echo $autoriaGet === 1 ? 'selected' : ''; ?>>Autoria única</option>
-                        <option value="0" <?php echo $autoriaGet === 0 ? 'selected' : ''; ?>>Autoria compartilhada</option>
+                        <option value="pec" <?php echo $tipoget == 'pec' ? 'selected' : ''; ?>>PEC</option>
+
                     </select>
                 </div>
                 <div class="col-md-2 col-6">
@@ -88,17 +83,24 @@ $autoriaGet = isset($_GET['autoria']) ? (int)$_GET['autoria'] : 1;
                         <th scope="col">Ementa</th>
                     </tr>
                 </thead>
-                <tbody> 
-                    <?php 
-                        $buscaProposicao = $proposicaoController->buscarProposicoesGabinete($autorGet, $anoGet, $tipoget, $itensGet, $paginaGet, $ordemGet, $ordenarPorGet, $autoriaGet, $arquivadoGet);
-                        if($buscaProposicao['status'] == 'success'){
-                            foreach($buscaProposicao['dados'] as $proposicao){
-                                echo '<tr>';
-                                echo '<td style="white-space: nowrap;">'.$proposicao['proposicao_titulo'].'</td>';
-                                echo '<td>'.$proposicao['proposicao_ementa'].'</td>';
-                                echo '</tr>';
-                            }
+                <tbody>
+                    <?php
+                    $buscaProposicao = $proposicaoController->buscarProposicoesGabinete($autorGet, $anoGet, $tipoget, $itensGet, $paginaGet, $ordemGet, $ordenarPorGet, $arquivadoGet);
+
+
+
+                    if ($buscaProposicao['status'] == 'success') {
+                        foreach ($buscaProposicao['dados'] as $proposicao) {
+                            echo '<tr>';
+                            echo '<td style="white-space: nowrap;">' . $proposicao['proposicao_titulo'] . '</td>';
+                            echo '<td>' . $proposicao['proposicao_ementa'] . '</td>';
+                            echo '</tr>';
                         }
+                    } else if ($buscaProposicao['status'] == 'empty') {
+                        echo '<tr><td colspan="11">' . $buscaProposicao['message'] . '</td></tr>';
+                    } else if ($buscaProposicao['status'] == 'error') {
+                        echo '<tr><td colspan="11">' . $buscaProposicao['message'] . ' | Código do erro: ' . $buscaProposicao['error_id'] . '</td></tr>';
+                    }
                     ?>
 
                 </tbody>

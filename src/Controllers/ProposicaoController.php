@@ -23,10 +23,10 @@ class ProposicaoController
         $this->logger = new Logger();
     }
 
-    public function buscarProposicoesGabinete($autor, $ano, $tipo, $itens, $pagina, $ordem, $ordenarPor, $autoria, $arquivado)
+    public function buscarProposicoesGabinete($autor, $ano, $tipo, $itens, $pagina, $ordem, $ordenarPor, $arquivado)
     {
         try {
-            $result = $this->proposicaoModel->buscarProposicoesGabinete($autor, $ano, $tipo, $itens, $pagina, $ordem, $ordenarPor, $autoria, $arquivado);
+            $result = $this->proposicaoModel->buscarProposicoesGabinete($autor, $ano, $tipo, $itens, $pagina, $ordem, $ordenarPor, $arquivado);
 
             $total = (isset($result[0]['total'])) ? $result[0]['total'] : 0;
             $totalPaginas = ceil($total / $itens);
