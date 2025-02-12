@@ -72,7 +72,11 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
         </div>
     </div>
 </div>
-
+<div class="card mb-2 ">
+    <div class="card-body p-1">
+        <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=imprimir-proposicoes" role="button"><i class="bi bi-printer-fill"></i> Imprimir</a>
+    </div>
+</div>
 <div class="card shadow-sm mb-2">
     <div class="card-body p-2">
         <div class="table-responsive mb-0">
@@ -90,7 +94,7 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                     if ($buscaProposicao['status'] == 'success') {
                         foreach ($buscaProposicao['dados'] as $proposicao) {
                             echo '<tr>';
-                            echo '<td style="white-space: nowrap;"><a href="?secao=proposicao&id='.$proposicao['proposicao_id'].'">' . $proposicao['proposicao_titulo'] . '</a></td>';
+                            echo '<td style="white-space: nowrap;"><a href="?secao=proposicao&id=' . $proposicao['proposicao_id'] . '">' . $proposicao['proposicao_titulo'] . '</a></td>';
                             echo '<td>' . $proposicao['proposicao_ementa'] . '</td>';
                             echo '</tr>';
                         }
