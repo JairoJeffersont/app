@@ -42,8 +42,8 @@ class ClienteModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO cliente (cliente_id, cliente_nome, cliente_email, cliente_telefone, cliente_endereco, cliente_cep, cliente_cpf, cliente_ativo, cliente_assinaturas, cliente_deputado_nome, cliente_deputado_estado, cliente_deputado_tipo)
-                  VALUES (UUID(), :cliente_nome, :cliente_email, :cliente_telefone, :cliente_endereco, :cliente_cep, :cliente_cpf, :cliente_ativo, :cliente_assinaturas, :cliente_deputado_nome, :cliente_deputado_estado, :cliente_deputado_tipo)";
+        $query = "INSERT INTO cliente (cliente_id, cliente_nome, cliente_email, cliente_telefone, cliente_endereco, cliente_cep, cliente_cpf, cliente_ativo, cliente_assinaturas, cliente_deputado_nome, cliente_deputado_id,  cliente_deputado_estado, cliente_deputado_tipo)
+                  VALUES (UUID(), :cliente_nome, :cliente_email, :cliente_telefone, :cliente_endereco, :cliente_cep, :cliente_cpf, :cliente_ativo, :cliente_assinaturas, :cliente_deputado_nome, UUID(), :cliente_deputado_estado, :cliente_deputado_tipo)";
 
         $stmt = $this->conn->prepare($query);
 
