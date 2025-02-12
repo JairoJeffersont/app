@@ -28,7 +28,9 @@ $autorGet = preg_replace('/[^a-z0-9\+]/', '', $autorGet);
 <div class="card mb-2 card-description">
     <div class="card-header bg-primary textcho -white px-2 py-1 card-background"><i class="bi bi-file-earmark-richtext"></i> Proposições | <?php echo $_SESSION['cliente_deputado_tipo'] ?></div>
     <div class="card-body p-2">
-        <p class="card-text mb-0">Nesta seção, é possível listar as proposições do gabinete.</p>
+        <p class="card-text mb-2">Nesta seção, é possível listar as proposições do gabinete.</p>
+        <p class="card-text mb-0">Esses dados são fornecidos pelo serviço de dados abertos da Câmara dos Deputados</p>
+
     </div>
 </div>
 
@@ -76,8 +78,9 @@ $autorGet = preg_replace('/[^a-z0-9\+]/', '', $autorGet);
             <table class="table table-hover table-bordered table-striped mb-0 custom-table">
                 <thead>
                     <tr>
+                        <!--<th scope="col">.</th>-->
                         <th scope="col">Título</th>
-                        <!--<th scope="col">Autoria</th>-->
+
                         <th scope="col">Ementa</th>
                     </tr>
                 </thead>
@@ -89,8 +92,9 @@ $autorGet = preg_replace('/[^a-z0-9\+]/', '', $autorGet);
                     if (!empty($buscaProposicoes['dados'])) {
                         foreach ($buscaProposicoes['dados'] as $proposicao) {
                             echo '<tr>';
-                            echo '<td style="white-space: nowrap;">' . $proposicao['proposicao_titulo'] . '</td>';
                             //echo '<td class="text-center">' . ((count($proposicao['proposicao_autores']) > 1) ? '<i class="bi bi-people-fill"></i>' : '<i class="bi bi-person-fill"></i>') . '</td>';
+                            echo '<td style="white-space: nowrap;"><a href="?secao=proposicao&id=' . $proposicao['proposicao_id'] . '">' . $proposicao['proposicao_titulo'] . '</a></td>';
+
                             echo '<td>' . $proposicao['proposicao_ementa'] . '</td>';
                             echo '</tr>';
                         }
