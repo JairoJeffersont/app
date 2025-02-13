@@ -22,6 +22,8 @@ require_once './vendor/autoload.php';
 
             if ($_SESSION['cliente_deputado_tipo'] == 'Deputado Federal') {
                 include 'proposicoes-dep.php';
+            }else{
+                echo 'naoidniod';
             }
 
             ?>
