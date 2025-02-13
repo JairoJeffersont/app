@@ -98,7 +98,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                     echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '. Aguarde...</div>';
                                     echo '<script>
                                     setTimeout(() => {
-                                        window.location.href = "?secao=proposicao&id='.$proposicaoIdGet.'";
+                                        window.location.href = "?secao=proposicao&id=' . $proposicaoIdGet . '";
                                     }, 1000);
                                 </script>
                                 ';
@@ -125,7 +125,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                     echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '. Aguarde...</div>';
                                     echo '<script>
                                                 setTimeout(() => {
-                                                    window.location.href = "?secao=proposicao&id='.$proposicaoIdGet.'";
+                                                    window.location.href = "?secao=proposicao&id=' . $proposicaoIdGet . '";
                                                 }, 1000);
                                             </script>
                                             ';
@@ -138,20 +138,16 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
 
                             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_apagar'])) {
 
-
-
                                 $result = $notaController->apagarNotaTecnica($buscaNota['dados'][0]['nota_id']);
 
                                 if ($result['status'] == 'success') {
                                     echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '. Aguarde...</div>';
                                     echo '<script>
                                                 setTimeout(() => {
-                                                    window.location.href = "?secao=proposicao&id='.$proposicaoIdGet.'";
+                                                    window.location.href = "?secao=proposicao&id=' . $proposicaoIdGet . '";
                                                 }, 1000);
                                             </script>
                                             ';
-                                } else if ($result['status'] == 'duplicated' ||  $result['status'] == 'bad_request') {
-                                    echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
                                 } else if ($result['status'] == 'error') {
                                     echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['id_erro']) ? ' | Código do erro: ' . $result['id_erro'] : '') . '</div>';
                                 }
