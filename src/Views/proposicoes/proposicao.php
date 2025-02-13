@@ -134,7 +134,13 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                                     foreach (array_slice($buscaTramitacoes['dados'], $offset, $itens) as $tramitacao) {
                                         echo '<tr>';
                                         echo '<td style="white-space: nowrap;">' . date('d/m/Y H:i', strtotime($tramitacao['dataHora'])) . '</td>';
-                                        echo '<td>' . htmlspecialchars($tramitacao['despacho']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tramitacao['despacho']);
+
+                                        if (isset($tramitacao['url'])) {
+                                            echo ' - <a href="' . $tramitacao['url'] . '" target="_blank">ver documento</a>';
+                                        }
+
+                                        echo '</td>';
                                         echo '<td>' . htmlspecialchars($tramitacao['siglaOrgao']) . '</td>';
                                         echo '</tr>';
                                     }
