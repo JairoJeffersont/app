@@ -42,6 +42,7 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                         <option value="pl" <?php echo $tipoget == 'pl' ? 'selected' : ''; ?>>Projeto de lei</option>
                         <option value="req" <?php echo $tipoget == 'req' ? 'selected' : ''; ?>>Requerimento</option>
                         <option value="pec" <?php echo $tipoget == 'pec' ? 'selected' : ''; ?>>PEC</option>
+                        <option value="prl" <?php echo $tipoget == 'prl' ? 'selected' : ''; ?>>Parecer</option>
 
                     </select>
                 </div>

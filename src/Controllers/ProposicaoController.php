@@ -42,4 +42,40 @@ class ProposicaoController
             return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
+
+
+
+    public function buscarProposicoesGabineteAno($autor)
+    {
+        try {
+            $result = $this->proposicaoModel->buscarProposicoesGabineteAno($autor);
+
+            if (empty($result)) {
+                return ['status' => 'empty', 'message' => 'Nenhuma proposição encontrada.'];
+            }
+
+            return ['status' => 'success', 'dados' => $result];
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('proposicao_error', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
+            return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
+
+    public function buscarProposicoesGabineteArquivada($autor)
+    {
+        try {
+            $result = $this->proposicaoModel->buscarProposicoesGabineteArquivada($autor);
+
+            if (empty($result)) {
+                return ['status' => 'empty', 'message' => 'Nenhuma proposição encontrada.'];
+            }
+
+            return ['status' => 'success', 'dados' => $result];
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('proposicao_error', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
+            return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
 }

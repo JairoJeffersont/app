@@ -3,6 +3,8 @@
     <div class="list-group list-group-flush">
         <p style="margin-left: 10px; margin-top:20px;font-weight: bolder;" class="text-muted"><i class="bi bi-list"></i> Assessoria Legislativa</p>
         <a class="list-group-item list-group-item-action list-group-item-light px-4" id="link" href="?secao=proposicoes"><i class="bi bi-file-earmark-text"></i> Proposições do deputado</a>
+        <a class="list-group-item list-group-item-action list-group-item-light px-4" href="?secao=estatisticas-proposicoes-dep"><i class="bi bi-arrow-return-right"></i> Estatísticas</a>
+
         <!--<a class="list-group-item list-group-item-action list-group-item-light px-4" href="?secao=reunioes"><i class="bi bi-calendar3"></i> Agenda da Câmara</a>-->
 
         <p style="margin-left: 10px; margin-top:20px;font-weight: bolder;" class="text-muted"><i class="bi bi-list"></i> Gestão de pessoas</p>
