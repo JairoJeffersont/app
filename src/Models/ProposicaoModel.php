@@ -60,15 +60,17 @@ class ProposicaoModel
     public function buscarProposicoesGabineteArquivada($autor)
     {
         $query = "SELECT proposicao_tipo,
-                         COUNT(CASE WHEN proposicao_arquivada = 1 THEN 1 END) AS total_arquivada,
-                         COUNT(CASE WHEN proposicao_arquivada = 0 THEN 1 END) AS total_nao_arquivada,
-                         COUNT(CASE WHEN proposicao_aprovada = 1 THEN 1 END) AS total_aprovada
-                  FROM view_proposicoes
-                  WHERE proposicao_autor_nome = :autor 
-                    AND proposicao_autor_proponente = 1 
-                    AND proposicao_autor_assinatura = 1 
-                  GROUP BY proposicao_tipo
-                  ORDER BY total_arquivada + total_nao_arquivada DESC";
+                    COUNT(CASE WHEN proposicao_arquivada = 1 THEN 1 END) AS total_arquivada,
+                    COUNT(CASE WHEN proposicao_arquivada = 0 THEN 1 END) AS total_nao_arquivada,
+                    COUNT(CASE WHEN proposicao_aprovada = 1 THEN 1 END) AS total_aprovada
+                FROM view_proposicoes
+                WHERE proposicao_autor_nome = :autor 
+                AND proposicao_autor_proponente = 1 
+                AND proposicao_autor_assinatura = 1 
+                GROUP BY proposicao_tipo
+                ORDER BY 
+                COUNT(CASE WHEN proposicao_arquivada = 1 THEN 1 END) + COUNT(CASE WHEN proposicao_arquivada = 0 THEN 1 END) DESC;
+                ";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':autor', $autor, PDO::PARAM_STR);

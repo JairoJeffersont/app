@@ -18,7 +18,7 @@ $tiposPermitidos = ['PL', 'PEC', 'REQ', 'PLP', 'PRL'];
     <div id="page-content-wrapper">
         <?php include './src/Views/includes/top_menu.php'; ?>
         <div class="container-fluid p-2">
-            <div class="card mb-2 ">
+            <div class="card mb-2 no-print">
                 <div class="card-body p-1">
                     <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
                 </div>
@@ -62,17 +62,27 @@ $tiposPermitidos = ['PL', 'PEC', 'REQ', 'PLP', 'PRL'];
 
                                         $buscaProposicoeArquivada = $proposicaoController->buscarProposicoesGabineteArquivada($_SESSION['cliente_deputado_nome']);
 
-                                        foreach ($buscaProposicoeArquivada['dados'] as $proposicaoArquivada) {
-                                            if (in_array($proposicaoArquivada['proposicao_tipo'], $tiposPermitidos)) {
-                                                echo '<tr>';
-                                                echo '<td>' . $proposicaoArquivada['proposicao_tipo'] . '</td>';
-                                                echo '<td>' . $proposicaoArquivada['total_nao_arquivada'] . '</td>';
-                                                echo '<td>' . $proposicaoArquivada['total_aprovada'] . '</td>';
-                                                echo '<td>' . $proposicaoArquivada['total_arquivada'] . '</td>';
-                                                echo '<td>' . $proposicaoArquivada['total_nao_arquivada'] +  $proposicaoArquivada['total_arquivada'] . '</td>';
-                                                echo '</tr>';
+                                        
+
+                                        if ($buscaProposicoeArquivada['status'] == 'success') {
+                                            foreach ($buscaProposicoeArquivada['dados'] as $proposicaoArquivada) {
+                                                if (in_array($proposicaoArquivada['proposicao_tipo'], $tiposPermitidos)) {
+                                                    echo '<tr>';
+                                                    echo '<td>' . $proposicaoArquivada['proposicao_tipo'] . '</td>';
+                                                    echo '<td>' . $proposicaoArquivada['total_nao_arquivada'] . '</td>';
+                                                    echo '<td>' . $proposicaoArquivada['total_aprovada'] . '</td>';
+                                                    echo '<td>' . $proposicaoArquivada['total_arquivada'] . '</td>';
+                                                    echo '<td>' . $proposicaoArquivada['total_nao_arquivada'] +  $proposicaoArquivada['total_arquivada'] . '</td>';
+                                                    echo '</tr>';
+                                                }
                                             }
+                                        } else if ($buscaProposicoeArquivada['status'] == 'empty') {
+                                            echo '<tr><td colspan="5">Nenhuma proposição encontrada</td></tr>';
+                                        } else if ($buscaProposicoeArquivada['status'] == 'error') {
+                                            echo '<tr><td colspan="5">' . $buscaProposicoeArquivada['message'] . '</td></tr>';
                                         }
+
+
 
                                         ?>
                                     </tbody>
@@ -92,29 +102,35 @@ $tiposPermitidos = ['PL', 'PEC', 'REQ', 'PLP', 'PRL'];
                                 <?php
                                 $buscaProposicoeAno = $proposicaoController->buscarProposicoesGabineteAno($_SESSION['cliente_deputado_nome']);
 
+                                if ($buscaProposicoeAno['status'] == 'success') {
+                                    $anos = array_column($buscaProposicoeAno['dados'], 'proposicao_ano');
+                                    $anosUnicos = array_unique($anos);
 
-                                $anos = array_column($buscaProposicoeAno['dados'], 'proposicao_ano');
-                                $anosUnicos = array_unique($anos);
 
-
-                                foreach ($anosUnicos as $ano) {
-                                    echo '<div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed p-2" style="font-size: 0.5em;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse' . $ano . '" aria-expanded="false" aria-controls="panelsStayOpen-collapse' . $ano . '">
-                                                ' . $ano . '
-                                                </button>
-                                            </h2>
-                                            <div id="panelsStayOpen-collapse' . $ano . '" class="accordion-collapse collapse">
-                                                <div class="accordion-body">';
-                                    foreach ($buscaProposicoeAno['dados'] as $proposicoesAno) {
-                                        if (in_array($proposicoesAno['proposicao_tipo'], $tiposPermitidos) && $proposicoesAno['proposicao_ano'] == $ano) {
-                                            echo '<p class="card-text mb-1"><i class="bi bi-dot"></i> ' . $proposicoesAno['proposicao_tipo'] . ' - ' . $proposicoesAno['total'] . ' | <a href="?secao=proposicoes&ano='.$ano.'&tipo='.strtolower($proposicoesAno['proposicao_tipo']).'">Ver</a></p>';
+                                    foreach ($anosUnicos as $ano) {
+                                        echo '<div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed p-2" style="font-size: 0.5em;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse' . $ano . '" aria-expanded="false" aria-controls="panelsStayOpen-collapse' . $ano . '">
+                                                    ' . $ano . '
+                                                    </button>
+                                                </h2>
+                                                <div id="panelsStayOpen-collapse' . $ano . '" class="accordion-collapse collapse">
+                                                    <div class="accordion-body">';
+                                        foreach ($buscaProposicoeAno['dados'] as $proposicoesAno) {
+                                            if (in_array($proposicoesAno['proposicao_tipo'], $tiposPermitidos) && $proposicoesAno['proposicao_ano'] == $ano) {
+                                                echo '<p class="card-text mb-1"><i class="bi bi-dot"></i> ' . $proposicoesAno['proposicao_tipo'] . ' - ' . $proposicoesAno['total'] . ' | <a href="?secao=proposicoes&ano=' . $ano . '&tipo=' . strtolower($proposicoesAno['proposicao_tipo']) . '">Ver</a></p>';
+                                            }
                                         }
+                                        echo '</div>
+                                                </div>
+                                            </div>';
                                     }
-                                    echo '</div>
-                                            </div>
-                                        </div>';
+                                } else if ($buscaProposicoeAno['status'] == 'empty') {
+                                    echo '<tr><td colspan=5>Nenhuma proposição encontrada</td></tr>';
+                                } else if ($buscaProposicoeAno['status'] == 'error') {
+                                    echo '<p class="card-text">' . $buscaProposicoeAno['error'] . '</p>';
                                 }
+
 
                                 ?>
 
