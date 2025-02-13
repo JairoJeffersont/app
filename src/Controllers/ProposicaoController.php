@@ -69,8 +69,12 @@ class ProposicaoController
         }
     }
 
-    public function buscarApensado($proposicaoId){
+    public function buscarDetalhe($proposicaoId){
         return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/'.$proposicaoId);
+    }
+
+    public function buscarTramitacoes($proposicaoId){
+        return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/'.$proposicaoId.'/tramitacoes');
     }
 
 

@@ -71,30 +71,95 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" style="font-size: 0.5em" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                                        <i class="bi bi-file-text"></i> &nbsp; &nbsp;Ver inteiro teor
+                                            <i class="bi bi-file-text"></i> &nbsp; &nbsp;Ver inteiro teor
                                         </button>
                                     </h2>
                                     <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
                                         <div class="accordion-body">
                                             <?php
-                                            // URL do arquivo PDF
-                                            $url_pdf = 'https://www.camara.leg.br/proposicoesWeb/prop_mostrarintegra?codteor=2853918';
 
-                                            // Exibindo o PDF com o embed
-                                            echo "<embed src='$url_pdf' type='application/pdf' width='100%' height='1000px'>";
+                                            $buscaDet = $proposicaoController->buscarDetalhe($buscaProposicao['dados'][0]['proposicao_id']);
+
+                                            if ($buscaDet['status'] == 'success' && !empty($buscaDet['dados']['urlInteiroTeor'])) {
+                                                $url_pdf = $buscaDet['dados']['urlInteiroTeor'];
+                                                echo "<embed src='$url_pdf' type='application/pdf' width='100%' height='1000px'>";
+                                            } else {
+                                                echo '<p class="card-text">Documento não disponível</p>';
+                                            }
+
+
                                             ?>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card mb-2 card-description">
+            <div class="card-header bg-primary text-white px-2 py-1"><i class="bi bi-fast-forward-btn"></i> Tramitações</div>
 
+                <div class="card-body p-2">
+                    <div class="table-responsive mb-0">
+                        <table class="table table-hover table-bordered table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Despacho</th>
+                                    <th scope="col">Órgão</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
 
+                                $buscaTramitacoes = $proposicaoController->buscarTramitacoes($buscaProposicao['dados'][0]['proposicao_id']);
 
+                                if ($buscaTramitacoes['status'] == 'success' && is_array($buscaTramitacoes['dados'])) {
+                                    $itens = isset($_GET['itens']) ? $_GET['itens'] : 10;
+                                    $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
+                                    // Ordena as tramitações por dataHora em ordem decrescente
+                                    usort($buscaTramitacoes['dados'], function ($a, $b) {
+                                        return strtotime($b['dataHora']) - strtotime($a['dataHora']);
+                                    });
 
+                                    $totalRegistros = count($buscaTramitacoes['dados']);
+                                    $totalPagina = ceil($totalRegistros / $itens);
+
+                                    $offset = ($pagina - 1) * $itens;
+
+                                    foreach (array_slice($buscaTramitacoes['dados'], $offset, $itens) as $tramitacao) {
+                                        echo '<tr>';
+                                        echo '<td style="white-space: nowrap;">' . date('d/m/Y', strtotime($tramitacao['dataHora'])) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tramitacao['despacho']) . '</td>';
+                                        echo '<td>' . htmlspecialchars($tramitacao['siglaOrgao']) . '</td>';
+                                        echo '</tr>';
+                                    }
+                                }
+
+                                ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php
+                    if ($totalPagina > 0 && $totalPagina != 1) {
+                        echo '<ul class="pagination custom-pagination mt-2 mb-0">';
+                        echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&itens=' . $itens . '&pagina=1">Primeira</a></li>';
+
+                        for ($i = 1; $i < $totalPagina - 1; $i++) {
+                            $pageNumber = $i + 1;
+                            echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&itens=' . $itens . '&pagina=' . $pageNumber . '">' . $pageNumber . '</a></li>';
+                        }
+
+                        echo '<li class="page-item ' . ($pagina == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&itens=' . $itens . '&pagina=' . $totalPagina . '">Última</a></li>';
+                        echo '</ul>';
+                    }
+                    ?>
+
+                </div>
             </div>
         </div>
     </div>
