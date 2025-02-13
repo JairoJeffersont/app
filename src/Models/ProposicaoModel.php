@@ -40,5 +40,15 @@ class ProposicaoModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    
+
+    public function buscar($coluna, $valor)
+    {
+        $query = "SELECT * FROM view_proposicoes WHERE $coluna = :valor";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

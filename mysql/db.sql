@@ -534,6 +534,24 @@ CREATE TABLE proposicoes_autores (
   COLLATE=utf8mb4_general_ci;
 
 
+CREATE TABLE nota_tecnica(
+    nota_id varchar(36) NOT NULL,
+    nota_proposicao INT NOT NULL,
+    nota_proposicao_apelido TEXT NULL,
+    nota_proposicao_resumo TEXT NULL,
+    nota_texto TEXT NULL,
+    nota_criada_por varchar(36) NOT NULL,
+    nota_cliente varchar(36) NOT NULL,
+    nota_criada_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nota_atualizada_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (nota_id),
+    CONSTRAINT fk_nota_criada_por FOREIGN KEY (nota_criada_por) REFERENCES usuario(usuario_id),
+    CONSTRAINT fk_nota_nota_clienter FOREIGN KEY (nota_cliente) REFERENCES cliente(cliente_id)
+)ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;
 CREATE VIEW view_orgaos_tipos AS SELECT orgaos_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM orgaos_tipos INNER JOIN usuario on orgaos_tipos.orgao_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON orgaos_tipos.orgao_tipo_cliente = cliente.cliente_id;
 CREATE VIEW view_pessoas_tipos AS SELECT pessoas_tipos.*, usuario.usuario_nome, cliente.cliente_nome FROM pessoas_tipos INNER JOIN usuario ON pessoa_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON pessoas_tipos.pessoa_tipo_cliente = cliente.cliente_id;
@@ -552,4 +570,5 @@ CREATE VIEW view_emendas AS SELECT emendas.*, emendas_status.emendas_status_nome
 CREATE VIEW view_agenda_tipo AS SELECT agenda_tipo.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_tipo INNER JOIN usuario ON agenda_tipo_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_tipo_cliente = cliente.cliente_id ORDER BY agenda_tipo.agenda_tipo_nome ASC;
 CREATE VIEW view_agenda_situacao AS SELECT agenda_situacao.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_situacao INNER JOIN usuario ON agenda_situacao_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_situacao_cliente = cliente.cliente_id ORDER BY agenda_situacao.agenda_situacao_nome ASC;
 CREATE VIEW view_agenda AS SELECT agenda.*, usuario.usuario_nome, cliente.cliente_nome, agenda_tipo.agenda_tipo_nome, agenda_situacao.agenda_situacao_nome FROM agenda INNER JOIN agenda_situacao ON agenda.agenda_situacao = agenda_situacao.agenda_situacao_id INNER JOIN agenda_tipo ON agenda.agenda_tipo = agenda_tipo.agenda_tipo_id INNER JOIN usuario ON agenda.agenda_criada_por = usuario.usuario_id INNER JOIN cliente ON agenda.agenda_cliente = cliente.cliente_id;
-CREATE VIEW view_proposicoes AS SELECT proposicoes_autores.proposicao_id AS proposicao_id, proposicoes_autores.proposicao_autor_id AS proposicao_autor_id, proposicoes_autores.proposicao_autor_nome AS proposicao_autor_nome, proposicoes_autores.proposicao_autor_partido AS proposicao_autor_partido, proposicoes_autores.proposicao_autor_estado AS proposicao_autor_estado, proposicoes_autores.proposicao_autor_proponente AS proposicao_autor_proponente, proposicoes_autores.proposicao_autor_assinatura AS proposicao_autor_assinatura, proposicoes.proposicao_numero AS proposicao_numero, proposicoes.proposicao_titulo AS proposicao_titulo, proposicoes.proposicao_tipo AS proposicao_tipo, proposicoes.proposicao_ementa AS proposicao_ementa, proposicoes.proposicao_ano AS proposicao_ano, proposicoes.proposicao_apresentacao AS proposicao_apresentacao, proposicoes.proposicao_arquivada AS proposicao_arquivada, proposicoes.proposicao_aprovada AS proposicao_aprovada FROM proposicoes_autores JOIN proposicoes ON proposicoes_autores.proposicao_id = proposicoes.proposicao_id;
+CREATE VIEW view_proposicoes AS SELECT proposicoes_autores.proposicao_id AS proposicao_id, proposicoes_autores.proposicao_autor_id AS proposicao_autor_id, proposicoes_autores.proposicao_autor_nome AS proposicao_autor_nome, proposicoes_autores.proposicao_autor_partido AS proposicao_autor_partido, proposicoes_autores.proposicao_autor_estado AS proposicao_autor_estado, proposicoes_autores.proposicao_autor_proponente AS proposicao_autor_proponente, proposicoes_autores.proposicao_autor_assinatura AS proposicao_autor_assinatura, proposicoes.proposicao_numero AS proposicao_numero, proposicoes.proposicao_titulo AS proposicao_titulo, proposicoes.proposicao_tipo AS proposicao_tipo, proposicoes.proposicao_ementa AS proposicao_ementa, proposicoes.proposicao_ano AS proposicao_ano, proposicoes.proposicao_apresentacao AS proposicao_apresentacao, proposicoes.proposicao_arquivada AS proposicao_arquivada, proposicoes.proposicao_aprovada AS proposicao_aprovada, proposicao_principal FROM proposicoes_autores JOIN proposicoes ON proposicoes_autores.proposicao_id = proposicoes.proposicao_id;
+CREATE VIEW view_notas AS SELECT nota_tecnica.*, usuario.usuario_nome, cliente.cliente_nome FROM nota_tecnica INNER JOIN usuario ON nota_tecnica.nota_criada_por = usuario.usuario_id INNER JOIN cliente ON nota_tecnica.nota_cliente = cliente.cliente_id;
