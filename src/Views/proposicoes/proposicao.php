@@ -31,6 +31,8 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
             <div class="card mb-2 ">
                 <div class="card-body p-1">
                     <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
+                    <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=proposicoes" role="button"><i class="bi bi-arrow-left"></i> Voltar</a>
+
                 </div>
             </div>
             <div class="card mb-2 card-description">
@@ -56,7 +58,7 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                             if (!empty($buscaProposicao['dados'][0]['proposicao_principal'])) {
                                 echo '<p class="card-text mb-0">Essa proposição foi apensada ao: <b><a href="?secao=proposicao&id=' . $buscaProposicao['dados'][0]['proposicao_principal'] . '">' . $proposicaoController->buscaProposicao('proposicao_id', $buscaProposicao['dados'][0]['proposicao_principal'])['dados'][0]['proposicao_titulo'] . '</a></b></p>';
                             } else {
-                                echo '<p class="card-text mb-0">Essa proposição não foi apensada</p>';
+                                echo '<p class="card-text mb-0">Essa proposição não foi apensada ou é a proposição principal</p>';
                             }
 
                             ?>
@@ -99,7 +101,7 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                 </div>
             </div>
             <div class="card mb-2 card-description">
-            <div class="card-header bg-primary text-white px-2 py-1"><i class="bi bi-fast-forward-btn"></i> Tramitações</div>
+                <div class="card-header bg-primary text-white px-2 py-1"><i class="bi bi-fast-forward-btn"></i> Tramitações</div>
 
                 <div class="card-body p-2">
                     <div class="table-responsive mb-0">
@@ -117,10 +119,9 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                                 $buscaTramitacoes = $proposicaoController->buscarTramitacoes($buscaProposicao['dados'][0]['proposicao_id']);
 
                                 if ($buscaTramitacoes['status'] == 'success' && is_array($buscaTramitacoes['dados'])) {
-                                    $itens = isset($_GET['itens']) ? $_GET['itens'] : 10;
+                                    $itens = 10;
                                     $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
-                                    // Ordena as tramitações por dataHora em ordem decrescente
                                     usort($buscaTramitacoes['dados'], function ($a, $b) {
                                         return strtotime($b['dataHora']) - strtotime($a['dataHora']);
                                     });
@@ -137,6 +138,8 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                                         echo '<td>' . htmlspecialchars($tramitacao['siglaOrgao']) . '</td>';
                                         echo '</tr>';
                                     }
+                                } else if ($buscaTramitacoes['status'] == 'error') {
+                                    echo '<p class="card-text">' . $buscaTramitacoes['message'] . '</p>';
                                 }
 
                                 ?>
@@ -147,14 +150,14 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                     <?php
                     if ($totalPagina > 0 && $totalPagina != 1) {
                         echo '<ul class="pagination custom-pagination mt-2 mb-0">';
-                        echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&itens=' . $itens . '&pagina=1">Primeira</a></li>';
+                        echo '<li class="page-item ' . ($pagina == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&pagina=1">Primeira</a></li>';
 
                         for ($i = 1; $i < $totalPagina - 1; $i++) {
                             $pageNumber = $i + 1;
-                            echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&itens=' . $itens . '&pagina=' . $pageNumber . '">' . $pageNumber . '</a></li>';
+                            echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&pagina=' . $pageNumber . '">' . $pageNumber . '</a></li>';
                         }
 
-                        echo '<li class="page-item ' . ($pagina == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&itens=' . $itens . '&pagina=' . $totalPagina . '">Última</a></li>';
+                        echo '<li class="page-item ' . ($pagina == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao&id=' . $proposicaoIdGet . '&pagina=' . $totalPagina . '">Última</a></li>';
                         echo '</ul>';
                     }
                     ?>
