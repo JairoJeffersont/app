@@ -85,7 +85,7 @@ class NotaTecnicaModel
      */
     public function listar($cliente)
     {
-        $query = "SELECT * FROM nota_tecnica WHERE nota_cliente = :cliente ORDER BY nota_criada_em DESC";
+        $query = "SELECT * FROM view_notas WHERE nota_cliente = :cliente ORDER BY nota_criada_em DESC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
@@ -104,7 +104,7 @@ class NotaTecnicaModel
      */
     public function buscar($coluna, $valor)
     {
-        $query = "SELECT * FROM nota_tecnica WHERE $coluna = :valor";
+        $query = "SELECT * FROM view_notas WHERE $coluna = :valor";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);

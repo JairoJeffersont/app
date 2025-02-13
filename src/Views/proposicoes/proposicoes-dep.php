@@ -3,11 +3,11 @@
 
 ob_start();
 
-
-
+use GabineteDigital\Controllers\NotaTecnicaController;
 use GabineteDigital\Controllers\ProposicaoController;
 
 $proposicaoController = new ProposicaoController();
+$notaController = new NotaTecnicaController();
 
 $anoGet = isset($_GET['ano']) ? $_GET['ano'] : date('Y');
 $autorGet = $_SESSION['cliente_deputado_nome'];
@@ -73,11 +73,11 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
         </div>
     </div>
 </div>
-<div class="card mb-2 ">
+<!--<div class="card mb-2 ">
     <div class="card-body p-1">
         <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=imprimir-proposicoes" role="button"><i class="bi bi-printer-fill"></i> Imprimir</a>
     </div>
-</div>
+</div>-->
 <div class="card shadow-sm mb-2">
     <div class="card-body p-2">
         <div class="table-responsive mb-0">
@@ -93,10 +93,22 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                     $buscaProposicao = $proposicaoController->buscarProposicoesGabinete($autorGet, $anoGet, $tipoget, $itensGet, $paginaGet, $ordemGet, $ordenarPorGet, $arquivadoGet);
 
                     if ($buscaProposicao['status'] == 'success') {
+
+
+
                         foreach ($buscaProposicao['dados'] as $proposicao) {
+
+                            $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicao['proposicao_id']);
+
+                            if ($buscaNota['status'] == 'success') {
+                                $ementa = '<b><em>' . $buscaNota['dados'][0]['nota_proposicao_apelido'] . '</b></em><br>' . $proposicao['proposicao_ementa'];
+                            } else {
+                                $ementa = $proposicao['proposicao_ementa'];
+                            }
+
                             echo '<tr>';
                             echo '<td style="white-space: nowrap;"><a href="?secao=proposicao&id=' . $proposicao['proposicao_id'] . '">' . $proposicao['proposicao_titulo'] . '</a></td>';
-                            echo '<td>' . $proposicao['proposicao_ementa'] . '</td>';
+                            echo '<td>' . $ementa . '</td>';
                             echo '</tr>';
                         }
                     } else if ($buscaProposicao['status'] == 'empty') {

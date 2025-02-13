@@ -19,6 +19,8 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
     header('Location: ?secao=proposicoes');
 }
 
+$buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoIdGet);
+
 
 ?>
 
@@ -47,8 +49,15 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                 <div class="col-12">
                     <div class="card mb-2">
                         <div class="card-body card-description">
-                            <h5 class="card-title mb-3"><?php echo $buscaProposicao['dados'][0]['proposicao_titulo'] ?></h5>
+                            <h5 class="card-title mb-3">
+                                <?php echo $buscaProposicao['dados'][0]['proposicao_titulo']; ?>
+                                <small><?php echo isset($buscaNota['dados'][0]['nota_proposicao_apelido']) ? ' | ' . $buscaNota['dados'][0]['nota_proposicao_apelido'] : ''; ?></small>
+                            </h5>
+
+
                             <p class="card-text"><?php echo $buscaProposicao['dados'][0]['proposicao_ementa'] ?></p>
+
+
                             <p class="card-text mb-1"><i class="bi bi-calendar2-week"></i> Data de apresentação: <?php echo date('d/m', strtotime($buscaProposicao['dados'][0]['proposicao_apresentacao'])) ?></p>
                             <p class="card-text mb-3"><i class="bi bi-archive"></i> Situação: <?php echo $buscaProposicao['dados'][0]['proposicao_arquivada'] ? '<b>Arquivada</b>' : 'Em tramitação' ?></p>
                             <?php echo $buscaProposicao['dados'][0]['proposicao_aprovada'] ? '<p class="card-text mb-3"><b>Proposição Aprovada</b></p>' : '' ?>
@@ -65,6 +74,75 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                         </div>
                     </div>
                 </div>
+
+                <div class="col-12">
+                    <div class="card mb-2 ">
+                        <div class="card-header bg-success text-white px-2 py-1 card-description"> Nota técnica</div>
+
+                        <div class="card-body p-2">
+
+                            <?php
+                            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_salvar'])) {
+
+                                $dados = [
+                                    'nota_proposicao' => $proposicaoIdGet,
+                                    'nota_proposicao_apelido' => htmlspecialchars($_POST['nota_proposicao_apelido'], ENT_QUOTES, 'UTF-8'),
+                                    'nota_proposicao_resumo' => htmlspecialchars($_POST['nota_proposicao_resumo'], ENT_QUOTES, 'UTF-8'),
+                                    'nota_texto' => htmlspecialchars($_POST['nota_texto'], ENT_QUOTES, 'UTF-8'),
+                                    'nota_criada_por' => $_SESSION['usuario_id'],
+                                    'nota_cliente' => $_SESSION['usuario_cliente']
+                                ];
+
+                                $result = $notaController->criarNotaTecnica($dados);
+
+                                if ($result['status'] == 'success') {
+                                    echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
+                                } else if ($result['status'] == 'duplicated' ||  $result['status'] == 'bad_request') {
+                                    echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $result['message'] . '</div>';
+                                } else if ($result['status'] == 'error') {
+                                    echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['id_erro']) ? ' | Código do erro: ' . $result['id_erro'] : '') . '</div>';
+                                }
+                            }
+                            ?>
+
+
+                            <form class="row g-2 form_custom" method="POST">
+                                <div class="col-md-4 col-12">
+                                    <input type="text" class="form-control form-control-sm" name="nota_proposicao_apelido" value="<?php echo $buscaNota['dados'][0]['nota_proposicao_apelido'] ?>" placeholder="Título" required>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <input type="text" class="form-control form-control-sm" name="nota_proposicao_resumo" placeholder="Resumo" value="<?php echo $buscaNota['dados'][0]['nota_proposicao_resumo'] ?>" required>
+                                </div>
+                                <div class="col-md-2 col-12">
+                                    <input type="text" class="form-control form-control-sm" disabled value="<?php echo $buscaNota['dados'][0]['usuario_nome'] ?>" required>
+                                </div>
+                                <div class="col-md-12 col-12">
+                                    <script>
+                                        tinymce.init({
+                                            selector: 'textarea',
+                                            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount fullscreen',
+                                            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | alignleft aligncenter alignright alignjustify | numlist bullist indent outdent | emoticons charmap | removeformat | fullscreen',
+                                            height: 350,
+                                            language: 'pt_BR',
+                                            content_css: "public/css/tinymce.css",
+                                            setup: function(editor) {
+                                                editor.on('init', function() {
+                                                    editor.getBody().style.fontSize = '10pt';
+                                                });
+                                            }
+                                        });
+                                    </script>
+                                    <textarea class="form-control form-control-sm" name="nota_texto" placeholder="Texto" rows="10"><?php echo $buscaNota['dados'][0]['nota_texto'] ?></textarea>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <button type="submit" class="btn btn-success btn-sm" name="btn_salvar"><i class="bi bi-floppy-fill"></i> Salvar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <div class="col-12">
                     <div class="card mb-2">

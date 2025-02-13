@@ -536,7 +536,7 @@ CREATE TABLE proposicoes_autores (
 
 CREATE TABLE nota_tecnica(
     nota_id varchar(36) NOT NULL,
-    nota_proposicao INT NOT NULL,
+    nota_proposicao INT NOT NULL UNIQUE,
     nota_proposicao_apelido TEXT NULL,
     nota_proposicao_resumo TEXT NULL,
     nota_texto TEXT NULL,
