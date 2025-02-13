@@ -21,6 +21,9 @@ class GetJson
             // Configurar CURL para incluir os cabeçalhos na resposta
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 "Accept: application/json"
             ]);
@@ -45,7 +48,7 @@ class GetJson
 
             if ($httpCode < 200 || $httpCode >= 300) {
                 $erro_id = uniqid();
-                $this->logger->novoLog('get_json_log', 'http_code - '.$httpCode . ' | ' . $erro_id);
+                $this->logger->novoLog('get_json_log', 'http_code - ' . $httpCode . ' | ' . $erro_id);
                 return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
             }
 
@@ -58,7 +61,7 @@ class GetJson
             }
 
             return [
-                "status" => "success",  
+                "status" => "success",
                 "dados" => $data['dados'],
                 "headers" => $this->parseHeaders($headers) // Parse cabeçalhos
             ];

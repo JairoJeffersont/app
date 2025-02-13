@@ -4,8 +4,8 @@ return [
     'database' => [
         'host' => 'localhost',
         'name' => 'gabinete_digital',
-        'user' => 'root',
-        'password' => 'root',
+        'user' => 'jairo',
+        'password' => 'intell01',
     ],
 
     'master_user' => [
