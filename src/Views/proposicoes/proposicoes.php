@@ -22,8 +22,17 @@ require_once './vendor/autoload.php';
 
             if ($_SESSION['cliente_deputado_tipo'] == 'Deputado Federal') {
                 include 'proposicoes-dep.php';
-            }else{
-                echo 'naoidniod';
+            } else {
+                echo ' <div class="card mb-2 card-description text-center">
+                       
+                        <div class="card-body p-4">
+                            <img src="public/img/fatal_error.png" alt="Em implementação" width="100" class="img-fluid mb-2">
+                            <h4 class="text-muted">Esta seção está em construção</h4>
+
+                            <p class="card-text"> Somente proposições de deputados federais estão disponíveis</p>
+                        </div>
+                    </div>
+';
             }
 
             ?>
@@ -31,4 +40,3 @@ require_once './vendor/autoload.php';
         </div>
     </div>
 </div>
-
