@@ -31,7 +31,7 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
             <div class="card mb-2 ">
                 <div class="card-body p-1">
                     <a class="btn btn-primary btn-sm custom-nav card-description" href="?secao=home" role="button"><i class="bi bi-house-door-fill"></i> Início</a>
-                    <a class="btn btn-success btn-sm custom-nav card-description" href="?secao=proposicoes" role="button"><i class="bi bi-arrow-left"></i> Voltar</a>
+                    <a class="btn btn-success btn-sm custom-nav card-description" href="#" onclick="history.back(-1);" role="button"><i class="bi bi-arrow-left"></i> Voltar</a>
 
                 </div>
             </div>
@@ -50,7 +50,7 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                             <h5 class="card-title mb-3"><?php echo $buscaProposicao['dados'][0]['proposicao_titulo'] ?></h5>
                             <p class="card-text"><?php echo $buscaProposicao['dados'][0]['proposicao_ementa'] ?></p>
                             <p class="card-text mb-1"><i class="bi bi-calendar2-week"></i> Data de apresentação: <?php echo date('d/m', strtotime($buscaProposicao['dados'][0]['proposicao_apresentacao'])) ?></p>
-                            <p class="card-text mb-3"><i class="bi bi-archive"></i> Arquivada: <?php echo $buscaProposicao['dados'][0]['proposicao_arquivada'] ? '<b>Arquivada</b>' : 'Em tramitação' ?></p>
+                            <p class="card-text mb-3"><i class="bi bi-archive"></i> Situação: <?php echo $buscaProposicao['dados'][0]['proposicao_arquivada'] ? '<b>Arquivada</b>' : 'Em tramitação' ?></p>
                             <?php echo $buscaProposicao['dados'][0]['proposicao_aprovada'] ? '<p class="card-text mb-3"><b>Proposição Aprovada</b></p>' : '' ?>
 
                             <?php
@@ -133,7 +133,7 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
 
                                     foreach (array_slice($buscaTramitacoes['dados'], $offset, $itens) as $tramitacao) {
                                         echo '<tr>';
-                                        echo '<td style="white-space: nowrap;">' . date('d/m/Y', strtotime($tramitacao['dataHora'])) . '</td>';
+                                        echo '<td style="white-space: nowrap;">' . date('d/m/Y H:i', strtotime($tramitacao['dataHora'])) . '</td>';
                                         echo '<td>' . htmlspecialchars($tramitacao['despacho']) . '</td>';
                                         echo '<td>' . htmlspecialchars($tramitacao['siglaOrgao']) . '</td>';
                                         echo '</tr>';
