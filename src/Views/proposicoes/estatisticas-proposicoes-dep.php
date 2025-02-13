@@ -13,10 +13,6 @@ $tiposPermitidos = ['PL', 'PEC', 'REQ', 'PLP', 'PRL'];
 
 ?>
 
-
-
-
-
 <div class="d-flex" id="wrapper">
     <?php include './src/Views/includes/side_bar.php'; ?>
     <div id="page-content-wrapper">
@@ -66,7 +62,6 @@ $tiposPermitidos = ['PL', 'PEC', 'REQ', 'PLP', 'PRL'];
 
                                         $buscaProposicoeArquivada = $proposicaoController->buscarProposicoesGabineteArquivada($_SESSION['cliente_deputado_nome']);
 
-
                                         foreach ($buscaProposicoeArquivada['dados'] as $proposicaoArquivada) {
                                             if (in_array($proposicaoArquivada['proposicao_tipo'], $tiposPermitidos)) {
                                                 echo '<tr>';
@@ -113,7 +108,7 @@ $tiposPermitidos = ['PL', 'PEC', 'REQ', 'PLP', 'PRL'];
                                                 <div class="accordion-body">';
                                     foreach ($buscaProposicoeAno['dados'] as $proposicoesAno) {
                                         if (in_array($proposicoesAno['proposicao_tipo'], $tiposPermitidos) && $proposicoesAno['proposicao_ano'] == $ano) {
-                                            echo '<p class="card-text mb-1"><i class="bi bi-dot"></i> ' . $proposicoesAno['proposicao_tipo'] . ' - ' . $proposicoesAno['total'] . '</p>';
+                                            echo '<p class="card-text mb-1"><i class="bi bi-dot"></i> ' . $proposicoesAno['proposicao_tipo'] . ' - ' . $proposicoesAno['total'] . ' | <a href="?secao=proposicoes&ano='.$ano.'&tipo='.strtolower($proposicoesAno['proposicao_tipo']).'">Ver</a></p>';
                                         }
                                     }
                                     echo '</div>
