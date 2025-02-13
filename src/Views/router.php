@@ -55,8 +55,7 @@ $rotas = [
     'agenda' => './src/Views/agenda/editar-agenda.php',
     'imprimir-agenda' => './src/Views/agenda/imprimir-agenda.php',
     'situacao-agenda' => './src/Views/agenda/editar-situacao-agenda.php',
-    'proposicoes' => './src/Views/proposicoes/proposicoes.php',
-    'estatisticas-proposicoes-dep' => './src/Views/proposicoes/estatisticas-proposicoes-dep.php'
+    'proposicoes' => './src/Views/proposicoes/proposicoes.php'
 ];
 
 if (array_key_exists($pagina, $rotas)) {
