@@ -62,13 +62,12 @@ class NotaTecnicaModel
      */
     public function atualizar($nota_id, $dados)
     {
-        $query = "UPDATE nota_tecnica SET nota_proposicao = :nota_proposicao, nota_proposicao_apelido = :nota_proposicao_apelido, 
+        $query = "UPDATE nota_tecnica SET nota_proposicao_apelido = :nota_proposicao_apelido, 
                   nota_proposicao_resumo = :nota_proposicao_resumo, nota_texto = :nota_texto
                   WHERE nota_id = :nota_id";
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':nota_proposicao', $dados['nota_proposicao'], PDO::PARAM_INT);
         $stmt->bindParam(':nota_proposicao_apelido', $dados['nota_proposicao_apelido'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_proposicao_resumo', $dados['nota_proposicao_resumo'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_texto', $dados['nota_texto'], PDO::PARAM_STR);

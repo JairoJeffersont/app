@@ -76,7 +76,7 @@ class NotaTecnicaController
      */
     public function atualizarNotaTecnica($nota_id, $dados)
     {
-        $camposObrigatorios = ['nota_proposicao', 'nota_proposicao_apelido', 'nota_proposicao_resumo', 'nota_texto'];
+        $camposObrigatorios = ['nota_proposicao_apelido', 'nota_proposicao_resumo', 'nota_texto'];
 
         foreach ($camposObrigatorios as $campo) {
             if (!isset($dados[$campo])) {
