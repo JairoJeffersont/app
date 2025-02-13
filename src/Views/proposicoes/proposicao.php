@@ -46,10 +46,10 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                     <div class="card mb-2">
                         <div class="card-body card-description">
                             <h5 class="card-title mb-3"><?php echo $buscaProposicao['dados'][0]['proposicao_titulo'] ?></h5>
-                            <p class="card-text card-description"><?php echo $buscaProposicao['dados'][0]['proposicao_ementa'] ?></p>
+                            <p class="card-text"><?php echo $buscaProposicao['dados'][0]['proposicao_ementa'] ?></p>
                             <p class="card-text mb-1"><i class="bi bi-calendar2-week"></i> Data de apresentação: <?php echo date('d/m', strtotime($buscaProposicao['dados'][0]['proposicao_apresentacao'])) ?></p>
-                            <p class="card-text mb-3"><i class="bi bi-archive"></i> Arquivada: <?php echo $buscaProposicao['dados'][0]['proposicao_arquivada'] ? 'Arquivada' : 'Em tramitação' ?></p>
-                            <?php echo $buscaProposicao['dados'][0]['proposicao_arquivada'] ? '<p class="card-text mb-3"><b>Proposição Aprovada</b></p>' : '' ?>
+                            <p class="card-text mb-3"><i class="bi bi-archive"></i> Arquivada: <?php echo $buscaProposicao['dados'][0]['proposicao_arquivada'] ? '<b>Arquivada</b>' : 'Em tramitação' ?></p>
+                            <?php echo $buscaProposicao['dados'][0]['proposicao_aprovada'] ? '<p class="card-text mb-3"><b>Proposição Aprovada</b></p>' : '' ?>
 
                             <?php
 
@@ -71,7 +71,7 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" style="font-size: 0.5em" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                                            Ver inteiro teor
+                                        <i class="bi bi-file-text"></i> &nbsp; &nbsp;Ver inteiro teor
                                         </button>
                                     </h2>
                                     <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
