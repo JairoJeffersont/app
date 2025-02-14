@@ -87,7 +87,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                     'nota_proposicao' => $proposicaoIdGet,
                                     'nota_proposicao_apelido' => htmlspecialchars($_POST['nota_proposicao_apelido'], ENT_QUOTES, 'UTF-8'),
                                     'nota_proposicao_resumo' => htmlspecialchars($_POST['nota_proposicao_resumo'], ENT_QUOTES, 'UTF-8'),
-                                    'nota_texto' => htmlspecialchars($_POST['nota_texto'], ENT_QUOTES, 'UTF-8'),
+                                    'nota_texto' => $_POST['nota_texto'],
                                     'nota_criada_por' => $_SESSION['usuario_id'],
                                     'nota_cliente' => $_SESSION['usuario_cliente']
                                 ];
@@ -116,7 +116,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                     'nota_proposicao' => $proposicaoIdGet,
                                     'nota_proposicao_apelido' => htmlspecialchars($_POST['nota_proposicao_apelido'], ENT_QUOTES, 'UTF-8'),
                                     'nota_proposicao_resumo' => htmlspecialchars($_POST['nota_proposicao_resumo'], ENT_QUOTES, 'UTF-8'),
-                                    'nota_texto' => htmlspecialchars($_POST['nota_texto'], ENT_QUOTES, 'UTF-8'),
+                                    'nota_texto' => $_POST['nota_texto'],
                                 ];
 
                                 $result = $notaController->atualizarNotaTecnica($buscaNota['dados'][0]['nota_id'], $dados);
@@ -188,9 +188,11 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
 
                                     if ($buscaNota['status'] == 'success') {
                                         echo '<button type="submit" class="btn btn-primary btn-sm" name="btn_atualizar"><i class="bi bi-floppy-fill"></i> Atualizar</button>&nbsp;';
-                                        echo '<button type="submit" class="btn btn-danger btn-sm" name="btn_apagar"><i class="bi bi-trash-fill"></i> Apagar</button>';
+                                        echo '<button type="submit" class="btn btn-danger btn-sm" name="btn_apagar"><i class="bi bi-trash-fill"></i> Apagar</button>&nbsp;';
+                                        echo '<a href="?secao=imprimir-proposicao&id='.$proposicaoIdGet.'" target="_blank" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Imprimir</a>';
                                     } else {
-                                        echo '<button type="submit" class="btn btn-success btn-sm" name="btn_salvar"><i class="bi bi-floppy-fill"></i> Salvar</button>';
+                                        echo '<button type="submit" class="btn btn-success btn-sm" name="btn_salvar"><i class="bi bi-floppy-fill"></i> Salvar</button>&nbsp;';
+                                        echo '<a href="?secao=imprimir-proposicao&id='.$proposicaoIdGet.'" target="_blank" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Imprimir</a>';
                                     }
 
                                     ?>

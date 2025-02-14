@@ -94,14 +94,12 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
 
                     if ($buscaProposicao['status'] == 'success') {
 
-
-
                         foreach ($buscaProposicao['dados'] as $proposicao) {
 
                             $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicao['proposicao_id']);
-                            
+
                             if ($buscaNota['status'] == 'success') {
-                                $ementa = '<b><em>' . $buscaNota['dados'][0]['nota_proposicao_apelido'] . '</b></em><brF>' . $buscaNota['dados'][0]['nota_proposicao_resumo'];
+                                $ementa = '<b><em>' . $buscaNota['dados'][0]['nota_proposicao_apelido'] . '</b></em><br>' . $buscaNota['dados'][0]['nota_proposicao_resumo'];
                             } else {
                                 $ementa = $proposicao['proposicao_ementa'];
                             }

@@ -56,7 +56,9 @@ $rotas = [
     'imprimir-agenda' => './src/Views/agenda/imprimir-agenda.php',
     'situacao-agenda' => './src/Views/agenda/editar-situacao-agenda.php',
     'proposicoes' => './src/Views/proposicoes/proposicoes.php',
-    'proposicao' => './src/Views/proposicoes/proposicao.php'
+    'proposicao' => './src/Views/proposicoes/proposicao.php',
+    'imprimir-proposicao' => './src/Views/proposicoes/imprimir-proposicao.php'
+
 
 ];
 
