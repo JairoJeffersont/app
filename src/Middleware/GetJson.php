@@ -62,7 +62,7 @@ class GetJson
 
             return [
                 "status" => "success",
-                "dados" => $data['dados'],
+                "dados" => isset($data['dados']) ? $data['dados'] : $data,
                 "headers" => $this->parseHeaders($headers) // Parse cabeçalhos
             ];
         } catch (\Exception $e) {

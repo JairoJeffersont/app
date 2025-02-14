@@ -33,6 +33,7 @@ class ProposicaoController
 
             $total = (isset($result[0]['total'])) ? $result[0]['total'] : 0;
             $totalPaginas = ceil($total / $itens);
+            
 
             if (empty($result)) {
                 return ['status' => 'empty', 'message' => 'Nenhuma proposição encontrada.'];
@@ -69,15 +70,18 @@ class ProposicaoController
         }
     }
 
-    public function buscarDetalhe($proposicaoId){
-        return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/'.$proposicaoId);
+    public function buscarDetalhe($proposicaoId)
+    {
+        return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/' . $proposicaoId);
     }
 
-    public function buscarTramitacoes($proposicaoId){
-        return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/'.$proposicaoId.'/tramitacoes');
+    public function buscarTramitacoes($proposicaoId)
+    {
+        return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/' . $proposicaoId . '/tramitacoes');
     }
 
-
-
-    
+    public function buscarProposicoesSenado($autor, $ano, $tipo)
+    {
+        return $this->getJson->pegarDadosURL('https://legis.senado.leg.br/dadosabertos/materia/pesquisa/lista?sigla='.$tipo.'&ano='.$ano.'&nomeAutor='.$autor);
+    }
 }
