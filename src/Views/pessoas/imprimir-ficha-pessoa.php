@@ -78,7 +78,7 @@ if ($buscaPessoa['status'] == 'not_found' || is_integer($pessoaGet) || $buscaPes
             <div class="card" style="background: none; border: none;">
                 <div class="card-body text-center" style="background: none;">
                     <img src="public/img/brasaooficialcolorido.png" class="img-fluid mb-2" style="width: 150px;" />
-                    <h5 class="card-title mb-2">Gabinete do Deputado <?php echo $_SESSION['cliente_deputado_nome'] ?></h5>
+                    <h5 class="card-title mb-2">Gabinete do <?php echo $_SESSION['cliente_deputado_tipo']?> <?php echo $_SESSION['cliente_deputado_nome'] ?></h5>
                     <p class="card-text" style="font-size: 1.4em;">Ficha cadastral </p>
                 </div>
             </div>

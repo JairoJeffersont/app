@@ -21,8 +21,6 @@ if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == '
 
 $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoIdGet);
 
-
-
 ?>
 
 
@@ -67,7 +65,6 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
 <script>
     window.onload = function() {
         window.print();
-
         window.onafterprint = function() {
             window.close();
         };
@@ -80,7 +77,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
             <div class="card" style="background: none; border: none;">
                 <div class="card-body text-center" style="background: none;">
                     <img src="public/img/brasaooficialcolorido.png" class="img-fluid mb-2" style="width: 150px;" />
-                    <h5 class="card-title mb-2">Gabinete do Deputado <?php echo $_SESSION['cliente_deputado_nome'] ?></h5>
+                    <h5 class="card-title mb-2">Gabinete do <?php echo $_SESSION['cliente_deputado_tipo']?> <?php echo $_SESSION['cliente_deputado_nome'] ?></h5>
                     <p class="card-text" style="font-size: 1.4em;">Ficha da proposição </p>
                 </div>
             </div>
