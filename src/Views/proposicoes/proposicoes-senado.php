@@ -75,6 +75,10 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 
                     if ($buscaProposicoes['status'] == 'success' && isset($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia'])) {
 
+                        usort($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia'], function($a, $b) {
+                            return $b['Numero'] - $a['Numero']; // Ordem decrescente
+                        });
+
                         $totalRegistros = count($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia']);
 
                         $totalPaginas = ceil($totalRegistros / $itensGet);
@@ -83,7 +87,7 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 
                         foreach (array_slice($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia'], $offset, $itensGet) as $materia) {
                             echo '<tr>';
-                            echo '<td style="white-space: nowrap;">' . $materia['Sigla'] . ' ' . ltrim($materia['Numero'], '0') . '/' . $materia['Ano'] . '</td>';
+                            echo '<td style="white-space: nowrap;"><a href="?secao=proposicao-senado&id=' . $materia['Codigo'] . '">' . $materia['Sigla'] . ' ' . ltrim($materia['Numero'], '0') . '/' . $materia['Ano'] . '</a></td>';
                             echo '<td>' . $materia['Ementa'] . '</td>';
                             echo '</tr>';
                         }
