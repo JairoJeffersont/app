@@ -28,34 +28,34 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 </div>
 
 <div class="card shadow-sm mb-2">
-        <div class="card-body p-2">
-            <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
-                <div class="col-md-1 col-2">
-                    <input type="hidden" name="secao" value="proposicoes" />
-                    <input type="text" class="form-control form-control-sm" name="ano" data-mask="0000" value="<?php echo $anoGet ?>">
-                </div>
-                <div class="col-md-1 col-10">
-                    <select class="form-select form-select-sm" name="tipo" required>
-                        <option value="pl" <?php echo $tipoget == 'pl' ? 'selected' : ''; ?>>Projeto de lei</option>
-                        <option value="req" <?php echo $tipoget == 'req' ? 'selected' : ''; ?>>Requerimento</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-1 col-4">
-                    <select class="form-select form-select-sm" name="itens" required>
-                        <option value="5" <?php echo $itensGet == 5 ? 'selected' : ''; ?>>5 itens</option>
-                        <option value="10" <?php echo $itensGet == 10 ? 'selected' : ''; ?>>10 itens</option>
-                        <option value="25" <?php echo $itensGet == 25 ? 'selected' : ''; ?>>25 itens</option>
-                        <option value="50" <?php echo $itensGet == 50 ? 'selected' : ''; ?>>50 itens</option>
-                    </select>
-                </div>
-               
-                <div class="col-md-1 col-2">
-                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
-                </div>
-            </form>
-        </div>
+    <div class="card-body p-2">
+        <form class="row g-2 form_custom mb-0" method="GET" enctype="application/x-www-form-urlencoded">
+            <div class="col-md-1 col-2">
+                <input type="hidden" name="secao" value="proposicoes" />
+                <input type="text" class="form-control form-control-sm" name="ano" data-mask="0000" value="<?php echo $anoGet ?>">
+            </div>
+            <div class="col-md-1 col-10">
+                <select class="form-select form-select-sm" name="tipo" required>
+                    <option value="pl" <?php echo $tipoget == 'pl' ? 'selected' : ''; ?>>Projeto de lei</option>
+                    <option value="req" <?php echo $tipoget == 'req' ? 'selected' : ''; ?>>Requerimento</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 col-4">
+                <select class="form-select form-select-sm" name="itens" required>
+                    <option value="5" <?php echo $itensGet == 5 ? 'selected' : ''; ?>>5 itens</option>
+                    <option value="10" <?php echo $itensGet == 10 ? 'selected' : ''; ?>>10 itens</option>
+                    <option value="25" <?php echo $itensGet == 25 ? 'selected' : ''; ?>>25 itens</option>
+                    <option value="50" <?php echo $itensGet == 50 ? 'selected' : ''; ?>>50 itens</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 col-2">
+                <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
+            </div>
+        </form>
     </div>
+</div>
 
 <div class="card shadow-sm mb-2">
     <div class="card-body p-2">
@@ -75,7 +75,7 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 
                     if ($buscaProposicoes['status'] == 'success' && isset($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia'])) {
 
-                        usort($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia'], function($a, $b) {
+                        usort($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia'], function ($a, $b) {
                             return $b['Numero'] - $a['Numero']; // Ordem decrescente
                         });
 
@@ -86,9 +86,20 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                         $offset = ($paginaGet - 1) * $itensGet;
 
                         foreach (array_slice($buscaProposicoes['dados']['PesquisaBasicaMateria']['Materias']['Materia'], $offset, $itensGet) as $materia) {
+
+                            $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao',  $materia['Codigo']);
+
+
+                            if ($buscaNota['status'] == 'success') {
+                                $ementa = '<b><em>' . $buscaNota['dados'][0]['nota_proposicao_apelido'] . '</b></em><br>' . $buscaNota['dados'][0]['nota_proposicao_resumo'];
+                            } else {
+                                $ementa = $materia['Ementa'];
+                            }
+
+
                             echo '<tr>';
                             echo '<td style="white-space: nowrap;"><a href="?secao=proposicao-senado&id=' . $materia['Codigo'] . '">' . $materia['Sigla'] . ' ' . ltrim($materia['Numero'], '0') . '/' . $materia['Ano'] . '</a></td>';
-                            echo '<td>' . $materia['Ementa'] . '</td>';
+                            echo '<td>' . $ementa . '</td>';
                             echo '</tr>';
                         }
                     } else {

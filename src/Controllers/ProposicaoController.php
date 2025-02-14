@@ -84,4 +84,9 @@ class ProposicaoController
     {
         return $this->getJson->pegarDadosURL('https://legis.senado.leg.br/dadosabertos/materia/pesquisa/lista?sigla='.$tipo.'&ano='.$ano.'&nomeAutor='.$autor);
     }
+
+    public function buscarDetalheSenado($proposicaoId)
+    {
+        return $this->getJson->pegarDadosURL('https://legis.senado.leg.br/dadosabertos/materia/'.$proposicaoId);
+    }
 }
