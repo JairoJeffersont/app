@@ -9,14 +9,40 @@ use GabineteDigital\Controllers\ProposicaoController;
 $proposicaoController = new ProposicaoController();
 $notaController = new NotaTecnicaController();
 
+
+function formatarTexto($texto) {
+    // Remover acentos
+    $texto = strtr($texto, [
+        'á' => 'a', 'à' => 'a', 'ã' => 'a', 'â' => 'a', 'ä' => 'a',
+        'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+        'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+        'ó' => 'o', 'ò' => 'o', 'õ' => 'o', 'ô' => 'o', 'ö' => 'o',
+        'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+        'ç' => 'c', 'ñ' => 'n',
+        'Á' => 'A', 'À' => 'A', 'Ã' => 'A', 'Â' => 'A', 'Ä' => 'A',
+        'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+        'Í' => 'I', 'Ì' => 'I', 'Î' => 'I', 'Ï' => 'I',
+        'Ó' => 'O', 'Ò' => 'O', 'Õ' => 'O', 'Ô' => 'O', 'Ö' => 'O',
+        'Ú' => 'U', 'Ù' => 'U', 'Û' => 'U', 'Ü' => 'U',
+        'Ç' => 'C', 'Ñ' => 'N'
+    ]);
+
+    $texto = preg_replace('/\s+/', '+', $texto);
+
+    return $texto;
+}
+
+
 $anoGet = isset($_GET['ano']) ? $_GET['ano'] : date('Y');
-$autorGet = $_SESSION['cliente_deputado_nome'];
+$autorGet = formatarTexto($_SESSION['cliente_deputado_nome']);
+
 $tipoget = isset($_GET['tipo']) ? $_GET['tipo'] : 'pl';
-$ordenarPorGet = isset($_GET['ordenarPor']) ? $_GET['ordenarPor'] : 'proposicao_numero';
-$ordemGet = isset($_GET['ordem']) ? $_GET['ordem'] : 'desc';
+
 $itensGet = isset($_GET['itens']) ? (int)$_GET['itens'] : 10;
 $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-$arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
+
+
+
 
 ?>
 
@@ -42,16 +68,10 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                         <option value="pl" <?php echo $tipoget == 'pl' ? 'selected' : ''; ?>>Projeto de lei</option>
                         <option value="req" <?php echo $tipoget == 'req' ? 'selected' : ''; ?>>Requerimento</option>
                         <option value="pec" <?php echo $tipoget == 'pec' ? 'selected' : ''; ?>>PEC</option>
-                        <option value="prl" <?php echo $tipoget == 'prl' ? 'selected' : ''; ?>>Parecer</option>
 
                     </select>
                 </div>
-                <div class="col-md-2 col-12">
-                    <select class="form-select form-select-sm" name="arquivado" required>
-                        <option value="1" <?php echo $arquivadoGet === 1 ? 'selected' : ''; ?>>Arquivado</option>
-                        <option value="0" <?php echo $arquivadoGet === 0 ? 'selected' : ''; ?>>Tramitando</option>
-                    </select>
-                </div>
+
                 <div class="col-md-1 col-4">
                     <select class="form-select form-select-sm" name="itens" required>
                         <option value="5" <?php echo $itensGet == 5 ? 'selected' : ''; ?>>5 itens</option>
@@ -60,12 +80,7 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                         <option value="50" <?php echo $itensGet == 50 ? 'selected' : ''; ?>>50 itens</option>
                     </select>
                 </div>
-                <div class="col-md-2 col-6">
-                    <select class="form-select form-select-sm" name="ordem" required>
-                        <option value="asc" <?php echo $ordemGet == 'asc' ? 'selected' : ''; ?>>Ordem Crescente</option>
-                        <option value="desc" <?php echo $ordemGet == 'desc' ? 'selected' : ''; ?>>Ordem Decrescente</option>
-                    </select>
-                </div>
+
                 <div class="col-md-1 col-2">
                     <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-search"></i></button>
                 </div>
@@ -90,29 +105,26 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
                 </thead>
                 <tbody>
                     <?php
-                    $buscaProposicao = $proposicaoController->buscarProposicoesGabinete($autorGet, $anoGet, $tipoget, $itensGet, $paginaGet, $ordemGet, $ordenarPorGet, $arquivadoGet);
+                    $buscaProposicao = $proposicaoController->buscarProposicoesDeputado($autorGet, $anoGet, $itensGet, $paginaGet, $tipoget);
 
                     if ($buscaProposicao['status'] == 'success') {
 
                         foreach ($buscaProposicao['dados'] as $proposicao) {
-
-                            $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicao['proposicao_id']);
+                            $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicao['id']);
 
                             if ($buscaNota['status'] == 'success') {
                                 $ementa = '<b><em>' . $buscaNota['dados'][0]['nota_proposicao_apelido'] . '</b></em><br>' . $buscaNota['dados'][0]['nota_proposicao_resumo'];
                             } else {
-                                $ementa = $proposicao['proposicao_ementa'];
+                                $ementa = $proposicao['ementa'];
                             }
 
                             echo '<tr>';
-                            echo '<td style="white-space: nowrap;"><a href="?secao=proposicao&id=' . $proposicao['proposicao_id'] . '">' . $proposicao['proposicao_titulo'] . '</a></td>';
+                            echo '<td style="white-space: nowrap;"><a href="?secao=proposicao&id=' . $proposicao['id'] . '">' . $proposicao['siglaTipo'] . ' ' . $proposicao['numero'] . '/' . $proposicao['ano'] . '</a></td>';
                             echo '<td>' . $ementa . '</td>';
                             echo '</tr>';
                         }
                     } else if ($buscaProposicao['status'] == 'empty') {
-                        echo '<tr><td colspan="11">' . $buscaProposicao['message'] . '</td></tr>';
-                    } else if ($buscaProposicao['status'] == 'error') {
-                        echo '<tr><td colspan="11">' . $buscaProposicao['message'] . ' | Código do erro: ' . $buscaProposicao['error_id'] . '</td></tr>';
+                        echo '<tr><td colspan="2">' . $buscaProposicao['message'] . '</td></tr>';
                     }
                     ?>
 
@@ -129,14 +141,14 @@ $arquivadoGet = isset($_GET['arquivado']) ? (int)$_GET['arquivado'] : 0;
 
         if ($totalPagina > 0 && $totalPagina != 1) {
             echo '<ul class="pagination custom-pagination mt-2 mb-0">';
-            echo '<li class="page-item ' . ($paginaGet == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=1&ordenarPor=' . $ordenarPorGet . '&ordem=' . $ordemGet . '&ordenarPor=' . $ordenarPorGet . '&tipo=' . $tipoget . '&arquivado=' . $arquivadoGet . '&ano=' . $anoGet . '">Primeira</a></li>';
+            echo '<li class="page-item ' . ($paginaGet == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=1&tipo=' . $tipoget . '&ano=' . $anoGet . '">Primeira</a></li>';
 
             for ($i = 1; $i < $totalPagina - 1; $i++) {
                 $pageNumber = $i + 1;
-                echo '<li class="page-item ' . ($paginaGet == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $pageNumber . '&ordenarPor=' . $ordenarPorGet . '&ordem=' . $ordemGet . '&ordenarPor=' . $ordenarPorGet . '&tipo=' . $tipoget . '&arquivado=' . $arquivadoGet . '&ano=' . $anoGet . '">' . $pageNumber . '</a></li>';
+                echo '<li class="page-item ' . ($paginaGet == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $pageNumber . '&tipo=' . $tipoget . '&ano=' . $anoGet . '">' . $pageNumber . '</a></li>';
             }
 
-            echo '<li class="page-item ' . ($paginaGet == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $totalPagina . '&ordenarPor=' . $ordenarPorGet . '&ordem=' . $ordemGet . '&ordenarPor=' . $ordenarPorGet . '&tipo=' . $tipoget . '&arquivado=' . $arquivadoGet . '&ano=' . $anoGet . '">Última</a></li>';
+            echo '<li class="page-item ' . ($paginaGet == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $totalPagina . '&tipo=' . $tipoget . '&ano=' . $anoGet . '">Última</a></li>';
             echo '</ul>';
         }
         ?>

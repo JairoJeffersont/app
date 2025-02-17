@@ -13,12 +13,11 @@ $notaController = new NotaTecnicaController();
 
 $proposicaoIdGet = $_GET['id'];
 
-$buscaProposicao = $proposicaoController->buscaProposicao('proposicao_id', $proposicaoIdGet);
+$buscaProposicao = $proposicaoController->buscarDetalhe($proposicaoIdGet);
 
-if ($buscaProposicao['status'] == 'not_found' || $buscaProposicao['status'] == 'error') {
-    header('Location: ?secao=proposicoes');
+if ($buscaProposicao['status'] == 'error' || empty($buscaProposicao['dados'])) {
+    header('location: ?secao=proposicoes');
 }
-
 $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoIdGet);
 
 ?>
@@ -77,7 +76,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
             <div class="card" style="background: none; border: none;">
                 <div class="card-body text-center" style="background: none;">
                     <img src="public/img/brasaooficialcolorido.png" class="img-fluid mb-2" style="width: 150px;" />
-                    <h5 class="card-title mb-2">Gabinete do <?php echo $_SESSION['cliente_deputado_tipo']?> <?php echo $_SESSION['cliente_deputado_nome'] ?></h5>
+                    <h5 class="card-title mb-2">Gabinete do <?php echo $_SESSION['cliente_deputado_tipo'] ?> <?php echo $_SESSION['cliente_deputado_nome'] ?></h5>
                     <p class="card-text" style="font-size: 1.4em;">Ficha da proposição </p>
                 </div>
             </div>
@@ -88,7 +87,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
         <div class="col-10">
             <div class="card" style="background: none; border: none;">
                 <div class="card-body" style="background: none;">
-                    <h5 class="card-title mb-4"><?php echo $buscaProposicao['dados'][0]['proposicao_titulo']; ?></h5>
+                    <h5 class="card-title mb-4"><?php echo $buscaProposicao['dados']['siglaTipo'] . ' ' . $buscaProposicao['dados']['numero'] . '/' . $buscaProposicao['dados']['ano']; ?></h5>
                     <?php
 
                     if ($buscaNota['status'] == 'success' && !empty($buscaNota['dados'])) {
@@ -96,10 +95,10 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                         echo '<p class="card-text mb-3"><b>Resumo</b></p>';
                         echo '<p class="card-text mb-3">' . $buscaNota['dados'][0]['nota_proposicao_resumo'] . '</p>';
                         echo '<p class="card-text mb-3"><b>Ementa</b></p>';
-                        echo '<p class="card-text mb-0"><em>' . $buscaProposicao['dados'][0]['proposicao_ementa'] . '</em></p>';
+                        echo '<p class="card-text mb-0"><em>' . $buscaProposicao['dados']['ementa'] . '</em></p>';
                     } else if ($buscaNota['status'] == 'not_found') {
                         echo '<p class="card-text mb-3"><b>Ementa</b></p>';
-                        echo '<p class="card-text mb-0"><em>' . $buscaProposicao['dados'][0]['proposicao_ementa'] . '</em></p>';
+                        echo '<p class="card-text mb-0"><em>' . $buscaProposicao['dados']['ementa'] . '</em></p>';
                     }
                     ?>
                 </div>
@@ -112,16 +111,24 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                 <div class="card-body" style="background: none;">
                     <h6 class="card-title">Informações gerais</h6>
                     <hr>
-                    <p class="card-text mb-1"><i class="bi bi-calendar2-week"></i> Data de apresentação: <?php echo date('d/m/Y', strtotime($buscaProposicao['dados'][0]['proposicao_apresentacao'])) ?></p>
-                    <p class="card-text mb-2"><i class="bi bi-archive"></i> Situação: <?php echo $buscaProposicao['dados'][0]['proposicao_arquivada'] ? '<b>Arquivada</b>' : 'Em tramitação' ?></p>
-                    <?php echo $buscaProposicao['dados'][0]['proposicao_aprovada'] ? '<p class="card-text mb-3"><b>Proposição Aprovada</b></p>' : '' ?>
-
+                   
+                    <p class="card-text mb-1"><i class="bi bi-calendar2-week"></i> Data de apresentação: <?php echo date('d/m/Y', strtotime($buscaProposicao['dados']['dataApresentacao'])) ?></p>
+                    <p class="card-text mb-2"><i class="bi bi-archive"></i> Situação: <?php echo ($buscaProposicao['dados']['statusProposicao'] == 'Arquivada') ? 'Arquivada' : 'Em tramitação' ?></p>
                     <?php
 
-                    if (!empty($buscaProposicao['dados'][0]['proposicao_principal'])) {
-                        echo '<p class="card-text mb-0"><i class="bi bi-info-circle"></i> Essa proposição foi apensada ao: <b>' . $proposicaoController->buscaProposicao('proposicao_id', $buscaProposicao['dados'][0]['proposicao_principal'])['dados'][0]['proposicao_titulo'] . '</b></p>';
+                    if ($buscaProposicao['dados']['statusProposicao'] == 'Transformado em Norma Jurídica') {
+                        echo '<p class="card-text mb-3"><b>Proposição Aprovada</b></p>';
+                    }
+
+
+
+                    if (!empty($buscaProposicao['dados']['uriPropPrincipal'])) {
+                        $buscaApensado = $proposicaoController->buscarDetalhe(basename($buscaProposicao['dados']['uriPropPrincipal']));
+                        if ($buscaApensado['status'] == 'success' && !empty($buscaApensado['dados'])) {
+                            echo '<p class="card-text mb-0">Essa proposição foi apensada ao: <b><a href="?secao=proposicao&id=' . $buscaApensado['dados']['id'] . '">' . $buscaApensado['dados']['siglaTipo'] . ' ' . $buscaApensado['dados']['numero'] . '/' . $buscaApensado['dados']['ano'] . '</a></b></p>';
+                        }
                     } else {
-                        echo '<p class="card-text mb-0"><i class="bi bi-info-circle"></i> Essa proposição não foi apensada ou é a proposição principal</p>';
+                        echo '<p class="card-text mb-0">Essa proposição não foi apensada ou é a proposição principal</p>';
                     }
                     ?>
 
