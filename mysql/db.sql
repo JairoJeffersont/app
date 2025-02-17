@@ -539,6 +539,7 @@ CREATE TABLE nota_tecnica(
     nota_proposicao INT NOT NULL UNIQUE,
     nota_proposicao_apelido TEXT NULL,
     nota_proposicao_resumo TEXT NULL,
+    nota_proposicao_tema TEXT NULL,
     nota_texto TEXT NULL,
     nota_criada_por varchar(36) NOT NULL,
     nota_cliente varchar(36) NOT NULL,
@@ -550,6 +551,44 @@ CREATE TABLE nota_tecnica(
 )ENGINE=InnoDB 
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE proposicao_tema (
+    proposicao_tema_id varchar(36) NOT NULL,
+    proposicao_tema_nome varchar(255) NOT NULL UNIQUE,
+    proposicao_tema_criado_por varchar(36) NOT NULL,
+    proposicao_tema_cliente varchar(36) NOT NULL,
+    proposicao_tema_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    proposicao_tema_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (proposicao_tema_id),
+    CONSTRAINT fk_proposicao_tema_criado_por FOREIGN KEY (proposicao_tema_criado_por) REFERENCES usuario(usuario_id),
+    CONSTRAINT fk_proposicao_tema_cliente FOREIGN KEY (proposicao_tema_cliente) REFERENCES cliente(cliente_id)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+  INSERT INTO proposicao_tema (proposicao_tema_id, proposicao_tema_nome, proposicao_tema_criado_por, proposicao_tema_cliente)
+VALUES 
+('1', 'Reforma Tributária', '1', '1'),
+('2', 'Direitos Humanos', '1', '1'),
+('3', 'Educação Pública', '1', '1'),
+('4', 'Meio Ambiente', '1', '1'),
+('5', 'Saúde Pública', '1', '1'),
+('6', 'Tecnologia e Inovação', '1', '1'),
+('7', 'Segurança Pública', '1', '1'),
+('8', 'Infraestrutura e Transportes', '1', '1'),
+('9', 'Reforma Trabalhista', '1', '1'),
+('10', 'Cultura e Lazer', '1', '1'),
+('11', 'Política Externa', '1', '1'),
+('12', 'Justiça e Direito', '1', '1'),
+('13', 'Agronegócio', '1', '1'),
+('14', 'Emprego e Renda', '1', '1'),
+('15', 'Igualdade de Gênero', '1', '1'),
+('16', 'Impostos e Taxas', '1', '1'),
+('17', 'Combate à Corrupção', '1', '1'),
+('18', 'Reforma da Previdência', '1', '1'),
+('19', 'Assistência Social', '1', '1'),
+('20', 'Proteção aos Animais', '1', '1');
+
 
 
 CREATE VIEW view_usuarios AS SELECT * FROM usuario INNER JOIN cliente ON usuario.usuario_cliente = cliente.cliente_id;

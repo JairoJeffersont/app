@@ -58,7 +58,10 @@ $rotas = [
     'proposicoes' => './src/Views/proposicoes/proposicoes.php',
     'proposicao' => './src/Views/proposicoes/proposicao.php',
     'proposicao-senado' => './src/Views/proposicoes/proposicao-senado.php',
-    'imprimir-proposicao' => './src/Views/proposicoes/imprimir-proposicao.php'
+    'imprimir-proposicao' => './src/Views/proposicoes/imprimir-proposicao.php',
+    'temas-proposicoes' => './src/Views/proposicoes/temas-proposicoes.php',
+    'tema-proposicao' => './src/Views/proposicoes/tema-proposicao.php',
+
 
 
 ];

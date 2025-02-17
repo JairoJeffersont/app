@@ -22,7 +22,7 @@ require_once './vendor/autoload.php';
 
             if ($_SESSION['cliente_deputado_tipo'] == 'Deputado Federal') {
                 include 'proposicoes-dep.php';
-            }else if ($_SESSION['cliente_deputado_tipo'] == 'Senador') {
+            } else if ($_SESSION['cliente_deputado_tipo'] == 'Senador') {
                 include 'proposicoes-senado.php';
             } else {
                 echo ' <div class="card mb-2 card-description text-center">
@@ -34,7 +34,7 @@ require_once './vendor/autoload.php';
                             <p class="card-text"> Somente proposições de deputados federais estão disponíveis</p>
                         </div>
                     </div>
-';
+                    ';
             }
 
             ?>

@@ -121,6 +121,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                 'nota_proposicao' => $proposicaoIdGet,
                                 'nota_proposicao_apelido' => htmlspecialchars($_POST['nota_proposicao_apelido'], ENT_QUOTES, 'UTF-8'),
                                 'nota_proposicao_resumo' => htmlspecialchars($_POST['nota_proposicao_resumo'], ENT_QUOTES, 'UTF-8'),
+                                'nota_proposicao_tema' => htmlspecialchars($_POST['nota_proposicao_tema'], ENT_QUOTES, 'UTF-8'),
                                 'nota_texto' => $_POST['nota_texto'],
                                 'nota_criada_por' => $_SESSION['usuario_id'],
                                 'nota_cliente' => $_SESSION['usuario_cliente']
@@ -193,8 +194,11 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             <div class="col-md-4 col-12">
                                 <input type="text" class="form-control form-control-sm" name="nota_proposicao_apelido" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_apelido'] : '' ?>" placeholder="Título" required>
                             </div>
-                            <div class="col-md-6 col-12">
+                            <div class="col-md-3 col-12">
                                 <input type="text" class="form-control form-control-sm" name="nota_proposicao_resumo" placeholder="Resumo" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_resumo'] : '' ?>" required>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <input type="text" class="form-control form-control-sm" name="nota_proposicao_tema" placeholder="Tema" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_tema'] : '' ?>" required>
                             </div>
                             <div class="col-md-2 col-12">
                                 <input type="text" class="form-control form-control-sm" disabled value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['usuario_nome'] : $_SESSION['usuario_nome'] ?>" required>

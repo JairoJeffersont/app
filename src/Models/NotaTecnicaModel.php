@@ -38,14 +38,15 @@ class NotaTecnicaModel
      */
     public function criar($dados)
     {
-        $query = "INSERT INTO nota_tecnica (nota_id, nota_proposicao, nota_proposicao_apelido, nota_proposicao_resumo, nota_texto, nota_criada_por, nota_cliente)
-                  VALUES (UUID(), :nota_proposicao, :nota_proposicao_apelido, :nota_proposicao_resumo, :nota_texto, :nota_criada_por, :nota_cliente)";
+        $query = "INSERT INTO nota_tecnica (nota_id, nota_proposicao, nota_proposicao_apelido, nota_proposicao_resumo, nota_proposicao_tema, nota_texto, nota_criada_por, nota_cliente)
+                  VALUES (UUID(), :nota_proposicao, :nota_proposicao_apelido, :nota_proposicao_resumo, :nota_proposicao_tema, :nota_texto, :nota_criada_por, :nota_cliente)";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':nota_proposicao', $dados['nota_proposicao'], PDO::PARAM_INT);
         $stmt->bindParam(':nota_proposicao_apelido', $dados['nota_proposicao_apelido'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_proposicao_resumo', $dados['nota_proposicao_resumo'], PDO::PARAM_STR);
+        $stmt->bindParam(':nota_proposicao_tema', $dados['nota_proposicao_tema'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_texto', $dados['nota_texto'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_criada_por', $dados['nota_criada_por'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_cliente', $dados['nota_cliente'], PDO::PARAM_STR);
@@ -63,13 +64,14 @@ class NotaTecnicaModel
     public function atualizar($nota_id, $dados)
     {
         $query = "UPDATE nota_tecnica SET nota_proposicao_apelido = :nota_proposicao_apelido, 
-                  nota_proposicao_resumo = :nota_proposicao_resumo, nota_texto = :nota_texto
+                  nota_proposicao_resumo = :nota_proposicao_resumo, nota_texto = :nota_texto, nota_proposicao_tema: nota_proposicao_tema
                   WHERE nota_id = :nota_id";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':nota_proposicao_apelido', $dados['nota_proposicao_apelido'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_proposicao_resumo', $dados['nota_proposicao_resumo'], PDO::PARAM_STR);
+        $stmt->bindParam(':nota_proposicao_tema', $dados['nota_proposicao_tema'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_texto', $dados['nota_texto'], PDO::PARAM_STR);
         $stmt->bindParam(':nota_id', $nota_id, PDO::PARAM_STR);
 
