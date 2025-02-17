@@ -194,14 +194,14 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
 
 
                         <form class="row g-2 form_custom" method="POST">
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-3 col-12">
                                 <input type="text" class="form-control form-control-sm" name="nota_proposicao_apelido" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_apelido'] : '' ?>" placeholder="Título" required>
                             </div>
-                            <div class="col-md-3 col-12">
+                            <div class="col-md-5 col-12">
                                 <input type="text" class="form-control form-control-sm" name="nota_proposicao_resumo" placeholder="Resumo" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_resumo'] : '' ?>" required>
                             </div>
-                            <div class="col-md-3 col-12">
-                                <select class="form-control form-control-sm" name="nota_proposicao_tema" required>
+                            <div class="col-md-2 col-12">
+                                <select class="form-control form-control-sm" name="nota_proposicao_tema" id="nota_proposicao_tema" required>
 
                                     <?php
                                     $buscaTema = $temaController->listarProposicoesTemas($_SESSION['usuario_cliente']);
@@ -376,3 +376,14 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
         </div>
     </div>
 </div>
+<script>
+    $('#nota_proposicao_tema').change(function() {
+        if ($('#nota_proposicao_tema').val() == '+') {
+            if (window.confirm("Você realmente deseja inserir um novo tema?")) {
+                window.location.href = "?secao=temas-proposicoes";
+            } else {
+                $('#nota_proposicao_tema').val(1000).change();
+            }
+        }
+    });
+</script>

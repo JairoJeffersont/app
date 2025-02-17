@@ -2,6 +2,7 @@
 
 use GabineteDigital\Controllers\NotaTecnicaController;
 use GabineteDigital\Controllers\ProposicaoController;
+use GabineteDigital\Controllers\ProposicaoTemaController;
 
 ob_start();
 
@@ -10,21 +11,18 @@ require_once './vendor/autoload.php';
 
 $proposicaoController = new ProposicaoController();
 $notaController = new NotaTecnicaController();
+$temaController = new ProposicaoTemaController();
 
 $proposicaoIdGet = $_GET['id'];
 
 $buscaProposicao = $proposicaoController->buscarDetalheSenado($proposicaoIdGet);
 
+
 if ($buscaProposicao['status'] == 'success' && !isset($buscaProposicao['dados']['DetalheMateria']['Materia'])) {
     header('Location: ?secao=proposicoes');
 }
 
-//print_r($buscaProposicao['dados']['DetalheMateria']['Materia']['IdentificacaoMateria']['CodigoMateria']);
-
-
 $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoIdGet);
-
-
 
 ?>
 
@@ -47,16 +45,11 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                     <p class="card-text mb-0">Nesta seção, você pode consultar informações de uma proposição.</p>
                 </div>
             </div>
-
-
-
             <div class="card mb-2">
                 <div class="card-body card-description">
                     <h5 class="card-title mb-3">
                         <?php echo $buscaProposicao['dados']['DetalheMateria']['Materia']['IdentificacaoMateria']['DescricaoIdentificacaoMateria']; ?>
                         <small><?php echo isset($buscaNota['dados'][0]['nota_proposicao_apelido']) ? ' | ' . $buscaNota['dados'][0]['nota_proposicao_apelido'] : ''; ?></small>
-
-
                     </h5>
 
                     <p class="card-text mb-2"><?php echo $buscaProposicao['dados']['DetalheMateria']['Materia']['DadosBasicosMateria']['EmentaMateria'] ?></p>
@@ -69,7 +62,6 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                     } else {
                         echo '<p class="card-text mb-2"><i class="bi bi-archive"></i> Situação: Arquivada</p>';
                     }
-
 
                     ?>
 
@@ -89,6 +81,8 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             'nota_proposicao' => $proposicaoIdGet,
                             'nota_proposicao_apelido' => htmlspecialchars($_POST['nota_proposicao_apelido'], ENT_QUOTES, 'UTF-8'),
                             'nota_proposicao_resumo' => htmlspecialchars($_POST['nota_proposicao_resumo'], ENT_QUOTES, 'UTF-8'),
+                            'nota_proposicao_tema' => htmlspecialchars($_POST['nota_proposicao_tema'], ENT_QUOTES, 'UTF-8'),
+
                             'nota_texto' => $_POST['nota_texto'],
                             'nota_criada_por' => $_SESSION['usuario_id'],
                             'nota_cliente' => $_SESSION['usuario_cliente']
@@ -118,6 +112,8 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             'nota_proposicao' => $proposicaoIdGet,
                             'nota_proposicao_apelido' => htmlspecialchars($_POST['nota_proposicao_apelido'], ENT_QUOTES, 'UTF-8'),
                             'nota_proposicao_resumo' => htmlspecialchars($_POST['nota_proposicao_resumo'], ENT_QUOTES, 'UTF-8'),
+                            'nota_proposicao_tema' => htmlspecialchars($_POST['nota_proposicao_tema'], ENT_QUOTES, 'UTF-8'),
+
                             'nota_texto' => $_POST['nota_texto'],
                         ];
 
@@ -158,11 +154,42 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
 
 
                     <form class="row g-2 form_custom" method="POST">
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-3 col-12">
                             <input type="text" class="form-control form-control-sm" name="nota_proposicao_apelido" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_apelido'] : '' ?>" placeholder="Título" required>
                         </div>
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-5 col-12">
                             <input type="text" class="form-control form-control-sm" name="nota_proposicao_resumo" placeholder="Resumo" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_resumo'] : '' ?>" required>
+                        </div>
+                        <div class="col-md-2 col-12">
+                            <select class="form-control form-control-sm" name="nota_proposicao_tema" id="nota_proposicao_tema" required>
+
+                                <?php
+                                $buscaTema = $temaController->listarProposicoesTemas($_SESSION['usuario_cliente']);
+                                if ($buscaTema['status'] == 'success') {
+                                    foreach ($buscaTema['dados'] as $tema) {
+
+                                        if (empty($buscaNota['dados'][0]['nota_proposicao_tema'])) {
+                                            if ($tema['proposicao_tema_id'] == 21) {
+                                                echo '<option value="' . $tema['proposicao_tema_id'] . '" selected>' . $tema['proposicao_tema_nome'] . '</option>';
+                                            } else {
+                                                echo '<option value="' . $tema['proposicao_tema_id'] . '">' . $tema['proposicao_tema_nome'] . '</option>';
+                                            }
+                                        } else {
+                                            if ($buscaNota['dados'][0]['nota_proposicao_tema'] == $tema['proposicao_tema_id']) {
+                                                echo '<option value="' . $tema['proposicao_tema_id'] . '" selected>' . $tema['proposicao_tema_nome'] . '</option>';
+                                            } else {
+                                                echo '<option value="' . $tema['proposicao_tema_id'] . '">' . $tema['proposicao_tema_nome'] . '</option>';
+                                            }
+                                        }
+                                    }
+                                }
+
+                                ?>
+
+                                <option value="+">Novo Tema</option>
+
+
+                            </select>
                         </div>
                         <div class="col-md-2 col-12">
                             <input type="text" class="form-control form-control-sm" disabled value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['usuario_nome'] : $_SESSION['usuario_nome'] ?>" required>
@@ -203,6 +230,39 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                     </form>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="card mb-2">
+                    <div class="card-body card-description">
+                        <div class="accordion" id="accordionPanelsStayOpenExample">
+
+                            <?php
+                            $buscaTexto = $proposicaoController->buscarTextoSenado($proposicaoIdGet);
+
+                            if (isset($buscaTexto['dados']['TextoMateria']['Materia']['Textos']['Texto'])) {
+                                foreach ($buscaTexto['dados']['TextoMateria']['Materia']['Textos']['Texto'] as $texto) {
+
+                                    echo ' <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" style="font-size: 0.5em" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse' . $texto['CodigoTexto'] . '" aria-expanded="false" aria-controls="panelsStayOpen-collapse' . $texto['CodigoTexto'] . '">
+                                                    <i class="bi bi-file-text"></i> &nbsp; &nbsp;' . $texto['DescricaoTipoTexto'] . '
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-collapse' . $texto['CodigoTexto'] . '" class="accordion-collapse collapse">
+                                                <div class="accordion-body">
+                                                    <iframe src="https://docs.google.com/gview?url=' . urlencode($texto['UrlTexto']) . '&embedded=true" width="100%" height="1000px"></iframe>
+                                                </div>
+                                            </div>
+                                        </div>';
+                                }
+                            } else {
+                                echo "Nenhum texto encontrado.";
+                            }
+                            ?>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card mb-2 card-description">
                 <div class="card-header bg-primary text-white px-2 py-1"><i class="bi bi-fast-forward-btn"></i> Tramitações</div>
 
@@ -218,21 +278,57 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             </thead>
                             <tbody>
                                 <?php
+                                $itensPorPagina = 10;
+                                $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+
                                 $buscaTramitacoes = $proposicaoController->buscarTramitacoesSenado($proposicaoIdGet);
 
-                                print_r($buscaTramitacoes);
+                                if ($buscaTramitacoes['status'] == 'success' && !empty($buscaTramitacoes['dados'])) {
+                                    $movimentacoes = [];
+                                    foreach ($buscaTramitacoes['dados']['MovimentacaoMateria']['Materia']['Autuacoes']['Autuacao'] as $tramitacao) {
+                                        foreach ($tramitacao['InformesLegislativos']['InformeLegislativo'] as $informe) {
+                                            $movimentacoes[] = $informe; // Armazene os informes
+                                        }
+                                    }
 
-                               
+                                    $totalPaginas = ceil(count($movimentacoes) / $itensPorPagina);
+
+                                    $offset = ($paginaAtual - 1) * $itensPorPagina;
+                                    $itensDaPagina = array_slice($movimentacoes, $offset, $itensPorPagina);
+
+                                    foreach ($itensDaPagina as $informe) {
+                                        echo '<tr>';
+                                        echo '<td>' . date('d/m/y', strtotime($informe['Data'])) . '</td>';
+                                        echo '<td>' . $informe['Descricao'] . '</td>';
+                                        echo '<td>' . $informe['Local']['SiglaLocal'] . '</td>';
+                                        echo '</tr>';
+                                    }
+                                }
                                 ?>
-
-
-
                             </tbody>
                         </table>
                     </div>
+                    <?php
+                    if ($totalPaginas > 1) {
+                        echo '<ul class="pagination custom-pagination mt-2 mb-0">';
 
+                        // Primeira página
+                        echo '<li class="page-item ' . ($paginaAtual == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao-senado&id=' . $proposicaoIdGet . '&pagina=1">Primeira</a></li>';
 
+                        // Páginas intermediárias
+                        for ($i = 1; $i < $totalPaginas - 1; $i++) {
+                            $pageNumber = $i + 1;
+                            echo '<li class="page-item ' . ($pagina == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao-senado&id=' . $proposicaoIdGet . '&pagina=' . $pageNumber . '">' . $pageNumber . '</a></li>';
+                        }
+
+                        // Última página
+                        echo '<li class="page-item ' . ($paginaAtual == $totalPaginas ? 'active' : '') . '"><a class="page-link" href="?secao=proposicao-senado&id=' . $proposicaoIdGet . '&pagina=' . $totalPaginas . '">Última</a></li>';
+
+                        echo '</ul>';
+                    }
+                    ?>
                 </div>
+
             </div>
         </div>
     </div>

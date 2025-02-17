@@ -77,6 +77,11 @@ class ProposicaoController
         return $this->getJson->pegarDadosURL('https://legis.senado.leg.br/dadosabertos/materia/' . $proposicaoId);
     }
 
+    public function buscarTextoSenado($proposicaoId)
+    {
+        return $this->getJson->pegarDadosURL('https://legis.senado.leg.br/dadosabertos/materia/textos/' . $proposicaoId);
+    }
+
     public function buscarTramitacoesSenado($proposicaoId)
     {
         return $this->getJson->pegarDadosURL('https://legis.senado.leg.br/dadosabertos/materia/movimentacoes/' . $proposicaoId);
