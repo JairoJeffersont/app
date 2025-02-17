@@ -218,10 +218,10 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             if ($buscaNota['status'] == 'success') {
                                 echo '<button type="submit" class="btn btn-primary btn-sm" name="btn_atualizar"><i class="bi bi-floppy-fill"></i> Atualizar</button>&nbsp;';
                                 echo '<button type="submit" class="btn btn-danger btn-sm" name="btn_apagar"><i class="bi bi-trash-fill"></i> Apagar</button>&nbsp;';
-                                echo '<a href="?secao=imprimir-proposicao&id=' . $proposicaoIdGet . '" target="_blank" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Imprimir</a>';
+                                echo '<a href="?secao=imprimir-proposicao-senado&id=' . $proposicaoIdGet . '" target="_blank" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Imprimir</a>';
                             } else {
                                 echo '<button type="submit" class="btn btn-success btn-sm" name="btn_salvar"><i class="bi bi-floppy-fill"></i> Salvar</button>&nbsp;';
-                                echo '<a href="?secao=imprimir-proposicao&id=' . $proposicaoIdGet . '" target="_blank" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Imprimir</a>';
+                                echo '<a href="?secao=imprimir-proposicao-senado&id=' . $proposicaoIdGet . '" target="_blank" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Imprimir</a>';
                             }
 
                             ?>
@@ -254,8 +254,10 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                             </div>
                                         </div>';
                                 }
+                            } else if ($buscaTexto['status'] == 'success' && empty($buscaTexto['dados'])) {
+                                echo '<tr><td colspan=3>Nenhum texto encontrado</td></tr>';
                             } else {
-                                echo "Nenhum texto encontrado.";
+                                echo '<tr><td colspan=3>' . $buscaTexto['message'] . '</td></tr>';
                             }
                             ?>
 
@@ -303,13 +305,17 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                         echo '<td>' . $informe['Local']['SiglaLocal'] . '</td>';
                                         echo '</tr>';
                                     }
+                                } else if ($buscaTramitacoes['status'] == 'success' && empty($buscaTramitacoes['dados'])) {
+                                    echo '<tr><td colspan=3>Nenhuma tramitação encontrada</td></tr>';
+                                } else {
+                                    echo '<tr><td colspan=3>' . $buscaTramitacoes['message'] . '</td></tr>';
                                 }
                                 ?>
                             </tbody>
                         </table>
                     </div>
                     <?php
-                    if ($totalPaginas > 1) {
+                    if (isset($totalPaginas) && $totalPaginas > 1) {
                         echo '<ul class="pagination custom-pagination mt-2 mb-0">';
 
                         // Primeira página

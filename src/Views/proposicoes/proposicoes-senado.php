@@ -10,7 +10,31 @@ $proposicaoController = new ProposicaoController();
 $notaController = new NotaTecnicaController();
 
 $anoGet = isset($_GET['ano']) ? $_GET['ano'] : date('Y');
-$autorGet = $_SESSION['cliente_deputado_nome'];
+
+
+function formatarTexto($texto) {
+    $texto = strtr($texto, [
+        'á' => 'a', 'à' => 'a', 'ã' => 'a', 'â' => 'a', 'ä' => 'a',
+        'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+        'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+        'ó' => 'o', 'ò' => 'o', 'õ' => 'o', 'ô' => 'o', 'ö' => 'o',
+        'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+        'ç' => 'c', 'ñ' => 'n',
+        'Á' => 'A', 'À' => 'A', 'Ã' => 'A', 'Â' => 'A', 'Ä' => 'A',
+        'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+        'Í' => 'I', 'Ì' => 'I', 'Î' => 'I', 'Ï' => 'I',
+        'Ó' => 'O', 'Ò' => 'O', 'Õ' => 'O', 'Ô' => 'O', 'Ö' => 'O',
+        'Ú' => 'U', 'Ù' => 'U', 'Û' => 'U', 'Ü' => 'U',
+        'Ç' => 'C', 'Ñ' => 'N'
+    ]);
+
+    $texto = preg_replace('/\s+/', '+', $texto);
+
+    return $texto;
+}
+
+$autorGet = formatarTexto($_SESSION['cliente_deputado_nome']);
+
 $tipoget = isset($_GET['tipo']) ? $_GET['tipo'] : 'pl';
 $ordenarPorGet = isset($_GET['ordenarPor']) ? $_GET['ordenarPor'] : 'proposicao_numero';
 $ordemGet = isset($_GET['ordem']) ? $_GET['ordem'] : 'desc';
