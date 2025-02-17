@@ -503,9 +503,9 @@ CREATE TABLE agenda(
 
 
 CREATE TABLE proposicoes (
-    proposicao_id INT NOT NULL,
+    proposicao_id varchar(36) NOT NULL,
     proposicao_numero INT NOT NULL,
-    proposicao_titulo VARCHAR(255) NOT NULL,
+    proposicao_titulo VARCHAR(255) NOT NULL UNIQUE,
     proposicao_ano INT NOT NULL,
     proposicao_tipo VARCHAR(10) NOT NULL,
     proposicao_ementa TEXT NOT NULL,
