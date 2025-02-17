@@ -220,6 +220,8 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                 <?php
                                 $buscaTramitacoes = $proposicaoController->buscarTramitacoesSenado($proposicaoIdGet);
 
+                                print_r($buscaTramitacoes);
+
                                
                                 ?>
 

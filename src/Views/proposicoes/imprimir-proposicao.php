@@ -156,7 +156,7 @@ $buscaAutores = $proposicaoController->buscarAutores($proposicaoIdGet);
                         }
 
                         if ($quantidadeAutores > 1) {
-                            echo '<p class="card-text mb-1">Outros autores (' . ($quantidadeAutores - 1) . ')</p>';
+                            echo '<p class="card-text mb-0">Outros autores (' . ($quantidadeAutores - 1) . ')</p>';
                         }
                     }
 
