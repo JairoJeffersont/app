@@ -2,6 +2,7 @@
 
 use GabineteDigital\Controllers\NotaTecnicaController;
 use GabineteDigital\Controllers\ProposicaoController;
+use GabineteDigital\Controllers\ProposicaoTemaController;
 
 ob_start();
 
@@ -10,6 +11,7 @@ require_once './vendor/autoload.php';
 
 $proposicaoController = new ProposicaoController();
 $notaController = new NotaTecnicaController();
+$temaController = new ProposicaoTemaController();
 
 $proposicaoIdGet = $_GET['id'];
 
@@ -151,6 +153,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                 'nota_proposicao' => $proposicaoIdGet,
                                 'nota_proposicao_apelido' => htmlspecialchars($_POST['nota_proposicao_apelido'], ENT_QUOTES, 'UTF-8'),
                                 'nota_proposicao_resumo' => htmlspecialchars($_POST['nota_proposicao_resumo'], ENT_QUOTES, 'UTF-8'),
+                                'nota_proposicao_tema' => htmlspecialchars($_POST['nota_proposicao_tema'], ENT_QUOTES, 'UTF-8'),
                                 'nota_texto' => $_POST['nota_texto'],
                             ];
 
@@ -198,8 +201,37 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                 <input type="text" class="form-control form-control-sm" name="nota_proposicao_resumo" placeholder="Resumo" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_resumo'] : '' ?>" required>
                             </div>
                             <div class="col-md-3 col-12">
-                                <input type="text" class="form-control form-control-sm" name="nota_proposicao_tema" placeholder="Tema" value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['nota_proposicao_tema'] : '' ?>" required>
+                                <select class="form-control form-control-sm" name="nota_proposicao_tema" required>
+
+                                    <?php
+                                    $buscaTema = $temaController->listarProposicoesTemas($_SESSION['usuario_cliente']);
+                                    if ($buscaTema['status'] == 'success') {
+                                        foreach ($buscaTema['dados'] as $tema) {
+
+                                            if (empty($buscaNota['dados'][0]['nota_proposicao_tema'])) {
+                                                if ($tema['proposicao_tema_id'] == 21) {
+                                                    echo '<option value="' . $tema['proposicao_tema_id'] . '" selected>' . $tema['proposicao_tema_nome'] . '</option>';
+                                                } else {
+                                                    echo '<option value="' . $tema['proposicao_tema_id'] . '">' . $tema['proposicao_tema_nome'] . '</option>';
+                                                }
+                                            } else {
+                                                if ($buscaNota['dados'][0]['nota_proposicao_tema'] == $tema['proposicao_tema_id']) {
+                                                    echo '<option value="' . $tema['proposicao_tema_id'] . '" selected>' . $tema['proposicao_tema_nome'] . '</option>';
+                                                } else {
+                                                    echo '<option value="' . $tema['proposicao_tema_id'] . '">' . $tema['proposicao_tema_nome'] . '</option>';
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    ?>
+
+                                    <option value="+">Novo Tema</option>
+
+
+                                </select>
                             </div>
+
                             <div class="col-md-2 col-12">
                                 <input type="text" class="form-control form-control-sm" disabled value="<?php echo $buscaNota['status'] == 'success' ? $buscaNota['dados'][0]['usuario_nome'] : $_SESSION['usuario_nome'] ?>" required>
                             </div>

@@ -587,7 +587,8 @@ VALUES
 ('17', 'Combate à Corrupção', '1', '1'),
 ('18', 'Reforma da Previdência', '1', '1'),
 ('19', 'Assistência Social', '1', '1'),
-('20', 'Proteção aos Animais', '1', '1');
+('20', 'Proteção aos Animais', '1', '1'),
+('21', 'Sem tema definido', '1', '1');
 
 
 

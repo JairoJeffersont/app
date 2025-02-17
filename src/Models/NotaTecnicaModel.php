@@ -63,8 +63,11 @@ class NotaTecnicaModel
      */
     public function atualizar($nota_id, $dados)
     {
-        $query = "UPDATE nota_tecnica SET nota_proposicao_apelido = :nota_proposicao_apelido, 
-                  nota_proposicao_resumo = :nota_proposicao_resumo, nota_texto = :nota_texto, nota_proposicao_tema: nota_proposicao_tema
+        $query = "UPDATE nota_tecnica SET 
+                    nota_proposicao_apelido = :nota_proposicao_apelido, 
+                    nota_proposicao_resumo = :nota_proposicao_resumo, 
+                    nota_texto = :nota_texto, 
+                    nota_proposicao_tema = :nota_proposicao_tema
                   WHERE nota_id = :nota_id";
 
         $stmt = $this->conn->prepare($query);
@@ -77,6 +80,7 @@ class NotaTecnicaModel
 
         return $stmt->execute();
     }
+
 
     /**
      * Método para listar todas as notas técnicas de um cliente.
