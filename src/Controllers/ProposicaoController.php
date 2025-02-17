@@ -62,6 +62,11 @@ class ProposicaoController
         return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/' . $proposicaoId . '/tramitacoes');
     }
 
+    public function buscarAutores($proposicaoId)
+    {
+        return $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes/' . $proposicaoId . '/autores');
+    }
+
     public function buscarProposicoesSenado($autor, $ano, $tipo)
     {
         return $this->getJson->pegarDadosURL('https://legis.senado.leg.br/dadosabertos/materia/pesquisa/lista?sigla=' . $tipo . '&ano=' . $ano . '&nomeAutor=' . $autor);

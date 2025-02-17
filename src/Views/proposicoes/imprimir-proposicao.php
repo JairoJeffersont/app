@@ -19,6 +19,7 @@ if ($buscaProposicao['status'] == 'error' || empty($buscaProposicao['dados'])) {
     header('location: ?secao=proposicoes');
 }
 $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoIdGet);
+$buscaAutores = $proposicaoController->buscarAutores($proposicaoIdGet);
 
 ?>
 
@@ -111,7 +112,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                 <div class="card-body" style="background: none;">
                     <h6 class="card-title">Informações gerais</h6>
                     <hr>
-                   
+
                     <p class="card-text mb-1"><i class="bi bi-calendar2-week"></i> Data de apresentação: <?php echo date('d/m/Y', strtotime($buscaProposicao['dados']['dataApresentacao'])) ?></p>
                     <p class="card-text mb-2"><i class="bi bi-archive"></i> Situação: <?php echo ($buscaProposicao['dados']['statusProposicao'] == 'Arquivada') ? 'Arquivada' : 'Em tramitação' ?></p>
                     <?php
@@ -130,6 +131,32 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                     } else {
                         echo '<p class="card-text mb-0">Essa proposição não foi apensada ou é a proposição principal</p>';
                     }
+
+                    ?>
+
+                    <hr>
+                    <?php
+
+                    if ($buscaAutores['status'] == 'success' && !empty($buscaAutores['dados'])) {
+                        echo '<p class="card-text mb-1"><b>Autor(es):</b></p>';
+
+                        $autores = $buscaAutores['dados'];
+                        $quantidadeAutores = count($autores);
+                        $exibiuSessao = false;
+
+                        foreach ($autores as $autor) {
+                            if ($autor['nome'] == $_SESSION['cliente_deputado_nome'] && !$exibiuSessao) {
+                                echo '<p class="card-text mb-1"><i class="bi bi-person-fill"></i> ' . $autor['nome'] . '</p>';
+                                $exibiuSessao = true;
+                                break; // Exibe apenas o primeiro autor da sessão e sai do loop
+                            }
+                        }
+
+                        if ($quantidadeAutores > 1) {
+                            echo '<p class="card-text mb-1">Outros autores (' . ($quantidadeAutores - 1) . ')</p>';
+                        }
+                    }
+
                     ?>
 
                 </div>
