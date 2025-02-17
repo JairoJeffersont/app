@@ -146,9 +146,12 @@ $buscaAutores = $proposicaoController->buscarAutores($proposicaoIdGet);
 
                         foreach ($autores as $autor) {
                             if ($autor['nome'] == $_SESSION['cliente_deputado_nome'] && !$exibiuSessao) {
-                                echo '<p class="card-text mb-1"><i class="bi bi-person-fill"></i> ' . $autor['nome'] . '</p>';
+                                // Corrigindo a lógica do operador ternário
+                                echo '<p class="card-text mb-1"><i class="bi bi-person-fill"></i> ' .
+                                    ($quantidadeAutores == 1 ? $autor['nome'] : $autor['nome'] . ' - Coautor ou subscrição') .
+                                    '</p>';
                                 $exibiuSessao = true;
-                                break; // Exibe apenas o primeiro autor da sessão e sai do loop
+                                break;
                             }
                         }
 
