@@ -522,6 +522,39 @@ CREATE TABLE proposicoes (
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
 
+  
+
+
+CREATE TABLE proposicoes_tramitacoes (
+    proposicao_tramitacao_id varchar(36) NOT NULL,
+    proposicao_tramitacao_nome VARCHAR(255) NOT NULL,
+    proposicao_tramitacao_descricao VARCHAR(255) NOT NULL UNIQUE,
+    proposicao_tramitacao_criada_por varchar(36),
+    proposicao_tramitacao_cliente varchar(36),
+    proposicao_tramitacao_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    proposicao_tramitacao_atualizado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (proposicao_tramitacao_id),
+    CONSTRAINT fk_proposicao_tramitacao_criada_por FOREIGN KEY (proposicao_tramitacao_criada_por) REFERENCES usuario(usuario_id),
+    CONSTRAINT fk_proposicao_tramitacao_cliente FOREIGN KEY (proposicao_tramitacao_cliente) REFERENCES cliente(cliente_id)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO proposicoes_tramitacoes (proposicao_tramitacao_id, proposicao_tramitacao_nome, proposicao_tramitacao_descricao, proposicao_tramitacao_criada_por, proposicao_tramitacao_cliente)
+VALUES 
+('1', 'Proposição apresentada', 'Proposição apresentada ao legislativo', 1, 1),
+('2', 'Proposição arquivada', 'Proposição arquivada sem aprovação', 1, 1),
+('3', 'Proposição encaminhada para comissão', 'Proposição enviada para análise em comissão', 1, 1),
+('4', 'Proposição discutida na comissão', 'Proposição discutida nas reuniões da comissão', 1, 1),
+('5', 'Proposição aprovada na comissão', 'Proposição aprovada pela comissão responsável', 1, 1),
+('6', 'Proposição encaminhada para plenário', 'Proposição enviada para o plenário para debate', 1, 1),
+('7', 'Proposição discutida no plenário', 'Proposição debatida no plenário da casa legislativa', 1, 1),
+('8', 'Proposição aprovada no plenário', 'Proposição aprovada no plenário', 1, 1),
+('9', 'Proposição sancionada', 'Proposição sancionada pelo chefe do executivo', 1, 1),
+('10', 'Proposição promulgada', 'Proposição promulgada e se torna lei', 1, 1);
+
+
 
 
 CREATE TABLE nota_tecnica(
@@ -601,4 +634,5 @@ CREATE VIEW view_agenda_tipo AS SELECT agenda_tipo.*, usuario.usuario_nome, clie
 CREATE VIEW view_agenda_situacao AS SELECT agenda_situacao.*, usuario.usuario_nome, cliente.cliente_nome FROM agenda_situacao INNER JOIN usuario ON agenda_situacao_criado_por = usuario.usuario_id INNER JOIN cliente ON agenda_situacao_cliente = cliente.cliente_id ORDER BY agenda_situacao.agenda_situacao_nome ASC;
 CREATE VIEW view_agenda AS SELECT agenda.*, usuario.usuario_nome, cliente.cliente_nome, agenda_tipo.agenda_tipo_nome, agenda_situacao.agenda_situacao_nome FROM agenda INNER JOIN agenda_situacao ON agenda.agenda_situacao = agenda_situacao.agenda_situacao_id INNER JOIN agenda_tipo ON agenda.agenda_tipo = agenda_tipo.agenda_tipo_id INNER JOIN usuario ON agenda.agenda_criada_por = usuario.usuario_id INNER JOIN cliente ON agenda.agenda_cliente = cliente.cliente_id;
 CREATE VIEW view_notas AS SELECT nota_tecnica.*, usuario.usuario_nome, cliente.cliente_nome FROM nota_tecnica INNER JOIN usuario ON nota_tecnica.nota_criada_por = usuario.usuario_id INNER JOIN cliente ON nota_tecnica.nota_cliente = cliente.cliente_id;
-CREATE VIEW view_proposicao_tema AS SELECT proposicao_tema.*, usuario.usuario_nome, cliente.cliente_nome FROM proposicao_tema INNER JOIN usuario ON proposicao_tema.proposicao_tema_criado_por = usuario.usuario_id INNER JOIN cliente ON proposicao_tema.proposicao_tema_cliente = cliente.cliente_id
+CREATE VIEW view_proposicao_tema AS SELECT proposicao_tema.*, usuario.usuario_nome, cliente.cliente_nome FROM proposicao_tema INNER JOIN usuario ON proposicao_tema.proposicao_tema_criado_por = usuario.usuario_id INNER JOIN cliente ON proposicao_tema.proposicao_tema_cliente = cliente.cliente_id;
+CREATE VIEW view_proposicoes_tramitacoes AS SELECT proposicoes_tramitacoes.*, usuario.usuario_nome, cliente.cliente_nome FROM proposicoes_tramitacoes INNER JOIN usuario ON proposicoes_tramitacoes.proposicao_tramitacao_criada_por = usuario.usuario_id INNER JOIN cliente ON proposicoes_tramitacoes.proposicao_tramitacao_cliente = cliente.cliente_id;

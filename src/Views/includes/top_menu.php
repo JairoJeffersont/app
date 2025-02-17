@@ -25,6 +25,7 @@
                         <a class="dropdown-item" href="?secao=situacoes-agendas">Situações da agenda</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?secao=temas-proposicoes">Temas de proposições</a>
+                        <a class="dropdown-item" href="?secao=proposicoes_tramitacoes">Tramitações de proposições</a>
 
 
 
