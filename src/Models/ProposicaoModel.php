@@ -32,9 +32,9 @@ class ProposicaoModel
                     :proposicao_aprovada, :proposicao_autor, 
                     :proposicao_criada_por, :proposicao_cliente
                 )";
-    
+
         $stmt = $this->conn->prepare($query);
-    
+
         $stmt->bindParam(':proposicao_numero', $dados['proposicao_numero'], PDO::PARAM_INT);
         $stmt->bindParam(':proposicao_titulo', $dados['proposicao_titulo'], PDO::PARAM_STR);
         $stmt->bindParam(':proposicao_ano', $dados['proposicao_ano'], PDO::PARAM_INT);
@@ -46,8 +46,9 @@ class ProposicaoModel
         $stmt->bindParam(':proposicao_autor', $dados['proposicao_autor'], PDO::PARAM_STR);
         $stmt->bindParam(':proposicao_criada_por', $dados['proposicao_criada_por'], PDO::PARAM_STR);
         $stmt->bindParam(':proposicao_cliente', $dados['proposicao_cliente'], PDO::PARAM_STR);
-    
+
         return $stmt->execute();
     }
+
     
 }

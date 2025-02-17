@@ -64,7 +64,7 @@ class ProposicaoController
             return $buscaDep;
         }
 
-        $response = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes?idDeputadoAutor=' . $idDeputado . '&itens=' . $itens . '&pagina=' . $pagina . '&ano='.$ano.'&ordem=DESC&ordenarPor=id&siglaTipo=' . $tipo);
+        $response = $this->getJson->pegarDadosURL('https://dadosabertos.camara.leg.br/api/v2/proposicoes?idDeputadoAutor=' . $idDeputado . '&itens=' . $itens . '&pagina=' . $pagina . '&ano=' . $ano . '&ordem=DESC&ordenarPor=id&siglaTipo=' . $tipo);
 
         $proposicoes = $response['dados'];
         $total_registros = isset($response['headers']['x-total-count']) ? (int) $response['headers']['x-total-count'] : 0;

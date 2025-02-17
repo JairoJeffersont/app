@@ -522,9 +522,7 @@ CREATE TABLE proposicoes (
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;
 
-  
-
-
+ 
 CREATE TABLE proposicoes_tramitacoes (
     proposicao_tramitacao_id varchar(36) NOT NULL,
     proposicao_tramitacao_nome VARCHAR(255) NOT NULL,
@@ -536,6 +534,19 @@ CREATE TABLE proposicoes_tramitacoes (
     PRIMARY KEY (proposicao_tramitacao_id),
     CONSTRAINT fk_proposicao_tramitacao_criada_por FOREIGN KEY (proposicao_tramitacao_criada_por) REFERENCES usuario(usuario_id),
     CONSTRAINT fk_proposicao_tramitacao_cliente FOREIGN KEY (proposicao_tramitacao_cliente) REFERENCES cliente(cliente_id)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE tramitacoes (
+    tramitacao_id varchar(36) NOT NULL,
+    tramitacao_proposicao VARCHAR(36) NOT NULL,
+    tramitacao_tipo VARCHAR(36) NOT NULL,
+    tramitacao_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (tramitacao_id),
+    CONSTRAINT fk_tramitacao_proposicao FOREIGN KEY (tramitacao_proposicao) REFERENCES proposicoes(proposicao_id),
+    CONSTRAINT fk_tramitacao_tipo FOREIGN KEY (tramitacao_tipo) REFERENCES proposicoes_tramitacoes(proposicao_tramitacao_id)
 ) ENGINE=InnoDB 
   DEFAULT CHARSET=utf8mb4 
   COLLATE=utf8mb4_general_ci;

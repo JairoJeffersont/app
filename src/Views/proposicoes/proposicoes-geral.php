@@ -5,18 +5,17 @@ ob_start();
 
 use GabineteDigital\Controllers\NotaTecnicaController;
 use GabineteDigital\Controllers\ProposicaoController;
+use GabineteDigital\Controllers\ProposicaoTramitacaoController;
 
 $proposicaoController = new ProposicaoController();
 $notaController = new NotaTecnicaController();
+$tramitacoesController = new ProposicaoTramitacaoController();
 
 $anoGet = isset($_GET['ano']) ? $_GET['ano'] : date('Y');
 $autorGet = $_SESSION['cliente_deputado_nome'];
 $tipoget = isset($_GET['tipo']) ? $_GET['tipo'] : 'pl';
 $itensGet = isset($_GET['itens']) ? (int)$_GET['itens'] : 10;
 $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-
-
-
 
 ?>
 
@@ -79,7 +78,7 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                     <option value="REQ">Requerimento</option>
                 </select>
             </div>
-            <div class="col-md-1 col-12">
+            <div class="col-md-2 col-12">
                 <input type="text" class="form-control form-control-sm" name="proposicao_apresentacao" data-mask=00/00/0000 placeholder="Data da apresentação" required>
             </div>
             <div class="col-md-2 col-12">
@@ -94,6 +93,7 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                     <option value="0" selected>Aprovada? (não)</option>
                 </select>
             </div>
+
             <div class="col-md-12 col-12">
                 <script>
                     tinymce.init({
