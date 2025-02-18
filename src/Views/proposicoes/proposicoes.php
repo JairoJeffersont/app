@@ -24,6 +24,8 @@ require_once './vendor/autoload.php';
                 include 'proposicoes-dep.php';
             } else if ($_SESSION['cliente_deputado_tipo'] == 'Senador') {
                 include 'proposicoes-senado.php';
+            } else if ($_SESSION['cliente_deputado_tipo'] == 'Prefeito' || $_SESSION['cliente_deputado_tipo'] == 'Governador') {
+                header('Location: ?secao=home');
             } else {
                 include 'proposicoes-geral.php';
             }
