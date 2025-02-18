@@ -65,6 +65,8 @@ $rotas = [
     'proposicoes_tramitacoes' => './src/Views/proposicoes/proposicoes_tramitacoes.php',
     'proposicao-geral' => './src/Views/proposicoes/proposicao-geral.php',
     'proposicao_tramitacao' => './src/Views/proposicoes/proposicao_tramitacao.php',
+    'imprimir-proposicao-geral' => './src/Views/proposicoes/imprimir-proposicao-geral.php',
+
 
 
 

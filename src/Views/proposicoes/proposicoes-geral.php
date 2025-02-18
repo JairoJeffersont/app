@@ -130,9 +130,11 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                 </div>
                 <div class="col-md-1 col-10">
                     <select class="form-select form-select-sm" name="tipo" required>
-                        <option value="pl" <?php echo $tipoget == 'pl' ? 'selected' : ''; ?>>Projeto de lei</option>
-                        <option value="req" <?php echo $tipoget == 'req' ? 'selected' : ''; ?>>Requerimento</option>
-                        <option value="pec" <?php echo $tipoget == 'pec' ? 'selected' : ''; ?>>PEC</option>
+                        <option value="PL" selected>Projeto de Lei</option>
+                        <option value="PR">Projeto de Resolução</option>
+                        <option value="PDC">Projeto de Decreto Legislativo</option>
+                        <option value="PLP">Projeto de Lei Complementar</option>
+                        <option value="REQ">Requerimento</option>
 
                     </select>
                 </div>

@@ -54,10 +54,8 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                     <p class="card-text mb-2">
                         <?php
                         $ementa = html_entity_decode($buscaProposicao['dados'][0]['proposicao_ementa']);
-                        $ementa = preg_replace('/<\/?p>/', '', $ementa); // Remove <p> e </p>
-                        echo $ementa = strip_tags($ementa); // Garante que outras tags também sejam removidas
-
-
+                        $ementa = preg_replace('/<\/?p>/', '', $ementa);
+                        echo $ementa = strip_tags($ementa);
                         ?>
                     </p>
                     <hr class="mb-2 mt-0">
