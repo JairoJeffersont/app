@@ -70,7 +70,16 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                         echo '<p class="card-text mb-2"><i class="bi bi-archive"></i> Situação: Arquivada</p>';
                     }
 
+                    if ($buscaProposicao['dados'][0]['proposicao_aprovada']) {
+                        echo '<p class="card-text mb-2"><i class="bi bi-archive"></i> Proposição aprovada</p>';
+                    }
+
                     ?>
+
+                    <p class="card-text mb-0">
+                        <i class="bi bi-person-fill"></i> Autor(a): <?php echo $buscaProposicao['dados'][0]['proposicao_autor']; ?>
+
+                    </p>
 
                 </div>
             </div>

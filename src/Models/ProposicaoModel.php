@@ -43,7 +43,7 @@ class ProposicaoModel
         $stmt->bindParam(':proposicao_ano', $dados['proposicao_ano'], PDO::PARAM_INT);
         $stmt->bindParam(':proposicao_tipo', $dados['proposicao_tipo'], PDO::PARAM_STR);
         $stmt->bindParam(':proposicao_ementa', $dados['proposicao_ementa'], PDO::PARAM_STR);
-        $stmt->bindParam(':proposicao_apresentacao', $dados['proposicao_apresentacao'], PDO::PARAM_STR); // Certifique-se que está no formato DATETIME
+        $stmt->bindParam(':proposicao_apresentacao', $dados['proposicao_apresentacao'], PDO::PARAM_STR);
         $stmt->bindParam(':proposicao_arquivada', $dados['proposicao_arquivada'], PDO::PARAM_BOOL);
         $stmt->bindParam(':proposicao_aprovada', $dados['proposicao_aprovada'], PDO::PARAM_BOOL);
         $stmt->bindParam(':proposicao_autor', $dados['proposicao_autor'], PDO::PARAM_STR);

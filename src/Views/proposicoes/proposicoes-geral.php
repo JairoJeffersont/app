@@ -79,7 +79,7 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                 </select>
             </div>
             <div class="col-md-2 col-12">
-                <input type="text" class="form-control form-control-sm" name="proposicao_apresentacao" data-mask=00/00/0000 placeholder="Data da apresentação" required>
+                <input type="date" class="form-control form-control-sm" name="proposicao_apresentacao" placeholder="Data da apresentação" required>
             </div>
             <div class="col-md-2 col-12">
                 <select class="form-control form-control-sm" name="proposicao_arquivada" required>

@@ -542,7 +542,7 @@ CREATE TABLE proposicoes_tramitacoes (
 CREATE TABLE tramitacoes (
     tramitacao_id varchar(36) NOT NULL,
     tramitacao_proposicao VARCHAR(36) NOT NULL,
-    tramitacao_tipo VARCHAR(36) NOT NULL UNIQUE,
+    tramitacao_tipo VARCHAR(36) NOT NULL,
     tramitacao_criado_em timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (tramitacao_id),
     CONSTRAINT fk_tramitacao_proposicao FOREIGN KEY (tramitacao_proposicao) REFERENCES proposicoes(proposicao_id),
