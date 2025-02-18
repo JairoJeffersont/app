@@ -24,8 +24,15 @@
                         <a class="dropdown-item" href="?secao=tipos-agendas">Tipos de agenda</a>
                         <a class="dropdown-item" href="?secao=situacoes-agendas">Situações da agenda</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="?secao=temas-proposicoes">Temas de proposições</a>
-                        <a class="dropdown-item" href="?secao=proposicoes_tramitacoes">Tramitações de proposições</a>
+
+                        <?php
+                         if ($_SESSION['cliente_deputado_tipo'] == 'Deputado Federal' || $_SESSION['cliente_deputado_tipo'] == 'Senador' || $_SESSION['cliente_deputado_tipo'] == 'Vereador'  || $_SESSION['cliente_deputado_tipo'] == 'Deputado Estadual') {
+                            echo ' <a class="dropdown-item" href="?secao=temas-proposicoes">Temas de proposições</a>
+                        <a class="dropdown-item" href="?secao=proposicoes_tramitacoes">Tramitações de proposições</a>';
+                         }
+                        
+                        ?>
+                       
 
 
 
