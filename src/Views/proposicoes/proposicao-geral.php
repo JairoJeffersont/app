@@ -321,10 +321,8 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             <tbody>
                                 <?php
 
-
                                 $itensPorPagina = 5;
                                 $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-
 
                                 $buscaTramitacoes = $proposicaoController->buscarTramitacoesDB('tramitacao_proposicao', $proposicaoIdGet);
 
