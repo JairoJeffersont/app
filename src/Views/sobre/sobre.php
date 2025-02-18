@@ -45,8 +45,8 @@ $buscaAnivesariantes = $pessoaController->buscarPessoa('pessoa_aniversario', dat
                             <p class="card-text mb-2"><strong>Gestor do sistema:</strong> <?php echo $_SESSION['cliente_nome'] ?></p>
                             <p class="card-text mb-2"><strong>Tipo do gabinete:</strong> <?php echo $_SESSION['cliente_deputado_tipo'] ?></p>
                             <p class="card-text mb-2"><strong>Político do gabinete:</strong> <?php echo $_SESSION['cliente_deputado_nome'] . '/' . $_SESSION['cliente_deputado_estado'] ?></p>
-                            <p class="card-text mb-2"><strong>Quantidade de licenças:</strong> <?php echo $_SESSION['cliente_assinaturas'] ?></p>
-                            <p class="card-text mb-2"><i class="bi bi-check-circle-fill text-success"></i> <strong>Assinatura ativa</strong></p>
+                            <p class="card-text mb-5"><strong>Quantidade de licenças:</strong> <?php echo $_SESSION['cliente_assinaturas'] ?></p>
+                            <p class="card-text mb-0"><i class="bi bi-check-circle-fill text-success"></i> <strong>Assinatura ativa</strong></p>
                         </div>
                     </div>
                 </div>
@@ -56,9 +56,7 @@ $buscaAnivesariantes = $pessoaController->buscarPessoa('pessoa_aniversario', dat
                     <div class="card  shadow-sm rounded" style="min-height: 260px;">
                         <div class="card-body p-3">
                             <h4 class="card-title text-warning">Licenciamento e Termos de Uso</h4>
-                            <p class="card-text mb-2"><strong>Licença de Código:</strong> O código-fonte deste software é disponibilizado sob uma licença <strong>Open Source</strong>, permitindo o uso, modificação e distribuição do código, conforme os termos estabelecidos pela licença adotada.</p>
-                            <p class="card-text mb-2"><strong>Modelo de Comercialização:</strong> O acesso ao software é fornecido por meio de uma assinatura paga, com opções de renovação mensal ou anual, conforme plano escolhido pelo cliente.</p>
-                            <p class="card-text mb-2"><strong>Propriedade do Código-Fonte:</strong> O código-fonte do software permanece de propriedade exclusiva da desenvolvedora, sendo mantido como <strong>privado</strong> e não acessível para distribuição ou modificação fora dos termos acordados.</p>
+                           
                             
                         </div>
                     </div>
