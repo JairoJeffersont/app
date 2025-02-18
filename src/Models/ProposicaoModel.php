@@ -112,7 +112,7 @@ class ProposicaoModel
 
     public function buscarTramitacoesDB($coluna, $valor)
     {
-        $query = "SELECT tramitacoes.*, proposicoes_tramitacoes.* FROM tramitacoes INNER JOIN proposicoes_tramitacoes ON tramitacoes.tramitacao_tipo = proposicoes_tramitacoes.proposicao_tramitacao_id WHERE $coluna = :valor";
+        $query = "SELECT tramitacoes.*, proposicoes_tramitacoes.* FROM tramitacoes INNER JOIN proposicoes_tramitacoes ON tramitacoes.tramitacao_tipo = proposicoes_tramitacoes.proposicao_tramitacao_id WHERE $coluna = :valor ORDER BY tramitacao_criado_em DESC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);

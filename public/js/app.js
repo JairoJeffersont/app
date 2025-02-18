@@ -40,6 +40,13 @@ $('button[name="btn_upload"]').on('click', function (event) {
     }
 });
 
+$('button[name="btn_tramitar"]').on('click', function (event) {
+    const confirmacao = confirm("Tem certeza que deseja tramitar essa proposição?");
+    if (!confirmacao) {
+        event.preventDefault();
+    }
+});
+
 $('button[name="btn_salvar"]').on('click', function (event) {
     const confirmacao = confirm("Tem certeza que deseja inserir esse registro?");
     if (!confirmacao) {

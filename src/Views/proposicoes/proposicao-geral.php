@@ -3,6 +3,7 @@
 use GabineteDigital\Controllers\NotaTecnicaController;
 use GabineteDigital\Controllers\ProposicaoController;
 use GabineteDigital\Controllers\ProposicaoTemaController;
+use GabineteDigital\Controllers\ProposicaoTramitacaoController;
 
 ob_start();
 
@@ -12,6 +13,7 @@ require_once './vendor/autoload.php';
 $proposicaoController = new ProposicaoController();
 $notaController = new NotaTecnicaController();
 $temaController = new ProposicaoTemaController();
+$tramitacoesController = new ProposicaoTramitacaoController();
 
 $proposicaoIdGet = $_GET['id'];
 
@@ -163,6 +165,9 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $result['message'] . ' ' . (isset($result['id_erro']) ? ' | Código do erro: ' . $result['id_erro'] : '') . '</div>';
                         }
                     }
+
+
+
                     ?>
 
                     <form class="row g-2 form_custom" method="POST">
@@ -242,6 +247,65 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                 </div>
             </div>
 
+
+
+            <div class="card mb-2 ">
+                <div class="card-body p-2">
+                    <?php
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_tramitar'])) {
+
+
+
+                        $resulTramita = $proposicaoController->inserirTramitacao($proposicaoIdGet, $_POST['tramitacao_tipo']);
+
+                        if ($resulTramita['status'] == 'success') {
+                            echo '<div class="alert alert-success px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $resulTramita['message'] . '. Aguarde...</div>';
+                            echo '<script>
+                                    setTimeout(() => {
+                                        window.location.href = "?secao=proposicao-geral&id=' . $proposicaoIdGet . '";
+                                    }, 1000);
+                                </script>
+                                ';
+                        } else if ($resulTramita['status'] == 'duplicated' ||  $result['status'] == 'bad_request') {
+                            echo '<div class="alert alert-info px-2 py-1 mb-2 custom-alert" data-timeout="3" role="alert">' . $resulTramita['message'] . '</div>';
+                        } else if ($resulTramita['status'] == 'error') {
+                            echo '<div class="alert alert-danger px-2 py-1 mb-2 custom-alert" data-timeout="0" role="alert">' . $resulTramita['message'] . ' ' . (isset($resulTramita['id_erro']) ? ' | Código do erro: ' . $resulTramita['id_erro'] : '') . '</div>';
+                        }
+                    }
+
+
+                    ?>
+                    <form class="row g-2 form_custom mb-0" method="POST" enctype="application/x-www-form-urlencoded">
+                        <input type="hidden" name="secao" value="proposicoes" />
+                        <div class="col-md-3 col-10">
+                            <select class="form-select form-select-sm" name="tramitacao_tipo" required>
+                                <option selected>Selecione a tramitação</option>
+                                <?php
+                                $buscaTramitacaoSelect = $tramitacoesController->listarProposicoesTramitacao($_SESSION['usuario_cliente']);
+
+                                if ($buscaTramitacaoSelect['status'] == 'success') {
+                                    foreach ($buscaTramitacaoSelect['dados'] as $tramitaSelect) {
+                                        echo '<option value="' . $tramitaSelect['proposicao_tramitacao_id'] . '">' . $tramitaSelect['proposicao_tramitacao_nome'] . '</option>';
+                                    }
+                                }
+
+                                ?>
+                                <option selected value="+">Novo tipo de tramitação</option>
+                            </select>
+                        </div>
+
+
+
+                        <div class="col-md-1 col-2">
+                            <button type="submit" class="btn btn-success btn-sm" name="btn_tramitar"><i class="bi bi-plus"></i> Tramitar</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+
+
             <div class="card mb-2 card-description">
                 <div class="card-header bg-primary text-white px-2 py-1"><i class="bi bi-fast-forward-btn"></i> Tramitações</div>
 
@@ -251,7 +315,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                             <thead>
                                 <tr>
                                     <th scope="col">Data</th>
-                                    <th scope="col">Despacho</th>
+                                    <th scope="col">Situação</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -272,7 +336,7 @@ $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicaoId
                                     foreach (array_slice($buscaTramitacoes['dados'], $offset, $itensPorPagina) as $tramitacao) {
                                         echo '<tr>';
 
-                                        echo '<td>' . date('d/m', strtotime($tramitacao['tramitacao_criado_em'])) . '</td>';
+                                        echo '<td>' . date('d/m/Y H:i', strtotime($tramitacao['tramitacao_criado_em'])) . '</td>';
                                         echo '<td>' . $tramitacao['proposicao_tramitacao_nome'] . '</td>';
                                         echo '</tr>';
                                     }

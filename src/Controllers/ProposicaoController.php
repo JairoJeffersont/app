@@ -51,6 +51,27 @@ class ProposicaoController
     }
 
 
+    public function inserirTramitacao($proposicaoId, $tramitacaoTipo)
+    {
+
+        try {
+            
+            $this->proposicaoModel->inserirTramitacao($proposicaoId, $tramitacaoTipo);
+
+            return ['status' => 'success', 'message' => 'Tramitação criada com sucesso.'];
+        } catch (PDOException $e) {
+
+            if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                return ['status' => 'duplicated', 'message' => 'A tramitação ja está cadastrada'];
+            }
+
+            $erro_id = uniqid();
+            $this->logger->novoLog('proposicao_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
+
+
 
     public function listarProposicoesDB($autor, $itens, $pagina, $tipo, $ano)
     {
