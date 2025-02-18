@@ -1,4 +1,3 @@
-
 CREATE TABLE cliente (
     cliente_id varchar(36) NOT NULL,    
     cliente_nome varchar(255) NOT NULL,
