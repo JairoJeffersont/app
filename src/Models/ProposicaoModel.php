@@ -19,6 +19,8 @@ class ProposicaoModel
 
     public function criar($dados)
     {
+
+
         $query = "INSERT INTO proposicoes (
                     proposicao_id, proposicao_numero, proposicao_titulo, 
                     proposicao_ano, proposicao_tipo, proposicao_ementa, 
@@ -26,7 +28,7 @@ class ProposicaoModel
                     proposicao_aprovada, proposicao_autor, 
                     proposicao_criada_por, proposicao_cliente
                 ) VALUES (
-                    UUID(), :proposicao_numero, :proposicao_titulo, 
+                    :proposicao_id, :proposicao_numero, :proposicao_titulo, 
                     :proposicao_ano, :proposicao_tipo, :proposicao_ementa, 
                     :proposicao_apresentacao, :proposicao_arquivada, 
                     :proposicao_aprovada, :proposicao_autor, 
@@ -34,6 +36,7 @@ class ProposicaoModel
                 )";
 
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':proposicao_id', $dados['proposicao_id'], PDO::PARAM_STR);
 
         $stmt->bindParam(':proposicao_numero', $dados['proposicao_numero'], PDO::PARAM_INT);
         $stmt->bindParam(':proposicao_titulo', $dados['proposicao_titulo'], PDO::PARAM_STR);
@@ -50,5 +53,49 @@ class ProposicaoModel
         return $stmt->execute();
     }
 
-    
+
+    public function inserirTramitacao($proposicaoId, $tramitacaoTipo)
+    {
+
+        $query = "INSERT INTO tramitacoes (tramitacao_id, tramitacao_proposicao, tramitacao_tipo) VALUES (UUID(), :tramitacao_proposicao, :tramitacao_tipo)";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':tramitacao_proposicao', $proposicaoId, PDO::PARAM_STR);
+        $stmt->bindParam(':tramitacao_tipo', $tramitacaoTipo, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
+
+    public function buscarProposicaoDB($autor, $itens, $pagina, $tipo, $ano)
+    {
+        $pagina = (int) $pagina;
+        $itens = (int) $itens;
+        $offset = ($pagina - 1) * $itens;
+
+        $query = "SELECT proposicoes.*, 
+                         (SELECT COUNT(*) 
+                          FROM proposicoes 
+                          WHERE proposicao_autor = :autor 
+                            AND proposicao_ano = :ano 
+                            AND proposicao_tipo = :tipo) AS total 
+                  FROM proposicoes 
+                  WHERE proposicao_autor = :autor 
+                    AND proposicao_ano = :ano 
+                    AND proposicao_tipo = :tipo 
+                  ORDER BY proposicao_id DESC 
+                  LIMIT :offset, :itens";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':autor', $autor, PDO::PARAM_STR);
+        $stmt->bindParam(':tipo', $tipo, PDO::PARAM_STR);
+        $stmt->bindParam(':ano', $ano, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':itens', $itens, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

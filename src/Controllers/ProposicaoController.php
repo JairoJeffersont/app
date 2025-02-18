@@ -33,7 +33,10 @@ class ProposicaoController
         }
 
         try {
+
             $this->proposicaoModel->criar($dados);
+            $this->proposicaoModel->inserirTramitacao($dados['proposicao_id'], 1);
+
             return ['status' => 'success', 'message' => 'Proposição criada com sucesso.'];
         } catch (PDOException $e) {
 
@@ -46,6 +49,32 @@ class ProposicaoController
             return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
+
+
+
+    public function listarProposicoesDB($autor, $itens, $pagina, $tipo, $ano)
+    {
+        try {
+
+            $result = $this->proposicaoModel->buscarProposicaoDB($autor, $itens, $pagina, $tipo, $ano);
+
+            $total = (isset($result[0]['total'])) ? $result[0]['total'] : 0;
+            $totalPaginas = ceil($total / $itens);
+
+            if (empty($result)) {
+                return ['status' => 'empty', 'message' => 'Nenhuma proposição encontrada.'];
+            }
+
+            return ['status' => 'success', 'total_paginas' => $totalPaginas, 'dados' => $result];
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('proposicao_log', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
+            return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
+
+
+
 
 
 
@@ -80,8 +109,6 @@ class ProposicaoController
             'total_paginas' => $total_paginas
         ];
     }
-
-
 
     public function buscarDetalhe($proposicaoId)
     {

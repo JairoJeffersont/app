@@ -1,6 +1,5 @@
 <?php
 
-
 ob_start();
 
 use GabineteDigital\Controllers\NotaTecnicaController;
@@ -47,7 +46,8 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                 'proposicao_ementa' => htmlspecialchars($_POST['proposicao_ementa'], ENT_QUOTES, 'UTF-8'),
                 'proposicao_criada_por' => $_SESSION['usuario_id'],
                 'proposicao_cliente' => $_SESSION['usuario_cliente'],
-                'proposicao_autor' => $_SESSION['cliente_deputado_nome']
+                'proposicao_autor' => $_SESSION['cliente_deputado_nome'],
+                'proposicao_id' => $dados['proposicao_id'] = uniqid()
             ];
 
             $result = $proposicaoController->criarProposicao($dados);
@@ -151,5 +151,70 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                 </div>
             </form>
         </div>
+    </div>
+</div>
+
+
+<div class="card shadow-sm mb-2">
+    <div class="card-body p-2">
+        <div class="table-responsive mb-0">
+            <table class="table table-hover table-bordered table-striped mb-0 custom-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Ementa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $buscaProposicao = $proposicaoController->listarProposicoesDB($autorGet, $itensGet, $paginaGet, $tipoget, $anoGet);
+
+                    if ($buscaProposicao['status'] == 'success') {
+
+                        foreach ($buscaProposicao['dados'] as $proposicao) {
+                            $buscaNota = $notaController->buscarNotaTecnica('nota_proposicao', $proposicao['proposicao_id']);
+
+                            if ($buscaNota['status'] == 'success') {
+                                $ementa = '<b><em>' . $buscaNota['dados'][0]['nota_proposicao_apelido'] . '</b></em><br>' . $buscaNota['dados'][0]['nota_proposicao_resumo'];
+                            } else {
+                                $ementa = html_entity_decode($proposicao['proposicao_ementa']);
+                                $ementa = preg_replace('/<\/?p>/', '', $ementa);
+                                $ementa = strip_tags($ementa);
+                            }
+
+                            echo '<tr>';
+                            echo '<td style="white-space: nowrap;"><a href="?secao=proposicao-geral&id=' . $proposicao['proposicao_id'] . '">' . $proposicao['proposicao_tipo'] . ' ' . $proposicao['proposicao_numero'] . '/' . $proposicao['proposicao_ano'] . '</a></td>';
+                            echo '<td>' . $ementa . '</td>';
+                            echo '</tr>';
+                        }
+                    } else if ($buscaProposicao['status'] == 'empty') {
+                        echo '<tr><td colspan="2">' . $buscaProposicao['message'] . '</td></tr>';
+                    }
+                    ?>
+
+                </tbody>
+            </table>
+        </div>
+        <?php
+
+        if (isset($buscaProposicao['total_paginas'])) {
+            $totalPagina = $buscaProposicao['total_paginas'];
+        } else {
+            $totalPagina = 0;
+        }
+
+        if ($totalPagina > 0 && $totalPagina != 1) {
+            echo '<ul class="pagination custom-pagination mt-2 mb-0">';
+            echo '<li class="page-item ' . ($paginaGet == 1 ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=1&tipo=' . $tipoget . '&ano=' . $anoGet . '">Primeira</a></li>';
+
+            for ($i = 1; $i < $totalPagina - 1; $i++) {
+                $pageNumber = $i + 1;
+                echo '<li class="page-item ' . ($paginaGet == $pageNumber ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $pageNumber . '&tipo=' . $tipoget . '&ano=' . $anoGet . '">' . $pageNumber . '</a></li>';
+            }
+
+            echo '<li class="page-item ' . ($paginaGet == $totalPagina ? 'active' : '') . '"><a class="page-link" href="?secao=proposicoes&itens=' . $itensGet . '&pagina=' . $totalPagina . '&tipo=' . $tipoget . '&ano=' . $anoGet . '">Última</a></li>';
+            echo '</ul>';
+        }
+        ?>
     </div>
 </div>
