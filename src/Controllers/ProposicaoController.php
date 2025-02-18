@@ -56,7 +56,7 @@ class ProposicaoController
     {
         try {
 
-            $result = $this->proposicaoModel->buscarProposicaoDB($autor, $itens, $pagina, $tipo, $ano);
+            $result = $this->proposicaoModel->listarProposicoesDB($autor, $itens, $pagina, $tipo, $ano);
 
             $total = (isset($result[0]['total'])) ? $result[0]['total'] : 0;
             $totalPaginas = ceil($total / $itens);
@@ -70,6 +70,39 @@ class ProposicaoController
             $erro_id = uniqid();
             $this->logger->novoLog('proposicao_log', 'ID do erro: ' . $erro_id . ' | ' . $e->getMessage());
             return ['status' => 'error', 'status_code' => 500, 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
+
+    public function buscarProposicaoDB($coluna, $valor)
+    {
+        try {
+            $pessoa = $this->proposicaoModel->buscar($coluna, $valor);
+            if ($pessoa) {
+                return ['status' => 'success', 'dados' => $pessoa];
+            } else {
+                return ['status' => 'not_found', 'message' => 'Proposição não encontrada.'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('pessoa_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
+        }
+    }
+
+
+    public function buscarTramitacoesDB($coluna, $valor)
+    {
+        try {
+            $pessoa = $this->proposicaoModel->buscarTramitacoesDB($coluna, $valor);
+            if ($pessoa) {
+                return ['status' => 'success', 'dados' => $pessoa];
+            } else {
+                return ['status' => 'not_found', 'message' => 'Tramitação não encontrada.'];
+            }
+        } catch (PDOException $e) {
+            $erro_id = uniqid();
+            $this->logger->novoLog('pessoa_log', $e->getMessage() . ' | ' . $erro_id);
+            return ['status' => 'error', 'message' => 'Erro interno do servidor', 'error_id' => $erro_id];
         }
     }
 

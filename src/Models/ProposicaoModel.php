@@ -36,7 +36,7 @@ class ProposicaoModel
                 )";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':proposicao_id', $dados['proposicao_id'], PDO::PARAM_STR);
+        $stmt->bindParam(':proposicao_id', $dados['proposicao_id'], PDO::PARAM_INT);
 
         $stmt->bindParam(':proposicao_numero', $dados['proposicao_numero'], PDO::PARAM_INT);
         $stmt->bindParam(':proposicao_titulo', $dados['proposicao_titulo'], PDO::PARAM_STR);
@@ -61,14 +61,14 @@ class ProposicaoModel
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':tramitacao_proposicao', $proposicaoId, PDO::PARAM_STR);
+        $stmt->bindParam(':tramitacao_proposicao', $proposicaoId, PDO::PARAM_INT);
         $stmt->bindParam(':tramitacao_tipo', $tramitacaoTipo, PDO::PARAM_STR);
 
         return $stmt->execute();
     }
 
 
-    public function buscarProposicaoDB($autor, $itens, $pagina, $tipo, $ano)
+    public function listarProposicoesDB($autor, $itens, $pagina, $tipo, $ano)
     {
         $pagina = (int) $pagina;
         $itens = (int) $itens;
@@ -94,6 +94,28 @@ class ProposicaoModel
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindValue(':itens', $itens, PDO::PARAM_INT);
 
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscar($coluna, $valor)
+    {
+        $query = "SELECT * FROM proposicoes WHERE $coluna = :valor";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarTramitacoesDB($coluna, $valor)
+    {
+        $query = "SELECT tramitacoes.*, proposicoes_tramitacoes.* FROM tramitacoes INNER JOIN proposicoes_tramitacoes ON tramitacoes.tramitacao_tipo = proposicoes_tramitacoes.proposicao_tramitacao_id WHERE $coluna = :valor";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

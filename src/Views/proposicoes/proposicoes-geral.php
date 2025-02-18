@@ -47,7 +47,7 @@ $paginaGet = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                 'proposicao_criada_por' => $_SESSION['usuario_id'],
                 'proposicao_cliente' => $_SESSION['usuario_cliente'],
                 'proposicao_autor' => $_SESSION['cliente_deputado_nome'],
-                'proposicao_id' => $dados['proposicao_id'] = uniqid()
+                'proposicao_id' => $dados['proposicao_id'] = time() . mt_rand(1000, 9999)
             ];
 
             $result = $proposicaoController->criarProposicao($dados);
