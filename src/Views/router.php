@@ -5,6 +5,7 @@ $pagina = isset($_GET['secao']) ? $_GET['secao'] :  include './src/Views/home/ho
 $rotas = [
     'login' => './src/Views/login/login.php',
     'sair' => './src/Views/login/sair.php',
+    'sobre' => './src/Views/sobre/sobre.php',
     'recuperar-senha' => './src/Views/login/recuperar-senha.php',
     'nova-senha' => './src/Views/login/nova-senha.php',
     'cadastro' => './src/Views/cadastro/cadastro.php',

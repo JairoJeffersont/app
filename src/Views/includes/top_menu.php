@@ -26,13 +26,13 @@
                         <div class="dropdown-divider"></div>
 
                         <?php
-                         if ($_SESSION['cliente_deputado_tipo'] == 'Deputado Federal' || $_SESSION['cliente_deputado_tipo'] == 'Senador' || $_SESSION['cliente_deputado_tipo'] == 'Vereador'  || $_SESSION['cliente_deputado_tipo'] == 'Deputado Estadual') {
+                        if ($_SESSION['cliente_deputado_tipo'] == 'Deputado Federal' || $_SESSION['cliente_deputado_tipo'] == 'Senador' || $_SESSION['cliente_deputado_tipo'] == 'Vereador'  || $_SESSION['cliente_deputado_tipo'] == 'Deputado Estadual') {
                             echo ' <a class="dropdown-item" href="?secao=temas-proposicoes">Temas de proposições</a>
                         <a class="dropdown-item" href="?secao=proposicoes_tramitacoes">Tramitações de proposições</a>';
-                         }
-                        
+                        }
+
                         ?>
-                       
+
 
 
 
@@ -57,6 +57,9 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['usuario_nome'] ?></a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="?secao=usuario&id=<?php echo $_SESSION['usuario_id'] ?>"><i class="bi bi-person-fill"></i> Perfil </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"  href="?secao=sobre"><i class="bi bi-info-circle"></i> Sobre</a>
+
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" id="btn-sair" href="?secao=sair"><i class="bi bi-door-open"></i> Sair</a>
                     </div>
